@@ -1,8 +1,8 @@
 <h2>Create Projects Form</h2>
 
 
-<?php if($this->session->flashdata('taskerr')): ?>
-		<?php echo $this->session->flashdata('taskerr') ?>
+<?php if($this->session->flashdata('taskerrors')): ?>
+		<?php echo $this->session->flashdata('taskerrors') ?>
 
 <?php endif; ?>
 

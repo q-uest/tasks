@@ -23,11 +23,19 @@ public function get_list_tasks($project_id)
 
 	$this->db->where('project_id',$project_id);
 	$list_task=$this->db->get('tasks');
-	echo "num rows=".$list_task->num_rows();
+	#echo "num rows=".$list_task->num_rows();
 	return $list_task->result();
 
 
 }
+
+public function delete_tasks($taskslis)
+ {
+ 	$this->db->where_in('id',$taskslis);
+ 	$delete=$this->db->delete('tasks');
+ 	return $delete?true:false;
+
+ }
 
 
 public function db_fetch_task($id)
@@ -36,7 +44,10 @@ public function db_fetch_task($id)
 
 	$this->db->where('id',$id);
 	$task=$this->db->get('tasks');
+
 	echo "num rows=".$task->num_rows();
+	echo "<br>";
+	var_dump($task->result());
 	return $task->result();
 
 
