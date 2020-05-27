@@ -22,7 +22,7 @@ public function get_list_tasks($project_id)
 
 
 	$this->db->where('project_id',$project_id);
-	$list_task=$this->db->get('tasks');
+	$list_task=$this->db->get('tasks_hierarch_view');
 	#echo "num rows=".$list_task->num_rows();
 	return $list_task->result();
 

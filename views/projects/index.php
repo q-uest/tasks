@@ -122,6 +122,11 @@ function addElement(project_id,taskArr)
 
 
 		var projrow=document.getElementById(projrowidx);
+		projtr.appendChild(projtd);
+		projtd.appendChild(taskstab1);
+		projrow.after(projtr);
+		cre_header();
+
 		for(i=0;i<taskArr.length;i++)
 		{
 			cre_tab1rows(i,taskArr);
@@ -131,8 +136,9 @@ function addElement(project_id,taskArr)
 
 		function cre_tab1rows(rownum,taskArr)
 		{
-		  	console.log("rownum=".concat(rownum));
-			newrow=taskstab1.insertRow(rownum);
+		  	console.log("from cre_tab1rows...rownum=".concat(rownum));
+		  	
+			newrow=taskstab1.insertRow(rownum+1);
 
 			c0=newrow.insertCell(0);
 			c1=newrow.insertCell(1);
@@ -140,19 +146,14 @@ function addElement(project_id,taskArr)
 			c0d=document.createElement('input');
 			cre_chkbox("chk".concat(taskArr[rownum].id),taskArr[rownum].id);
 			c1d=document.createTextNode(taskArr[rownum].id);
+			console.log("cre_tab1rows...id[".concat(rownum).concat("]=").concat(taskArr[rownum].id));
 			c2d=document.createTextNode(taskArr[rownum].task_name);
 			c0.appendChild(c0d);
 			c1.appendChild(c1d);
 			c2.appendChild(c2d);
 				//	taskstab1.insertRow(newrow);
 			
-			if (rownum==0)
-			{
-				projtr.appendChild(projtd);
-				projtd.appendChild(taskstab1);
-				projrow.after(projtr);
-				cre_header();
-			}		
+					
 		}
 	} 
 // create tasktab2 in a new <td>
@@ -240,10 +241,6 @@ function addElement(project_id,taskArr)
     		}
     	}
 
-		
-
-
-
    		 // end-> insert new records
 
 		function cre_headertab2()
@@ -254,11 +251,17 @@ function addElement(project_id,taskArr)
 			var cell0 = row.insertCell(0);
 			var cell1 = row.insertCell(1);
 			var cell2 = row.insertCell(2);
-			cell0.innerHTML = "<b>Due Date</b>";
-			cell1.innerHTML = "<b>Description</b>";
+			cell0.innerHTML = "<b>Parent Task</b>";
+			cell1.innerHTML = "<b>Level</b>";
 			btn=cre_delbutn();
 			cell1.after(btn);
 		}
+
+		console.log("rownum==0;creating table tasktab2.....");
+		td2.appendChild(taskstab2);
+		projtr.appendChild(td2);
+		cre_headertab2();
+
 		
 		for(rownum=0;rownum<taskArr.length;rownum++)
 		{
@@ -268,25 +271,26 @@ function addElement(project_id,taskArr)
 
 		function cre_rows(rownum)
 		{
-			newrow=taskstab2.insertRow(rownum);
+			newrow=taskstab2.insertRow(rownum+1);
 			c0=newrow.insertCell(0);
 			c1=newrow.insertCell(1);
-			c0d=document.createTextNode(taskArr[rownum].due_date);
-			c1d=document.createTextNode('dummy task2');
+			console.log("taskarr[rownum].parent_Task_id=".concat(taskArr[rownum].task_id));
+			c0d=document.createTextNode(taskArr[rownum].parent_task_id);
+			c1d=document.createTextNode(taskArr[rownum].lvl);
 			c0.appendChild(c0d);
 			c1.appendChild(c1d);
 			//taskstab2.insertRow(newrow);
 		
 
-			if(rownum<1)
-			{
+			// if(rownum==0)
+			// {
 				
-				console.log("creating table.....");
-				td2.appendChild(taskstab2);
-				projtr.appendChild(td2);
-				cre_headertab2();
+			// 	console.log("rownum==0;creating table tasktab2.....");
+			// 	td2.appendChild(taskstab2);
+			// 	projtr.appendChild(td2);
+			// 	cre_headertab2();
 
-			}
+			// }
 		}
 
 	}
