@@ -1,6 +1,8 @@
 
 <h1>Projects</h1>
 
+<!-- <a class="btn btn-primary pull-right" href="<?php echo base_url(); ?>projects/create">Create Project </a>
+-->
 <p>
 
 <?php 
@@ -14,7 +16,6 @@ if($this->session->flashdata('project_inserted'))
 </p>
 
 <p>
-
 <?php if($this->session->flashdata('project_updated'))
 {
 
@@ -22,21 +23,17 @@ if($this->session->flashdata('project_inserted'))
 }
 
 ?>
-
 </p>
 
 <p>
-
 <?php if($this->session->flashdata('project_deleted'))
 {
    echo $this->session->flashdata('project_deleted');
 }
 
 ?>
-
 </p>
 
-<a class="btn btn-primary pull-right" href="<?php echo base_url(); ?>projects/create">Create Project </a>
 
 
 <script> type="text/javascript"
@@ -360,115 +357,103 @@ function inserttasksonly(project_id)
     					console.log("responseText=".concat(this.responseText));
       				  
       				  projicon.className="glyphicon glyphicon-collapse-down";
-      				  insert_new_tasks_only=false;
-      				  addElement(project_id,tasksArr);
+      				  display_tasks(tasksArr);
+      				 
       				 }
-      				 else
-      				 {
-      				 	inserttasksonly(project_id);
-      				 }
-
+      				 
       			}
       		}			
-      		
-      		
-    			manage_tasktabs();
-            
-        
+   			manage_tasktabs();
+
         function manage_tasktabs() 
         {
          	projicon=document.getElementById("projicon".concat(project_id));
          	piconclass=projicon.className;
          	console.log(piconclass);
-         	taskstab1=document.getElementById('taskstab1'.concat(project_id));
-  			taskstab2=document.getElementById('taskstab2'.concat(project_id));
-  			
+         	
       		if (piconclass == "glyphicon glyphicon-expand")
       		{
-      				console.log("icon=glyphicon-expand");
-      				if (taskstab1 == null || wf_project_id != "" || del_project_id.includes(project_id))			
-      				{
-      					console.log('tasktab1 is not there yet or need refreshing');
-  						xhttp.open("GET", "http://localhost/ci/tasks/list_tasks/".concat(project_id), true);
+      				
+      					xhttp.open("GET", "http://localhost/ci/tasks/list_tasks/".concat(project_id), true);
   						console.log('this is after xhttp.open statement');
   						xhttp.send();
   						console.log('this is after xhttp.send');
 
-
-  					}
-  					else
-  					{
-
-  						console.log("tasktables already exist");
-  						taskstab1.style.display="table";
-  						taskstab2.style.display="table";
-  						projicon.className="glyphicon glyphicon-collapse-down";
-  					}
   			}
   			else
   			{
-
-  				console.log("switch off task tables");
-  				console.log(taskstab1);
-  				taskstab1.style.display="none";
-  				taskstab2.style.display="none";
   				projicon.className="glyphicon glyphicon-expand";
   			}
 			
 		}
-	}
+	function display_tasks(tasks)
+	{
+// find the location of the corresponding project_id in the window
+
+		projrw="projrw".concat(project_id);
+		projrwid=document.getElementById(projrw);
+		
+// insert task records under project_id
+
+		for(rownum=0;rownum<tasks.length;rownum++)
+		{
+
+			var el = document.createElement("div");
+			el.id="taskrw".concat(tasks[rownum].id);
+			
+
+			taskrec="<div class='col-xs-12'> <hr/> <div class='col-xs-4'>".concat(tasks[rownum].task_name).concat("</div> <div class='col-xs-4'>").concat(tasks[rownum].task_body.substring(0,40)).concat("</div> <div class='col-xs-2'>").concat(tasks[rownum].due_date).concat("</div> </div>  ");
+			el.innerHTML = taskrec;
+
+			projrwid.append(el);
+		}
+		console.log("the last rownum val=".concat(tasks[rownum-2].id));
+		lastrec=document.getElementById("taskrw".concat(tasks[rownum-2].id));
+		add_hr="<hr/>";
+		el.innerHTML = add_hr;
+		lastrec.append(el);
+    }
+}
 		
 </script>
 		
-
-
-<table id="projtab" class="table  table-dark">
-	<thead>
-	<tr>
-		<th>
-		Project Name
-		</th>
-		<th>
-		Description
-		</th>
-	</tr>
-	</thead>
-	<tbody>
-		
 		<?php foreach($projects as $project): ?>
 		
-		<?php echo '<tr id="projrw'.$project->id.'">' ?>
-		<?php echo '<td><span  id="projicon'. $project->id .'"class="glyphicon glyphicon-expand"></span>'.'<a id="project_id" href='. base_url() ."projects/display/". $project->id .">"." ".$project->project_name . "</a></td>"?>
-		<?php echo "<td>".$project->project_body; "</td>"?>
+		<?php echo "<div id='projrw".$project->id."'>" ?>	
+		<?php echo "<div class='col-xs-3'>" ?>
+		<?php echo '<span  id="projicon'. $project->id .'"class="glyphicon glyphicon-expand"></span>'.'<a id="project_id" href='. base_url() ."projects/display/". $project->id .">"." ".$project->project_name . "</a>" ?>
 
-
-		<td><a class="btn btn-danger" href='<?php echo base_url() ."projects/del_proj/". $project->id ?>'><span class="glyphicon glyphicon-remove"></span></a></td>
-
+		<?php echo "</div>" ?>			
+	
+		<?php echo "<div class='col-xs-6'>" ?>
+		<?php echo $project->project_body; ?>
+		<?php echo "</div>" ?>			
 		
-
-		</tr>
-
+	
+		<?php echo "<div class='col-xs-1'>" ?>
+	
+		<a class="btn btn-danger" href='<?php echo base_url() ."projects/del_proj/". $project->id ?>'><span class="glyphicon glyphicon-remove"></span></a>
 
 		<script> type="text/javascript" 
 	
 		document.getElementById('projicon<?php echo $project->id ?>').addEventListener('click',function(){
 			get_projectid(<?php echo $project->id ?>) ;
+
 	
 		}
 		);
 	
 		</script>
+		<?php echo "</div>" ?>			
+		
+		<?php echo "</div>" ?>			
 		
 	<?php endforeach ?>
 		
-		
-
-	</tbody>
-
-</table>
-
-
-
+		<?php echo "</div>" ?>	
+		<?php echo "</p>" ?>					
+		<?php echo "</p>" ?>				
+	
 <?php 
 
    	

@@ -57,7 +57,7 @@
 
 <div class="container">
 	
-	<div class="col-xs-3">
+	<div class="col-xs-2">
 
 	<?php 
 	if($this->session->flashdata('loginerr')):
@@ -73,7 +73,7 @@
 	</div>
 
 
-	<div class="col-xs-9">
+	<div class="col-xs-10">
 
     <?php $this->load->view($main_view); ?>
 
