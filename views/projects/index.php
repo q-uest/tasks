@@ -392,45 +392,212 @@ function inserttasksonly(project_id)
 
 		projrw="projrw".concat(project_id);
 		projrwid=document.getElementById(projrw);
+		var varrpartrk=[];
 		
 // insert task records under project_id
-
-		for(rownum=0;rownum<tasks.length;rownum++)
+		
+		function find_child_task(id,ocur=1) 
 		{
-
-			var el = document.createElement("div");
-			el.id="taskrw".concat(tasks[rownum].id);
+			var oc=0;
+			var i=0;
+			for (i=0;i<tasks.length;i++)
+			{
+				//console.log("(1)find_child_tasks id=pid=oc=".concat(tasks[i].id).concat(".").concat(tasks[i].parent_task_id).concat(".").concat("+").concat(oc));
 			
 
-			taskrec="<div class='col-xs-12'> <hr/> <div class='col-xs-4'>".concat(tasks[rownum].task_name).concat("</div> <div class='col-xs-4'>").concat(tasks[rownum].task_body.substring(0,40)).concat("</div> <div class='col-xs-2'>").concat(tasks[rownum].due_date).concat("</div> </div>  ");
-			el.innerHTML = taskrec;
+				if ( tasks[i].parent_task_id==id )
+				{
+					// console.log("(2)find_child_tasks id=>oc=".concat(id).concat("+").concat(oc));
+			
+					oc=oc+1;
+					if (oc == ocur)
+						break;
+				}
 
-			projrwid.append(el);
+			}
+			
+			if (i<tasks.length)
+			{
+				// console.log("find_child_task retval=".concat(tasks[i].id));
+				return(tasks[i].id);
+			}
+			else
+				return null;
 		}
-		console.log("the last rownum val=".concat(tasks[rownum-2].id));
-		lastrec=document.getElementById("taskrw".concat(tasks[rownum-2].id));
-		add_hr="<hr/>";
-		el.innerHTML = add_hr;
-		lastrec.append(el);
-    }
+
+		function find_parent_task(id) 
+		{
+			var vparent_task_id=0;
+			for (i=0;i<tasks.length;i++)
+			{
+				if (tasks[i].id==id)
+				{
+					vparent_task_id=tasks[i].parent_task_id;
+					//console.log("find_parent_task returns".concat(vparent_task_id));
+					break;
+
+				}
+
+			}
+			return vparent_task_id;
+		}
+
+		function find_root_tasks()
+		{
+			var i=0;
+			var j=0;
+			var roottaskarr=[];
+			for (i=0;i<tasks.length;i++)
+			{
+				if (tasks[i].parent_task_id==0)
+				{
+					//console.log("find_root_Task ".concat(tasks[i].id));
+					roottaskarr[j]=tasks[i].id;
+					//console.log("find_root_Task= ".concat(roottaskarr[j]));
+					j=j+1;
+				}
+			}
+			return (roottaskarr);
+
+		}
+
+
+		function find_child_count(id)
+		{
+			var i=0;
+			cnt=0;
+			for (i=0;i<tasks.length;i++)
+			{
+				if (tasks[i].parent_task_id==id)
+					cnt=cnt+1;	
+			}
+			return(cnt);
+		}
+
+		function find_task_idx(id)
+		{
+			found=false;
+			var i=0;
+			for(i=0;i<varrpartrk.length;i++)
+			{
+				//console.log("find_task_idx index=".concat(i).concat("=>").concat(varrpartrk[i].id));
+
+				if (varrpartrk[i].id == id)
+				{
+					found=true;
+					//console.log("(1)find_task_idx=".concat(i));
+					break;
+				}
+			}
+			//console.log("(2)find_task_idx index=".concat(i));
+			if (found)
+			   return(i);
+			else
+				return(0);
+
+		}
+
+		 var i=0;
+		 var voccur=0;
+		 var vroottaskarr=[];
+		 vroottaskarr=find_root_tasks();
+		 for (i=0;i<vroottaskarr.length;i++)
+		 {
+
+		 	var vcurrtask=vroottaskarr[i];
+		 	var vcurrlvl=1;
+		 	var varrcnt=0;
+		 	var vchldcnt=find_child_count(vcurrtask);
+		 	var vparent_task=vcurrtask;
+
+			var vtempind=0;
+		 	while ( vparent_task !== 0 )
+		 	{
+		 		if ( vchldcnt == 0 ) 
+				{					
+					if (vcurrtask !== null )
+					{
+						console.log("tasksid= ".concat(vcurrtask));
+						// console.log("vcurrtask is NOT null");
+					}
+					else
+					{
+						//console.log("vcurrtask is null");
+						vcurrtask=vintmedtask;
+						//console.log("vintmedtask".concat(vintmedtask));
+					}
+					vparent_task=find_parent_task(vcurrtask);
+					//console.log("vparenttask=".concat(vparent_task));
+					if (vparent_task !== 0 )
+					{
+						vcurrtask=vparent_task;
+						taskidx=find_task_idx(vcurrtask);
+						voccur=varrpartrk[taskidx].voccur;
+						voccur=voccur+1;
+
+						varrpartrk[taskidx].voccur=voccur;
+					//	console.log("vchldcnt==0 voccur=".concat(voccur));
+					}
+					else
+						console.log("vparent_Task=0..time to stop theloop");
+				}
+				else if (vchldcnt == 1 )
+				{
+				 	console.log("tasksid= ".concat(vcurrtask));
+				 	voccur=1;
+				}
+				else if (vchldcnt > 1)
+					console.log("taskid= ".concat(vcurrtask));
+				
+				// store vcurrtask and voccur in an array to refer later
+				
+				vintmedtask=vcurrtask;
+				vcurrtask=find_child_task(vcurrtask,voccur);
+				//console.log("check return val of currtask".concat(vcurrtask));
+
+				vtempind=vtempind+1;
+				if ( vcurrtask == null )
+				{
+					vchldcnt=0;
+				}
+				else
+				{
+					voccur=1;
+					str='{"id":'.concat(vcurrtask).concat(',"voccur":').concat(voccur).concat('}');
+					
+					console.log(str);
+					tmpvar=JSON.parse(str);
+					varrpartrk[varrcnt]=tmpvar;
+					//console.log("array length of varrpartrk".concat(varrpartrk.length));
+					vchldcnt=find_child_count(vcurrtask);
+		 			varrcnt=varrcnt+1;
+				}
+
+
+				
+			}
+		}
+	}
 }
+	
+		
 		
 </script>
 		
 		<?php foreach($projects as $project): ?>
 		
-		<?php echo "<div id='projrw".$project->id."'>" ?>	
-		<?php echo "<div class='col-xs-3'>" ?>
-		<?php echo '<span  id="projicon'. $project->id .'"class="glyphicon glyphicon-expand"></span>'.'<a id="project_id" href='. base_url() ."projects/display/". $project->id .">"." ".$project->project_name . "</a>" ?>
+		<?php echo "<div class='row' id='projrw".$project->id."'>" ?>	
+		<?php echo "<div class='col-xs-2'>" ?>
+		<?php echo '<span  id="projicon'. $project->id .'" class="glyphicon glyphicon-expand"></span>'.'<a id="project_id" href='. base_url() ."projects/display/". $project->id .">"." ".$project->project_name . "</a>" ?>
 
 		<?php echo "</div>" ?>			
 	
-		<?php echo "<div class='col-xs-6'>" ?>
+		<?php echo "<div class='col-xs-7'>" ?>
 		<?php echo $project->project_body; ?>
 		<?php echo "</div>" ?>			
 		
 	
-		<?php echo "<div class='col-xs-1'>" ?>
+		<?php echo "<div class='col-xs-1, pl-0'>" ?>
 	
 		<a class="btn btn-danger" href='<?php echo base_url() ."projects/del_proj/". $project->id ?>'><span class="glyphicon glyphicon-remove"></span></a>
 
