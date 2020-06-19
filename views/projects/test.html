@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<style type="text/css">
+
+:root {
+
+  --lvl : 100px;
+  --bc : red;
+
+}
+
+.lvl1 {
+	padding-left: calc( 2 * var( --lvl ));
+	background-color: var(--bc);
+	
+}
+
+.lvl2 {
+	padding-left:  calc( 3 * var( --lvl ));
+	background-color: var(--bc);
+	
+}
+
+
+</style>
+
+<head>
+	<title></title>
+</head>
+<body>
+
+<div id="divid">
+	<button id="butt" class="lvl1">hello1</button>
+	<button id="butt2" class="lvl2">hello2</button>
+	
+<script>
+	type="text/javascript" 
+		
+		document.getElementById('butt').addEventListener('click',function(){
+		root=document.getElementById('divid');
+		
+		a=root.style.getPropertyValue('--lvl');
+      	b=root.style.getPropertyValue('--bc');
+
+      	console.log("pre current value of --lvl="+a+b);
+
+      	root.style.setProperty('--lvl', '50px');
+		root.style.setProperty('--bc', 'green');
+
+		a=root.style.getPropertyValue('--lvl');
+      	b=root.style.getPropertyValue('--bc');
+      	
+      	
+      	console.log("post current value of --lvl="+a+b);
+
+
+
+      	});
+      		
+</script>
+</div>
+
+</body>
+</html>
