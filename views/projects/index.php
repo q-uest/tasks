@@ -387,7 +387,7 @@ function inserttasksonly(project_id)
       			tdiv1_id="t"+tskid+"l"+tasksOrdArr[i].lvl;
       			tdiv1.id=tdiv1_id;
       	
-      		
+      			tdiv1.classList.add("tskitm");
       			tskhr=document.createElement('hr');
       			//tskhr.style="margin-top:10px;margin-bottom:10px;padding-top: 0px;padding-bottom: 0px;border: 0.01px solid #5CB3FF";
       			tskhr.id="hr"+tskid;
@@ -631,6 +631,39 @@ function inserttasksonly(project_id)
 				    		}
 
       		}
+
+
+		function pub_find_child_task(id,ocur=1) 
+		{
+			var oc=0;
+			var i=0;
+			for (i=0;i<tasks.length;i++)
+			{
+				//console.log("(1)find_child_tasks id=pid=oc=".concat(tasks[i].id).concat(".").concat(tasks[i].parent_task_id).concat(".").concat("+").concat(oc));
+			
+
+				if ( tasks[i].parent_task_id==id )
+				{
+					// console.log("(2)find_child_tasks id=>oc=".concat(id).concat("+").concat(oc));
+			
+					oc=oc+1;
+					if (oc == ocur)
+						break;
+				}
+
+			}
+			
+			if (i<tasks.length)
+			{
+				// console.log("find_child_task retval=".concat(tasks[i].id));
+				return(tasks[i].id);
+			}
+			else
+				return null;
+		}
+
+
+
       	
       
 	 function draw_vline()
@@ -645,74 +678,127 @@ function inserttasksonly(project_id)
 			projdiv='outdiv'+tasksOrdArr[i].project_id;
 			projdivele=document.getElementById(projdiv);
 
+			var lstprocessed_pgrp=[];
+			var lstprocessed_idx=0;
+
+			var vprevgroup=0;
+			var vgroup=0;
+
+			var vleftpaddval=18;
+
+			var vsitmlvl;
+
+			var vinitlvlproc=0;
+			var prevlvl1=0;
+
       		for(i=0;i<tasksOrdArr.length;i++)
       		{
       			vprcind=varrParChld[i];
 
       			console.log("BEGINNING OF VERTICAL LINE FOR LOOP");
-      			console.log("i=+taskid="+i+" "+tasksOrdArr[i].id);
+      			console.log("taskid="+tasksOrdArr[i].id);
 
+      			var processed='N';
+      			var pi=0;
+      			var pgrp='pt'+tasksOrdArr[i].parent_task_id;
 
-      			if (tasksOrdArr[i].lvl > 1 && (tasksOrdArr[i].id == 162 ||tasksOrdArr[i].id == 164 ||tasksOrdArr[i].id == 166 ))      				 
+      			vprevgroup=vgroup;
+      			vgroup=tasksOrdArr[i].group_id;
+      			prevlvl=vrtlvl;
+      			vrtlvl=tasksOrdArr[i].lvl; 	
+
+      			if (vprevgroup!==vgroup)
+					prevlvl=0;
+				
+				    	
+      			for (pi=0;pi<lstprocessed_pgrp.length;pi++)
       			{
-      				tskdiv="t"+tasksOrdArr[i].id+"l"+tasksOrdArr[i].lvl;
-      				console.log("the div to be appended"+tskdiv);
-      				tskdivele=document.getElementById(tskdiv);
-      				var pgrp='pt'+tasksOrdArr[i].parent_task_id;
+      					console.log("already processed parentgroups="+lstprocessed_pgrp[pi]);
 
-      				var itm=document.getElementsByClassName(pgrp);
+      					if (lstprocessed_pgrp[pi]== pgrp)
+      						processed='Y';
+      				
+      			}
 
-				  	console.log("PARENT GROUP COUNT="+pgrp+' '+itm.length);
+				var itm=document.getElementsByClassName(pgrp);
+			  	console.log("PARENT GROUP COUNT="+pgrp+' '+itm.length);
 
-				   	if (itm.length > 1)
-				   	{
+
+      			if ( processed =='N' )
+				{
+					if (itm.length > 1)
+				  	{
+      					tskdiv="t"+tasksOrdArr[i].id+"l"+tasksOrdArr[i].lvl;
+      					console.log("the div to be appended "+tskdiv);
+      					tskdivele=document.getElementById(tskdiv);
+      				   	
+				   	
+      				
+				  		lstprocessed_pgrp[lstprocessed_idx]=pgrp;
+				   		lstprocessed_idx=lstprocessed_idx+1;
+
+				   		// create new div called divout+pgrp
+
+				   		
 				   		vldivout='divout'+pgrp;
 				   	   	vldivoutele=document.createElement('div');
 				   	   	vldivoutele.id=vldivout;
 				   	   	console.log("div id created vloutdivid="+vldivout);
 				   	   	tskdivele.parentNode.insertBefore(vldivoutele,tskdivele.nextSibling);
-				   	   	//projdivele.insertBefore(vldivoutele,tskdivele);
 
-
-
+				   	   	// create new div called divin+pgrp
+				   	   	
 				   	   	vldivin='divin'+pgrp;
 				   	   	vldivinele=document.createElement('div');
 				   	   	vldivinele.id=vldivin;
-				   	   	
-				   	   	vldivinele.classList.add('vldivin');
 
+				   	   	// add the div element to the vldivin class
+
+				   	   	vldivinele.classList.add('vldivin');
 				   	   	vldivoutele.appendChild(vldivinele);
 
+				   	   	// set indention for each task items/groups
+
+						vrtlvl1= ( vrtlvl - prevlvl )  * vleftpaddval;
+
+						// first time after the single items are displayed, this variable, vsitmlvl is used for indenting new div group with children  
+
+						vrtlvl1=vrtlvl1+vsitmlvl;
+
+						// reset vsitmlvl to zero, so that the next div with children will start from the current block or the next single item will start based on its level (refer the else part)
+
+						vsitmlvl=0;
 				   	   	
-				   	   	// find the root element's level which will be used in the calculation below to set padding-left for child elemnts
+				   	   	console.log("VRTLVL prevlvl+vrtlvl="+prevlvl+' '+vrtlvl);
 
-				   	   	prevlvl=vrtlvl;
-
+				   	   	// <==
+				   	   	// set indent of the row based on its level
+				   	   	// ==>
 
 				   	   	root=document.getElementById(vldivout);
-				   	   	vrtlvl=tasksOrdArr[i].lvl;
-				   	   	vrtlvl1= ( vrtlvl - prevlvl )  * 18;
-				   	   	
 				   	   	if (vrtlvl1 == 0)
-				   	   		vrtlvl1=18;
+				   	   		vrtlvl1=vleftpaddval;
 
-				   	   	vrtlvl1=vrtlvl1+'px';
-				   	   	console.log("the calculated value to be passed 2 --rtlvl="+vrtlvl1);
-				   	   	root.style.setProperty('--rtlvl', vrtlvl1 );
-				   	   	vrtlvl1=root.style.getPropertyValue('--rtlvl');
-				   	   	console.log("rootlevel set is,"+vrtlvl1);
+				   	   	
+				   	   	console.log("the calculated value to be passed to --rtlvl="+vrtlvl1);
+				   	   	root.style.setProperty('--rtlvl', vrtlvl1+'px' );
+				   	   	root.style.getPropertyValue('--rtlvl');
+				   	   	console.log("rootlevel set is,"+root.style.getPropertyValue('--rtlvl'));
 
 				   	   	vldivoutele.classList.add('vldivout');
 	      				
+
+				   	   	// <==
+				   	   	// find items in range & include them in the same div
+				   	   	// ==>
+
 				   		var vrange=[];
 				   		var vrngitm=[];
 
 				   		var fstitm=itm[0].id;
-				   		console.log("fstitm="+fstitm);
-
+				   		
 				   		var lstitm=itm[itm.length-1].id;
-
-				   		console.log('lastitm='+lstitm);
+				   		console.log("fstitm=lastitm="+fstitm+' '+lstitm);
 				   		
 				   		fstitmele=document.getElementById(fstitm);
 				   		lstitmele=document.getElementById(lstitm);
@@ -725,42 +811,25 @@ function inserttasksonly(project_id)
 				   		for (i2=0;i2<rofitms.length;i2++)
 				   		{
 				   			chldid='t'+rofitms[i2].id+'l'+rofitms[i2].lvl;
-				   				
 				   			console.log("rofitms[i2]="+chldid);
 				   			chldele=document.getElementById(chldid);
 				   			console.log("parent of before change "+chldid+" "+chldele.parentNode.id);
-				   			//chldele.parentNode.removeChild(chldele);
+			   			
 				   			vldivinele.appendChild(chldele);
 
+				   			// remove lvl1 so that the vertical line will connect all the tasks in the same level 
 
-				   			root=document.getElementById(chldid);
-
-				   			// reset padding-left to get the vertical line
-
-
-				   			root.style.setProperty('--lvl2',(rofitms[i2].lvl)+'px' );
-				   			vrtlvlnum= ( ( (vrtlvl - prevlvl)  * -18 ) + (rofitms[i2].lvl - vrtlvl) * 18 ) ;
-				   			vrtlvlnum=vrtlvlnum+'px';
-				   			console.log("vrtlvlnum="+vrtlvlnum);
-				   			root.style.setProperty('--rtlvlnum',vrtlvlnum);
-	      					vlvl2=root.style.getPropertyValue('--lvl2');
-	      					console.log("frm vldraw the current value of --lvl2 & lvl="+vlvl2+' '+rofitms[i2].lvl);
-	      					chldele.classList.remove('lvl1');
+				   			chldele.classList.remove('lvl1');
 	      					chldele.classList.add('tskitm');  
-	      					//chldele.classList.add('v2');  
+	      					
 
 				   			console.log("successfully appendChild is done on "+chldid);
 				   			console.log("parent of after change "+chldid+" "+chldele.parentNode.id);
 				   			
 				   		}
-				   		//console.log("appendchild vldivele to vldivele2");
-				   		//console.log("the parent of vldivele="+vldivele.parentNode);
-
-				   		//vldivele2.appendChild(vldivele);
-
+				   		
 				   		function find_pos(itm)
 				   		{
-
 				   			var curritm;
 				   			var i=0;
 				   			for (i=0;i<=tasksOrdArr.length;i++)
@@ -784,27 +853,66 @@ function inserttasksonly(project_id)
 				   			var resultarr=[];
 				   			i=find_pos(fstitm);	
 				   			
+				   			// <==
 				   			// find position of the last item
 				   			// add +1 to include the last element too in resultarr
+				   			// ==>
 
-				   			l=find_pos(lstitm)+1;
+				   			l=find_pos(lstitm);
+				   			
+				   			
 				   			console.log("startpos(i)=lastpos(l)"+i+' '+l);
+				   			console.log("tasksOrdArr[i].length="+tasksOrdArr.length);
 
-				   			curritm='t'+tasksOrdArr[i].id+'l'+tasksOrdArr[i].lvl;
-				   			lstitm='t'+tasksOrdArr[l].id+'l'+tasksOrdArr[l].lvl;
-				   			console.log("curritm="+curritm);
-				   			while (curritm !== lstitm && i <tasksOrdArr.length && tasksOrdArr[i].lvl>1)
+				   			
+				   			while ( i <= l  && tasksOrdArr[i].lvl>1 )
 				   			{
-				   				console.log("inside while curritm+startpos+lstitm"+curritm+' '+i+" "+lstitm);
+				   				//console.log("inside while curritm+startpos+lstitm"+i+" "+lstitm);
 				   				resultarr[j]=tasksOrdArr[i];
 				   				i=i+1;
 				   				j=j+1;
-				   				curritm='t'+tasksOrdArr[i].id+'l'+tasksOrdArr[i].lvl;
 				   			}
 				   					console.log("get_itms_inrange ends here...");
 				   					return resultarr;
 
 				   		}	
+				   	}
+				   	else
+				   	{
+				   		// 
+				   		// if the parent group of the current row contains no children
+				   		// 
+
+
+				   		console.log("THIS IS SINGLE ITEM WITHOUT NO CHILDREN..");
+				   		console.log("vrtlvl=+prevlvl="+vrtlvl+' '+prevlvl);
+
+				   		if (vsitmlvl == 0)
+				   			prevlvl1=0;
+				   		else				   			
+				   			prevlvl1=vrtlvl1;
+
+				   		if (vinitlvlproc !== tasksOrdArr[i].group_id)
+				   		{
+				   		   	vrtlvl1= vrtlvl * vleftpaddval;
+				   		   	prevlvl1=0;
+						}
+						else
+							vrtlvl1= prevlvl1+ ((vrtlvl-prevlvl) * vleftpaddval);
+
+
+
+						// "vsitmlvl" below variable for indenting the tasks with children in the "if" clause above where itm.length>1
+						
+
+						vsitmlvl=vrtlvl1;
+						vrtlvl1=vrtlvl1 + 15;
+						vinitlvlproc=tasksOrdArr[i].group_id;
+						
+				   	   	console.log("the calculated value to be passed 2 --rtlvl="+vrtlvl1);
+				   	   	itm[0].style.setProperty('--rtlvl', vrtlvl1+'px' );
+				   	   	console.log("rootlevel set is,"+vrtlvl1+'px');
+						itm[0].classList.add('singleitem');
 				   	}
 				  }
 

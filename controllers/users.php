@@ -103,7 +103,7 @@ if ($this->form_validation->run() == FALSE )
 
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[3]');
         
-        $this->form_validation->set_rules('Confpswd', 'Pswd', 'trim|required|min_length[1]|matches[password]');
+        // $this->form_validation->set_rules('Confpswd', 'Pswd', 'trim|required|min_length[1]|matches[password]');
 
       //  echo "users.login()....form_validation=".$this->form_validation->run();
 

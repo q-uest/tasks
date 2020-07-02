@@ -66,7 +66,7 @@ $data = array('class' => 'form-control',
 
 </div>
 
-<div class="form-group">
+<!-- <div class="form-group">
 
 
 <?php echo form_label('Confirm Password'); ?>
@@ -81,7 +81,7 @@ $data = array('class' => 'form-control',
 <?php echo form_password($data);  ?>
 
 </div>
-
+ -->
 <div class="form-group">
 
 <?php 
