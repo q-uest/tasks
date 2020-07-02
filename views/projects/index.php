@@ -419,6 +419,7 @@ function inserttasksonly(project_id)
       				tdivc3=document.createElement('div');
       				tdivc3.className="col-xs-12";
 
+
       				if (tasksOrdArr[i].lvl == 1)
       				{
       					tdivc3.style="#border-left: 10px solid #5CB3FF;background-color:#897F7F;color:white;";
@@ -684,7 +685,9 @@ function inserttasksonly(project_id)
 			var vprevgroup=0;
 			var vgroup=0;
 
-			var vleftpaddval=18;
+			// sets indention between task levels 
+
+			var vleftpaddval=5;
 
 			var vsitmlvl;
 
@@ -817,9 +820,7 @@ function inserttasksonly(project_id)
 			   			
 				   			vldivinele.appendChild(chldele);
 
-				   			// remove lvl1 so that the vertical line will connect all the tasks in the same level 
-
-				   			chldele.classList.remove('lvl1');
+				   			
 	      					chldele.classList.add('tskitm');  
 	      					
 
@@ -885,7 +886,7 @@ function inserttasksonly(project_id)
 
 
 				   		console.log("THIS IS SINGLE ITEM WITHOUT NO CHILDREN..");
-				   		console.log("vrtlvl=+prevlvl="+vrtlvl+' '+prevlvl);
+				   		console.log("vrtlvl=+prevlvl=vsitmlvl=prevlvl1="+vrtlvl+' '+prevlvl+' '+vsitmlvl+' '+prevlvl1);
 
 				   		if (vsitmlvl == 0)
 				   			prevlvl1=0;
@@ -901,9 +902,17 @@ function inserttasksonly(project_id)
 							vrtlvl1= prevlvl1+ ((vrtlvl-prevlvl) * vleftpaddval);
 
 
+						// if parent node of the task item is the outer most div, then the indention should be only based on task's level
+
+						if (itm[0].parentNode.id == "outdiv34")
+						{
+							vrtlvl1= vrtlvl * vleftpaddval;
+						}
+
 
 						// "vsitmlvl" below variable for indenting the tasks with children in the "if" clause above where itm.length>1
 						
+
 
 						vsitmlvl=vrtlvl1;
 						vrtlvl1=vrtlvl1 + 15;

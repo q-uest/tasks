@@ -14,10 +14,11 @@
 
 :root {
   --lvl : 1px;
-  --bg : green;
+  --bg : #9A3F36;
   --lvl2 : 1px;
   --rtlvl : 1px;
   --rtlvlnum : 1px;
+  --vertln : 1px solid #9A3F36 ;
   
 }
 
@@ -36,13 +37,14 @@
   padding-left: 15px;
   height:100%;
   #color: green;
-  border-left: 3px solid #339933;
+  #border-left: 3px solid #339933;
+  border-left: var(--vertln);
   #border: 2px solid black;
   
 }
 
     .lvl1 {
-      padding-left: 33px ;
+    #  padding-left: 33px ;
       #padding-left: var( --rtlvl )  ;
     #  padding-left: calc( ( 50 * var( --lvl ) + 15px ) );
       #padding-left: -62px;
@@ -70,7 +72,8 @@
      margin-top:0px;
      padding-top: 0px;
      padding-bottom: 0px;
-    border-left: 2px solid #339966;
+    #border-left: 2px solid #339966;
+    border-left: var(--vertln);
      #border-style:solid;
 
 
