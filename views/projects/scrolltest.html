@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CI Test</title>
+
+
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+.div {
+	#white-space: : nowrap;
+}
+#outer1 {
+	
+	width: 500px;
+	height: 200px;
+	overflow-y: hidden;
+	overflow-x: scroll;
+	border: 2px solid red;
+#	padding-left: 25px;
+}
+#div1 {
+	width:250%;
+	border:2px solid blue;
+}
+
+
+#outermost {
+	width: 500px;
+	height: 1000px;
+	overflow-y: scroll;
+	overflow-x: scroll;
+	padding-left: 25px;
+		border:1px solid green;
+}
+
+
+#outer2 {
+	padding-left:250px;
+#	width: 500px;
+#	height: 100px;
+	overflow-y: hidden;
+	overflow-x: scroll;
+}
+
+#div2 {
+
+	width:250%;
+}
+
+
+#outer3 {
+	#padding-left:250px;
+	width: 500px;
+	height: 100px;
+	overflow-y: scroll;
+	overflow-x: scroll;
+}
+
+#div3 {
+
+	width:150%;
+}
+
+
+</style>
+
+</head>
+<body>
+
+
+<!-- <div style="border:1px solid black;width:150px;height:100px;overflow-y:hidden;overflow-x:scroll;">
+<p style="width:250%;">
+By using overflow-x, we can create scroll bars when the contents of this div are wider than the container. By setting this paragraph to 250 percent, it is 250 percent wider than the parent container - forcing an overflow. 
+</p>
+</div>
+
+ -->
+
+<div class="container">
+	<div class="row"> 
+		<div id="outermost">
+			<div id="outer1" class="col-xs-12">
+				
+
+				<div id="div1" > 
+					Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+				</div>
+			</div>	
+	
+
+			<div class="row"> 
+				<div id="outer2" class="col-xs-12">
+					<div id="div2" class="col-xs-10"> 
+						Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+					</div>
+				</div>	
+			</div>
+
+
+			<div class="row"> 
+				<div id="outer3" class="col-xs-12">
+					<div id="div3" class="col-xs-10"> 
+					Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+				</div>
+			</div>	
+		</div>
+	</div>
+</div>
+</div>
+
+</body>
+</html>

@@ -37,74 +37,353 @@ if($this->session->flashdata('project_inserted'))
 
 
 
+<script> type="text/javascript"
+
+var wf_project_id="";
+var del_project_id=[];
+
+console.log("window=".concat(window));
+
+window.addEventListener('focus', winfocus());
+
+function winfocus()
+{
+
+// check insert task has been done (taskins_pid=project_id)
+	// if(typeof taskins_pid === "undefined")
+	// {
+ //  		taskins_pid="";
+	// }
+
+		console.log("firing winfocus()");
+	if (wf_project_id !== "" )
+	{
+		console.log("task insert was detected");
+		console.log("project_id=".concat(wf_project_id));
+		tab1=document.getElementById("taskstab1".concat(wf_project_id));
+		tab2=document.getElementById("taskstab2".concat(wf_project_id));
+		console.log(tab1);
+		console.log(tab2);
+		tab1.remove();
+		tab2.remove();
+		get_projectid(wf_project_id);
+
+	}
+}
+
+	
+function addElement(project_id,taskArr) 
+{ 		
+		wf_project_id="";
+	 	create_tab1(project_id,taskArr);
+	 	create_tab2(project_id,taskArr);
+	 	cre_insbutn();
+
+	function create_tab1(project_id,taskArr) 
+	{
+		
+		var projtr = document.createElement('tr');   
+		projtr.id="projtr".concat(project_id);
+		projid=projtr.id;
+		proid=document.getElementById(projid);
+		var projtd = document.createElement('td');
+		projtd.id="projtd".concat(project_id);   
+		var projtab=document.getElementById('projtab');
+		var taskstab1=document.createElement("TABLE");
+		taskstab1id="taskstab1".concat(project_id);
+		taskstab1.id=taskstab1id;
+		taskstab1.classList="table table-dark";
+		projrowidx="projrw".concat(project_id);
+
+		function cre_header()
+		{
+			var taskstab1=document.getElementById(taskstab1id);
+			var tab1thead = taskstab1.createTHead();   
+			var row = tab1thead.insertRow(0);    
+			var cell0 = row.insertCell(0);
+			cell0.innerHTML = "";
+			var cell1 = row.insertCell(1);
+			cell1.innerHTML = "<b>Task ID</b>";
+			var cell2 = row.insertCell(2);
+			cell2.innerHTML = "<b>Description</b>";
+
+		}
+
+		function cre_chkbox(chkbxnm,val) 
+		{
+			c0d.type = "checkbox"; 
+            c0d.name = chkbxnm; 
+            c0d.value = val; 
+            c0d.id = chkbxnm; 
+
+		}
+
+
+		var projrow=document.getElementById(projrowidx);
+		projtr.appendChild(projtd);
+		projtd.appendChild(taskstab1);
+		projrow.after(projtr);
+		cre_header();
+
+		for(i=0;i<taskArr.length;i++)
+		{
+			cre_tab1rows(i,taskArr);
+
+		}
+
+
+		function cre_tab1rows(rownum,taskArr)
+		{
+		  	console.log("from cre_tab1rows...rownum=".concat(rownum));
+		  	
+			newrow=taskstab1.insertRow(rownum+1);
+
+			c0=newrow.insertCell(0);
+			c1=newrow.insertCell(1);
+			c2=newrow.insertCell(2);
+			c0d=document.createElement('input');
+			cre_chkbox("chk".concat(taskArr[rownum].id),taskArr[rownum].id);
+			c1d=document.createTextNode(taskArr[rownum].id);
+			console.log("cre_tab1rows...id[".concat(rownum).concat("]=").concat(taskArr[rownum].id));
+			c2d=document.createTextNode(taskArr[rownum].task_name);
+			c0.appendChild(c0d);
+			c1.appendChild(c1d);
+			c2.appendChild(c2d);
+				//	taskstab1.insertRow(newrow);
+			
+					
+		}
+	} 
+// create tasktab2 in a new <td>
+
+	function create_tab2(project_id,taskArr)
+	{
+		console.log('tasktab2');
+		projtrid='projtr'.concat(project_id);
+		console.log(projtrid);
+		projtr=document.getElementById(projtrid);
+		console.log(projtr);
+		var second_projcol = document.createElement('td');
+		second_projcol.id="proj2col";   
+		var td2 = document.createElement('td');
+		td2.id="tasktab2td";   
+		var taskstab2=document.createElement("TABLE");
+		taskstab2id="taskstab2".concat(project_id);
+		taskstab2.id=taskstab2id;
+		taskstab2.classList="table table-dark";
+		var projrow=document.getElementById(projrowidx);
+		task1tabloc=document.getElementById('taskstab1');
+
+		
+		function cre_delbutn()
+		{
+			var btn = document.createElement("BUTTON");
+			btn.id="delbutton".concat(project_id);
+    		var t = document.createTextNode("Delete");
+    		console.log("calling.....cre_delbutn()".concat(btn));
+    		//btn.setAttribute("style","color:blue;font-size:20px");
+    		btn.classList="btn-primary";
+    		btn.appendChild(t);
+    		document.body.appendChild(btn);
+    		btn.onclick=function(){deltasks()};
+    		return(btn);
+    	
+			
+
+    		function deltasks() 
+    		{
+
+    			console.log("firing deltasks");
+    			var deltasklst=[];
+    			arrele=0;
+    			for(i=0;i<taskArr.length;i++)
+    			{ 
+    					chkbox="chk".concat(taskArr[i].id);
+    					chkboxid=document.getElementById(chkbox);
+    					console.log(chkboxid);
+    					var chkd=chkboxid.checked;
+    					var cbval=chkboxid.value;
+    					if (chkboxid.checked==true)
+    					{
+    						deltasklst[arrele]=cbval;
+    						arrele++;
+    					}
+
+    			}
+    			tasks=deltasklst.join(',');
+    			console.log("tasks to be delted=".concat(tasks));
+    			del_dbtasks(tasks);
+    			delarrsize=del_project_id.length;
+    			if (delarrsize = 0)
+    				{
+    					del_project_id[0]=project_id;
+    				}
+    			else
+    				{
+    					del_project_id[delarrsize+1]=project_id;
+    				}
+    				console.log("Calling get_projectid from del_tasks()");
+    			get_projectid(project_id);
+    			
+    			
+    			function del_dbtasks(tasks)
+				{ 
+					$.post('tasks/del_loftasks', {elements:tasks},function(data,status,xhr)
+						{   // success callback function
+                			alert('status: ' + status + ', data: ' + data.responseData);
+            			}
+            		);
+	    			//window.location.replace("http://localhost/ci/projects");
+
+    			}
+    		}
+    	}
+
+   		 // end-> insert new records
+
+		function cre_headertab2()
+		{
+			var taskstab2=document.getElementById(taskstab2id);
+			var tab2thead = taskstab2.createTHead();   
+			var row = tab2thead.insertRow(0);    
+			var cell0 = row.insertCell(0);
+			var cell1 = row.insertCell(1);
+			var cell2 = row.insertCell(2);
+			cell0.innerHTML = "<b>Parent Task</b>";
+			cell1.innerHTML = "<b>Level</b>";
+			btn=cre_delbutn();
+			cell1.after(btn);
+		}
+
+		console.log("rownum==0;creating table tasktab2.....");
+		td2.appendChild(taskstab2);
+		projtr.appendChild(td2);
+		cre_headertab2();
+
+		
+		for(rownum=0;rownum<taskArr.length;rownum++)
+		{
+			console.log("calling cre_rows in tasktab2");
+			cre_rows(rownum);
+		}
+
+		function cre_rows(rownum)
+		{
+			newrow=taskstab2.insertRow(rownum+1);
+			c0=newrow.insertCell(0);
+			c1=newrow.insertCell(1);
+			console.log("taskarr[rownum].parent_Task_id=".concat(taskArr[rownum].task_id));
+			c0d=document.createTextNode(taskArr[rownum].parent_task_id);
+			c1d=document.createTextNode(taskArr[rownum].lvl);
+			c0.appendChild(c0d);
+			c1.appendChild(c1d);
+			//taskstab2.insertRow(newrow);
+		
+
+			// if(rownum==0)
+			// {
+				
+			// 	console.log("rownum==0;creating table tasktab2.....");
+			// 	td2.appendChild(taskstab2);
+			// 	projtr.appendChild(td2);
+			// 	cre_headertab2();
+
+			// }
+		}
+
+	}
+	
+		// begin-> insert new records
+
+		function cre_insbutn()
+		{
+			var btn = document.createElement("BUTTON");
+			var delbut=document.getElementById("delbutton".concat(project_id));
+    		var t = document.createTextNode("Insert");
+    		console.log("calling.....cre_insbutn()".concat(btn));
+    		//btn.setAttribute("style","color:blue;font-size:20px");
+    		btn.classList="btn-primary";
+    		btn.appendChild(t);
+    		document.body.appendChild(btn);
+    		delbut.after(btn);
+    		console.log("project_id".concat(project_id));
+    		//btn.onclick=function(){instasks()};
+    		btn.onclick=function(){popupwindow()};
+
+    		return(btn);
+		    	
+    		function popupwindow()
+    		{
+
+    		var url='http://localhost/ci/tasks/js_add_task/'.concat(project_id);
+    		var windowName="New Tasks"
+    		windowObjectReference = window.open(url, windowName,
+           "width=500,height=500,left=600,top=100,resizable,scrollbars,status");
+
+    		wf_project_id=project_id;
+    		console.log("from insert_func()..wf_project_id=".concat(wf_project_id));
+
+    		}
+
+		}
+
+}
+function inserttasksonly(project_id)
+    		{
+    			let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=yes,width=500,height=500,left=600,top=100`;
+
+				var url='http://localhost/ci/tasks/js_add_task/'.concat(project_id);
+				console.log("project_id".concat(project_id));
+				window.open(url, 'test', params);
+			}
+
+
+</script>
+
 
 <script> type="text/javascript" 
 
 		function get_projectid(project_id)
 		{ 
-      projicon=document.getElementById('projicon'+project_id);
-			console.log("get_projectid is fired...icon="+projicon.className);
-      fstitmid="p"+project_id+'_outdiv_pt0';
-      fstitm=document.getElementById(fstitmid);
-
-
-
-      if (projicon.className  == "glyphicon glyphicon-expand" && fstitm==null)
-      {
-          console.log("from GET_PROJECTID b4 XMLHttpRequest()");
-          var xhttp = new XMLHttpRequest();
-          xhttp.open("GET", "http://localhost/ci/tasks/list_tasks/".concat(project_id), true);
-          console.log('this is after xhttp.open statement');
-          xhttp.send();
-          console.log('this is after xhttp.send');
-  
-          xhttp.onreadystatechange = function() 
+			console.log("get_projectid is fired...");
+			var xhttp = new XMLHttpRequest();
+  			xhttp.onreadystatechange = function() 
+  			{
+    			if (this.readyState == 4 && this.status == 200)
     			{
-            
-      			if (this.readyState == 4 && this.status == 200)
-      			{
-      				if (this.responseText.length > 3)
-      				{
-      					var tasksArr = JSON.parse(this.responseText); 
-      					console.log("responseText=".concat(this.responseText));
+    				if (this.responseText.length > 3)
+    				{
+    					var tasksArr = JSON.parse(this.responseText); 
+    					console.log("responseText=".concat(this.responseText));
 
-                // adding a new column to indicate the task is parent or child 
+              // adding a new column to indicate the task is parent or child 
 
-        				  tasksArr.forEach(function(e){
-                  if (typeof e === "object" ){
-                    e["has_child"] = "N"
-                  }
-                  });
+      				  tasksArr.forEach(function(e){
+                if (typeof e === "object" ){
+                  e["has_child"] = "N"
+                }
+                });
 
-                //
-      
-        				  projicon.className="glyphicon glyphicon-collapse-down";
-        				  display_tasks(tasksArr);
-        				  console.log("The calling of functions ends here...!!");
-        			}
-            }
+              //
+
+              if (projicon.className=="glyphicon glyphicon-expand")
+              {
+      				  projicon.className="glyphicon glyphicon-collapse-down";
+      				  display_tasks(tasksArr);
+      				  console.log("The calling of functions ends here...!!");
+      				}
+              else if (projicon.className=="glyphicon glyphicon-collapse-down")
+              {
+                projicon.className="glyphicon glyphicon-expand";
+                projrw='projrw'+project_id;
+                projrw.toggle('hiditm');
+  				    
+      				}
+              
+      		  }
           }
-      }
-      else if ((projicon.className  == "glyphicon glyphicon-expand" && fstitm !==null))
-      {
-        console.log("current value=glyphicon glyphicon-expand");
-        projicon.className="glyphicon glyphicon-collapse-down";
-        
-        fstitm.classList.toggle('hiditm');
-        prjendhr.classList.toggle('hiditm');
-        
-      }
-      else if (projicon.className=="glyphicon glyphicon-collapse-down")
-      {
-        console.log("current value=glyphicon-collapse-down ");
-        projicon.className="glyphicon glyphicon-expand";
-        //projrw='projrw'+project_id;
-        fstitm.classList.toggle('hiditm');
-			  prjendhr.classList.toggle('hiditm');
-  		}
-          
-  
-           
+        }
+    }
 
     function find_root_tasks(tasksOrdArr)
     {
@@ -293,29 +572,17 @@ if($this->session->flashdata('project_inserted'))
           // horizontal line
 
           tskhr=document.createElement('hr');
-          tskhrid="tskhr"+taskid;
+          tskhrid="hr"+taskid;
           tskhr.id=tskhrid;
           tskhr.className="tskhr col-xs-12";
 
 
-          tophr=document.createElement('hr');
-          tophrid="tophr"+taskid;
-          tophr.id=tophrid;
-          tophr.className="tophr";
-          tophr.style="width:100%";
-
-          bothr=document.createElement('hr');
-          bothrid="bothr"+taskid;
-          bothr.id=bothrid;
-          bothr.className="bothr";
-          bothr.style="width:100%";
 
           // icon for tasks
 
           spanele=document.createElement("span");
           ikid="ic"+taskid;
           spanele.id=ikid;
-          spanele.style="font-size:1.5em;"
 
           
 
@@ -334,49 +601,19 @@ if($this->session->flashdata('project_inserted'))
           cntdiv.className='col-xs-12';
 
 
-          // the outer div for holding task records, including all the fields
+          // div for holding task records
 
           divc1=document.createElement('div');
           divc1.className="col-xs-12";
-          divc1.classList.add("divc1");
 
           
 
           tname=document.createTextNode("  "+tasksArr[i].task_name+'('+tasksArr[i].id+')'+' '+tasksArr[i].lvl);
-          lbrk=document.createElement('br');
+          tassignee=document.createTextNode(tasksArr[i].assignee);
+          tduedate=document.createTextNode(tasksArr[i].due_date);
+
+
           
-          // column #2 & column #3
-
-          c2div=document.createElement('div');
-          c3div=document.createElement('div');
-
-          c2div.className="col-xs-10";
-
-          // icon for asssignee value
-
-          iassgnele=document.createElement("span");
-          iassgnele.id="iassgnele";
-          iassgnele.className="glyphicon glyphicon-user";
-
-
-          // icon for due date value
-
-          iduedtele=document.createElement("span");
-          iduedtele.id="iduedtele";
-          iduedtele.className="glyphicon glyphicon-calendar";
-          
-          // create text nodes for Assignee & duedate
-
-          tassignee=document.createTextNode(" "+tasksArr[i].assignee);
-          tduedate=document.createTextNode(" "+tasksArr[i].due_date);
-
-          c2div.appendChild(iassgnele);
-          c2div.appendChild(tassignee);
-          c3div.appendChild(iduedtele);
-          c3div.appendChild(tduedate);
-          c2div.appendChild(c3div);
-
-          c3div.style="margin-bottom:25px;float:right";
           
           // if task level == 1 (root task), assign a different style from the ones having level > 1
           
@@ -410,30 +647,23 @@ if($this->session->flashdata('project_inserted'))
               pt0div=document.createElement('div');
               pt0div.id=pt0divid;
               pt0div.className="col-xs-10";
-              pt0div.classList.add("outrbrdr");
+              pt0div.style="border-right:2px solid #339966";
             }
 
             outdiv=document.createElement('div');  
             outdiv.id=outdivid;
             
           
-            // set style for divc1
+            // set style
             
 
-
-            divc1.style="border-left: 10px solid #2E4053;border-right: 10px solid #2E4053;#background-color:#897F7F ;color:#2E4053;padding-left:0px;padding-right:0px;border-radius: 25px; margin-bottom:10px" ;
+            divc1.style="border-left: 10px solid #2E4053;border-right: 10px solid #2E4053;#background-color:#897F7F ;color:#2E4053" ;
 
             
             rtdiv=document.createElement('div');
             rtdiv.appendChild(spanele);
             rtdiv.appendChild(tname);
-
-            // change tname (task name) style properties 
-            rtdiv.style="margin-bottom:10px;"
-
             cntdiv.appendChild(rtdiv);
-            cntdiv.style="font-size:20px;font-weight:bold;padding-top:10px";
-            
 
           }
           else if  (currlvl>1)
@@ -456,7 +686,7 @@ if($this->session->flashdata('project_inserted'))
             // set style for tasks whose level > 1
 
             //divc1.style="border-left: 10px solid #5CB3FF;border-right: 1px solid #5CB3FF;"
-            divc1.style="border-left: 10px solid #5CB3FF;border-right: 10px solid #5CB3FF;padding-left:0px;padding-right:0px;border-radius: 15px; margin-bottom:10px";
+            divc1.style="border-left: 10px solid #5CB3FF;"
             //
 
             // display task values in <h4>
@@ -465,26 +695,22 @@ if($this->session->flashdata('project_inserted'))
             h.appendChild(spanele);
             h.appendChild(tname);
             cntdiv.appendChild(h);
-
-            cntdiv.style="font-size:15px;font-weight:bold;";
           }
 
 
           
-        //  outdiv.style="padding-left:20px;";
+          outdiv.style="padding-left:20px;";
 
           divc1.appendChild(cntdiv);
-          divc1.appendChild(c2div);
-          //divc1.appendChild(c3div);
-          divc1.appendChild(bothr);
+          divc1.appendChild(tassignee);
+          divc1.appendChild(tduedate);
+
           tdiv.appendChild(divc1);
-
-          if (currlvl>1)
-            encdiv.appendChild(tophr);
-
+          tdiv.appendChild(tskhr);
           encdiv.appendChild(tdiv);
           omdiv.appendChild(encdiv);
           outrow.appendChild(omdiv);
+
           outdiv.appendChild(outrow);
 
           if (prevdivid !== outdivid && rowcnt==1)
@@ -494,7 +720,7 @@ if($this->session->flashdata('project_inserted'))
 
           if (prevdivid == outdivid && rowcnt > 1)
           {
-           // console.log("MULTIrow candidate...prevdivid="+prevdivid+' outdivid='+outdivid+' rowcnt='+rowcnt);
+            console.log("MULTIrow candidate...prevdivid="+prevdivid+' outdivid='+outdivid+' rowcnt='+rowcnt);
             outdiv.classList.remove("singlerow");
             outdiv.classList.add("multirows"+grpid);
           }
@@ -520,7 +746,10 @@ if($this->session->flashdata('project_inserted'))
             projrw.appendChild(pt0div);
             outdiv.style="padding-left:0px;"  
             pt0div.classList.add("leftbord");
-  
+
+
+           
+            
             // counter to draw a horizontal line at end of each group
 
             hrgrpcnt=hrgrpcnt+1;
@@ -614,56 +843,18 @@ if($this->session->flashdata('project_inserted'))
 
 
 
-          // mouse over event on divc1
 
-            
-        // This handler will be executed only once when the cursor
-        // moves over the item
-
-        // divc1.addEventListener("mouseenter", function( event ) {   
-        //   // highlight the mouseenter target
-        //   event.target.style.backgroundColor = "purple";
-
-        //   // reset the color after a short delay
-        //   setTimeout(function() {
-        //     event.target.style.backgroundColor = "";
-        //   }, 500);
-        // }, false);
-
-        // This handler will be executed every time the cursor
-        // is moved over a different list item
-
-        divc1.addEventListener("mouseover", function( event ) {   
-          // highlight the mouseover target
-          console.log("MOUSEOVER event fired");
-          this.style.backgroundColor = "orange";
-          this.style.color = "white";
-          
-        }, false);
-
-        divc1.addEventListener("mouseout", function( event ) {   
-          // highlight the mouseover target
-          console.log("MOUSEOUT event fired");
-          this.style.backgroundColor = "";   
-          this.style.color = "";
-        }, false);
-
-        // End of mouse over/mouse enter event triggers
-
-
-
-
-          // end of the for Loop
         }
 
-        prjendhr=document.createElement('hr');
-        prjendhrid="prjendhr"+project_id;
-        prjendhr.id=prjendhrid;
-        prjendhr.className="prjendhr col-xs-10";
-        projrw.appendChild(prjendhr);
+        endhr=document.createElement('hr');
+        endhr.id=endhrid;
+        endhr.className="endhr col-xs-10";
+        projrw.appendChild(endhr);
+
+
 
         
-        function find_child_tasks(pid)
+function find_child_tasks(pid)
               {
                 var i=0;
                 var chi=[];
@@ -707,7 +898,7 @@ if($this->session->flashdata('project_inserted'))
                 console.log("Adding into leftbord PARENT OUTROW="+chlddiv[j].id);
 
                 chlddiv[j].classList.add("leftbord");
-                chlddiv[j].classList.add("col-xs-12");
+               chlddiv[j].classList.add("col-xs-12");
 
               }
             }
@@ -1160,48 +1351,47 @@ if($this->session->flashdata('project_inserted'))
     }
 
 	
-       // manage_tasktabs();
-        function manage_tasktabs() 
-        {
-          console.log("CALLING MANAGE_TASKTABS.......");
-          projicon=document.getElementById("projicon".concat(project_id));
-          piconclass=projicon.className;
-          tskdiv=document.getElementById("outdiv"+project_id);
-          console.log(piconclass);
-          
-          if (piconclass == "glyphicon glyphicon-expand")
-          {
-            
-              if ( tskdiv == null ) 
-              {
-                xhttp.open("GET", "http://localhost/ci/tasks/list_tasks/".concat(project_id), true);
-              console.log('this is after xhttp.open statement');
-              xhttp.send();
-              console.log('this is after xhttp.send');
-            }
-            else
-            {
-              console.log("The task div is already present; set display to block");
-              tskdiv.style.display="inline";
-              projicon.className="glyphicon glyphicon-collapse-down";
-            }
-
-
-        }
-        else
-        {
-          //projicon.className="glyphicon glyphicon-collapse-down";
-          document.getElementById("outdiv"+project_id).style.display="none";
-          projicon.className="glyphicon glyphicon-expand";
-
-          
-        }
-      
-    }
 
 
    
-   	
+   	manage_tasktabs();
+        function manage_tasktabs() 
+        {
+         	projicon=document.getElementById("projicon".concat(project_id));
+         	piconclass=projicon.className;
+         	tskdiv=document.getElementById("outdiv"+project_id);
+         	console.log(piconclass);
+         	
+      		if (piconclass == "glyphicon glyphicon-expand")
+      		{
+      			
+      				if ( tskdiv == null )	
+      				{
+      					xhttp.open("GET", "http://localhost/ci/tasks/list_tasks/".concat(project_id), true);
+  						console.log('this is after xhttp.open statement');
+  						xhttp.send();
+  						console.log('this is after xhttp.send');
+  					}
+  					else
+  					{
+  						console.log("The task div is already present; set display to block");
+  						tskdiv.style.display="inline";
+  						projicon.className="glyphicon glyphicon-collapse-down";
+  					}
+
+
+  			}
+  			else
+  			{
+  				//projicon.className="glyphicon glyphicon-collapse-down";
+  				document.getElementById("outdiv"+project_id).style.display="none";
+  				projicon.className="glyphicon glyphicon-expand";
+
+  				
+  			}
+			
+		}
+
 	function get_tasksordered(tasks)
 	{
 // find the location of the corresponding project_id in the window
@@ -1398,7 +1588,7 @@ if($this->session->flashdata('project_inserted'))
 	
 }
 
-    		
+		
 		
 </script>
 		
@@ -1419,7 +1609,7 @@ if($this->session->flashdata('project_inserted'))
 	
 		<?php echo "<div class='col-xs-1, pl-0'>" ?>
 	
-		<a class="btn btn-primary" href='<?php echo base_url() ."projects/del_proj/". $project->id ?>'><span class="glyphicon glyphicon-remove"></span></a>
+		<a class="btn btn-danger" href='<?php echo base_url() ."projects/del_proj/". $project->id ?>'><span class="glyphicon glyphicon-remove"></span></a>
 
     <?php echo "</div>" ?>
     <?php echo "</div>" ?>
