@@ -6,6 +6,7 @@
 
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -19,18 +20,19 @@
   --rtlvl : 1px;
   --rtlvlnum : 1px;
   --vertln : 1px solid #9A3F36 ;
-  
+  --outbrdr :5px solid #2E4053;  
 }
 
 .vldivout {
   padding-left: var(--rtlvl) ;
-  height:100%;
-  #border-left: 5px solid rgb(51, 153, 102);
- # border: 2px solid black;
+  #height:100%;
+  
 }
 
 
-
+body {
+  background-color: #F4F6F6;
+}
 .vldivin {
   
   #padding-left: calc(1 * var(--rtlvl) );
@@ -40,7 +42,13 @@
   #border-left: 3px solid #339933;
   border-left: var(--vertln);
   #border: 2px solid black;
-  
+
+}
+
+
+.omdiv {
+  #border-left: 3px solid #339933;
+
 }
 
     .lvl1 {
@@ -63,8 +71,8 @@
    #border: 2px solid black;
 } 
     .outdiv{
-      
-      background-color: white;
+      background-color: #F4F6F6
+     # background-color: white;
       text-decoration: black;
      # border-left:2px solid red;
 
@@ -73,18 +81,56 @@
      padding-top: 0px;
      padding-bottom: 0px;
     #border-left: 2px solid #339966;
-    border-left: var(--vertln);
+    #border-left: ;
+    padding-left: 10px;
      #border-style:solid;
-
-
 
 
     }
 
+.leftbord{
+     #border: 2px solid red;
+     border-left: 3px solid #666633;
+     #margin-left: -15px;
+     padding-left: 0px;
+     padding-right: 0px;
+}
+
+.lastitm {
+  border-left: 2px solid #339933;
+}
+.unsetlb
+{
+  border-left:1px solid red !important;
+}
+  .multirows {
+     #border-left: 2px solid #339933;
+     #padding-left: 10px;
+  }
+
+.indiv1{
+
+ padding-left: 10px;
+
+}
+
+.encdiv {
+  overflow-y: hidden;
+  overflow-x: scroll;
+ # border: 2px solid red;
+  #padding-left: calc(var( --rtlvl ) * 1 ) ;
+}
+
+
+
+.lftpad {
+ padding-left: calc(var( --rtlvl ) * 1 ) ;  
+}
 
 .singleitem {
-  padding-left: calc(var( --rtlvl ) * 1 ) ;
-#padding-left: 51px;
+ #border: 2px solid blue;
+  width: var(--scrollper);
+ padding-left: calc(var( --rtlvl ) * 1 ) ; 
 }
 
 .tskitm {
@@ -94,20 +140,72 @@
   margin-top: 10px;
     #border-left: 2px solid #897F7F; 
    # border: 0.01px solid blue;
+   width: var(--scrollper);
 }
 
 .tskhr {
 
-  margin-top:10px;
+  margin-top:0px;
   margin-bottom:0px;
   padding-top: 0px;
   padding-bottom: 5px;
- border: 0.01px solid #5CB3FF;
-#border: 0.01px solid #F4F6F6
+ border: 0.01px solid  #5CB3FF;
+ padding:0px;
+
 
 }
 
- 
+.tophr {
+
+  margin-top:0px;
+  margin-bottom:0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border: 1.5px dotted  #666633;
+ #padding:0px;
+
+
+}
+
+.bothr {
+
+  margin-top:0px;
+  margin-bottom:5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+ border: 1.5px dotted  #666633;
+ #padding:0px;
+
+
+}
+
+
+.endhr {
+  height:10px;
+  border-width:0;
+  color:grey;
+  background-color:grey;
+  margin-top:0px;
+  margin-bottom: 0px;
+  padding:0px;
+
+}
+
+.prjendhr {
+  height:10px;
+  border-width:0;
+  color:grey;
+  background-color:#f09348;
+  margin-top:0px;
+  margin-bottom: 0px;
+  padding:0px;
+
+}
+
+
+ .bord {
+  border:2px solid red;
+ }
 .selitem {
   background-color: brown;
   text-decoration-color: white;
@@ -123,11 +221,37 @@ a:hover {
 }
 
 
+.outrbrdr {
+
+border-right: var(--outbrdr);
+border-left: var(--outbrdr);
+border-bottom: var(--outbrdr);
+  
+}
+
 .txthlt {
- background-color:  #8A4117;
+ background-color:#2E4053   ;
+ ##8A4117;
+ 
  #text-decoration-color: white;
  color: white; !important
 
+}
+
+.rtdivc3 {
+
+border-left: 10px solid #063852;
+#background-color:#897F7F ;
+#color:#8A4117;
+
+}
+
+.rtname{
+
+  font-weight: bold;
+  font-size: 25px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 a:active {
@@ -198,9 +322,9 @@ a:active {
 
 
 
-<div class="container">
+<div class="container-fluid">
 	
-	<div class="col-xs-2">
+	<div class="col-xs-1">
 
 	<?php 
 	if($this->session->flashdata('loginerr')):
@@ -210,13 +334,15 @@ a:active {
 	?>
 
 
-	<?php $this->load->view('users/login_view'); ?>
+
+  
+  <?php $this->load->view('users/login_view'); ?>
 
 
 	</div>
 
 
-	<div class="col-xs-10">
+	<div class="col-xs-11">
 
     <?php $this->load->view($main_view); ?>
 
