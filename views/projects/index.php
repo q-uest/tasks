@@ -293,17 +293,29 @@ if($this->session->flashdata('project_inserted'))
           // horizontal line
 
           tskhr=document.createElement('hr');
-          tskhrid="hr"+taskid;
+          tskhrid="tskhr"+taskid;
           tskhr.id=tskhrid;
           tskhr.className="tskhr col-xs-12";
 
 
+          tophr=document.createElement('hr');
+          tophrid="tophr"+taskid;
+          tophr.id=tophrid;
+          tophr.className="tophr";
+          tophr.style="width:100%";
+
+          bothr=document.createElement('hr');
+          bothrid="bothr"+taskid;
+          bothr.id=bothrid;
+          bothr.className="bothr";
+          bothr.style="width:100%";
 
           // icon for tasks
 
           spanele=document.createElement("span");
           ikid="ic"+taskid;
           spanele.id=ikid;
+          spanele.style="font-size:1.5em;"
 
           
 
@@ -322,19 +334,49 @@ if($this->session->flashdata('project_inserted'))
           cntdiv.className='col-xs-12';
 
 
-          // div for holding task records
+          // the outer div for holding task records, including all the fields
 
           divc1=document.createElement('div');
           divc1.className="col-xs-12";
+          divc1.classList.add("divc1");
 
           
 
           tname=document.createTextNode("  "+tasksArr[i].task_name+'('+tasksArr[i].id+')'+' '+tasksArr[i].lvl);
-          tassignee=document.createTextNode(tasksArr[i].assignee);
-          tduedate=document.createTextNode(tasksArr[i].due_date);
-
-
+          lbrk=document.createElement('br');
           
+          // column #2 & column #3
+
+          c2div=document.createElement('div');
+          c3div=document.createElement('div');
+
+          c2div.className="col-xs-10";
+
+          // icon for asssignee value
+
+          iassgnele=document.createElement("span");
+          iassgnele.id="iassgnele";
+          iassgnele.className="glyphicon glyphicon-user";
+
+
+          // icon for due date value
+
+          iduedtele=document.createElement("span");
+          iduedtele.id="iduedtele";
+          iduedtele.className="glyphicon glyphicon-calendar";
+          
+          // create text nodes for Assignee & duedate
+
+          tassignee=document.createTextNode(" "+tasksArr[i].assignee);
+          tduedate=document.createTextNode(" "+tasksArr[i].due_date);
+
+          c2div.appendChild(iassgnele);
+          c2div.appendChild(tassignee);
+          c3div.appendChild(iduedtele);
+          c3div.appendChild(tduedate);
+          c2div.appendChild(c3div);
+
+          c3div.style="margin-bottom:25px;float:right";
           
           // if task level == 1 (root task), assign a different style from the ones having level > 1
           
@@ -368,23 +410,30 @@ if($this->session->flashdata('project_inserted'))
               pt0div=document.createElement('div');
               pt0div.id=pt0divid;
               pt0div.className="col-xs-10";
-              pt0div.style="border-right:2px solid #339966";
+              pt0div.classList.add("outrbrdr");
             }
 
             outdiv=document.createElement('div');  
             outdiv.id=outdivid;
             
           
-            // set style
+            // set style for divc1
             
 
-            divc1.style="border-left: 10px solid #2E4053;border-right: 10px solid #2E4053;#background-color:#897F7F ;color:#2E4053" ;
+
+            divc1.style="border-left: 10px solid #2E4053;border-right: 10px solid #2E4053;#background-color:#897F7F ;color:#2E4053;padding-left:0px;padding-right:0px;border-radius: 25px; margin-bottom:10px" ;
 
             
             rtdiv=document.createElement('div');
             rtdiv.appendChild(spanele);
             rtdiv.appendChild(tname);
+
+            // change tname (task name) style properties 
+            rtdiv.style="margin-bottom:10px;"
+
             cntdiv.appendChild(rtdiv);
+            cntdiv.style="font-size:20px;font-weight:bold;padding-top:10px";
+            
 
           }
           else if  (currlvl>1)
@@ -407,7 +456,7 @@ if($this->session->flashdata('project_inserted'))
             // set style for tasks whose level > 1
 
             //divc1.style="border-left: 10px solid #5CB3FF;border-right: 1px solid #5CB3FF;"
-            divc1.style="border-left: 10px solid #5CB3FF;"
+            divc1.style="border-left: 10px solid #5CB3FF;border-right: 10px solid #5CB3FF;padding-left:0px;padding-right:0px;border-radius: 15px; margin-bottom:10px";
             //
 
             // display task values in <h4>
@@ -416,22 +465,26 @@ if($this->session->flashdata('project_inserted'))
             h.appendChild(spanele);
             h.appendChild(tname);
             cntdiv.appendChild(h);
+
+            cntdiv.style="font-size:15px;font-weight:bold;";
           }
 
 
           
-          outdiv.style="padding-left:20px;";
+        //  outdiv.style="padding-left:20px;";
 
           divc1.appendChild(cntdiv);
-          divc1.appendChild(tassignee);
-          divc1.appendChild(tduedate);
-
+          divc1.appendChild(c2div);
+          //divc1.appendChild(c3div);
+          divc1.appendChild(bothr);
           tdiv.appendChild(divc1);
-          tdiv.appendChild(tskhr);
+
+          if (currlvl>1)
+            encdiv.appendChild(tophr);
+
           encdiv.appendChild(tdiv);
           omdiv.appendChild(encdiv);
           outrow.appendChild(omdiv);
-
           outdiv.appendChild(outrow);
 
           if (prevdivid !== outdivid && rowcnt==1)
@@ -441,7 +494,7 @@ if($this->session->flashdata('project_inserted'))
 
           if (prevdivid == outdivid && rowcnt > 1)
           {
-            console.log("MULTIrow candidate...prevdivid="+prevdivid+' outdivid='+outdivid+' rowcnt='+rowcnt);
+           // console.log("MULTIrow candidate...prevdivid="+prevdivid+' outdivid='+outdivid+' rowcnt='+rowcnt);
             outdiv.classList.remove("singlerow");
             outdiv.classList.add("multirows"+grpid);
           }
@@ -467,10 +520,7 @@ if($this->session->flashdata('project_inserted'))
             projrw.appendChild(pt0div);
             outdiv.style="padding-left:0px;"  
             pt0div.classList.add("leftbord");
-
-
-           
-            
+  
             // counter to draw a horizontal line at end of each group
 
             hrgrpcnt=hrgrpcnt+1;
@@ -564,19 +614,56 @@ if($this->session->flashdata('project_inserted'))
 
 
 
+          // mouse over event on divc1
 
+            
+        // This handler will be executed only once when the cursor
+        // moves over the item
+
+        // divc1.addEventListener("mouseenter", function( event ) {   
+        //   // highlight the mouseenter target
+        //   event.target.style.backgroundColor = "purple";
+
+        //   // reset the color after a short delay
+        //   setTimeout(function() {
+        //     event.target.style.backgroundColor = "";
+        //   }, 500);
+        // }, false);
+
+        // This handler will be executed every time the cursor
+        // is moved over a different list item
+
+        divc1.addEventListener("mouseover", function( event ) {   
+          // highlight the mouseover target
+          console.log("MOUSEOVER event fired");
+          this.style.backgroundColor = "orange";
+          this.style.color = "white";
+          
+        }, false);
+
+        divc1.addEventListener("mouseout", function( event ) {   
+          // highlight the mouseover target
+          console.log("MOUSEOUT event fired");
+          this.style.backgroundColor = "";   
+          this.style.color = "";
+        }, false);
+
+        // End of mouse over/mouse enter event triggers
+
+
+
+
+          // end of the for Loop
         }
 
         prjendhr=document.createElement('hr');
         prjendhrid="prjendhr"+project_id;
         prjendhr.id=prjendhrid;
-        prjendhr.className="endhr col-xs-10";
+        prjendhr.className="prjendhr col-xs-10";
         projrw.appendChild(prjendhr);
 
-
-
         
-function find_child_tasks(pid)
+        function find_child_tasks(pid)
               {
                 var i=0;
                 var chi=[];
@@ -620,7 +707,7 @@ function find_child_tasks(pid)
                 console.log("Adding into leftbord PARENT OUTROW="+chlddiv[j].id);
 
                 chlddiv[j].classList.add("leftbord");
-               chlddiv[j].classList.add("col-xs-12");
+                chlddiv[j].classList.add("col-xs-12");
 
               }
             }
@@ -1332,7 +1419,7 @@ function find_child_tasks(pid)
 	
 		<?php echo "<div class='col-xs-1, pl-0'>" ?>
 	
-		<a class="btn btn-danger" href='<?php echo base_url() ."projects/del_proj/". $project->id ?>'><span class="glyphicon glyphicon-remove"></span></a>
+		<a class="btn btn-primary" href='<?php echo base_url() ."projects/del_proj/". $project->id ?>'><span class="glyphicon glyphicon-remove"></span></a>
 
     <?php echo "</div>" ?>
     <?php echo "</div>" ?>
