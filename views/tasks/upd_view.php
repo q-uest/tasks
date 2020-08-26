@@ -33,12 +33,12 @@
 
 
 <?php 
-echo "<h3>Tasks for <b>".$this->session->userdata('project_data')->project_name."</b></h3>"; 
+//echo "<h3>Tasks for <b>".$this->session->userdata('project_data')->project_name."</b></h3>"; 
 ?>
 
 
-<?php if($this->session->flashdata('taskerrors')): ?>
-		<?php echo $this->session->flashdata('taskerrors') ?>
+<?php if($this->session->flashdata('errors')): ?>
+		<?php echo $this->session->flashdata('errors') ?>
 
 <?php endif; ?>
 
@@ -46,7 +46,7 @@ echo "<h3>Tasks for <b>".$this->session->userdata('project_data')->project_name.
 
 
 
-<?php echo form_open('tasks/validate_task',$attributes); ?>
+<?php echo form_open('tasks/validate_upd_task',$attributes); ?>
 
 
 <div class="form-group">
@@ -55,11 +55,11 @@ echo "<h3>Tasks for <b>".$this->session->userdata('project_data')->project_name.
 <?php 
 
 $data = array('class' => 'form-control',
-			  'name' => 'name',
-			  'placeholder' => 'Task Name');
+			  'name' => 'task_name',
+			  'placeholder' => $task[0]["task_name"]);
 ?>
 
-<?php echo form_input($data);  ?>
+<?php echo form_input($data,$task[0]["task_name"]);  ?>
 
 
 
@@ -78,7 +78,7 @@ $data = array('class' => 'form-control',
 			'rows'=>2);
 ?>
 
-<?php echo form_textarea($data);  ?>
+<?php echo form_textarea($data,$task[0]["task_body"]);  ?>
 
 
 
@@ -92,33 +92,15 @@ $data = array('class' => 'form-control',
 
 $data = array('class' => 'form-control',
 			  'name' => 'due_date',
-			  'placeholder' => $_GET['due_date']);
+			  'placeholder' => $task[0]['due_date']);
 ?>
 
-<?php echo form_input($data,$_GET['due_date']);  ?>
+<?php echo form_input($data,$task[0]['due_date']);  ?>
 
 
 
 </div>
 
-
-<div class="form-group">
-
-<!--<?php echo form_label('Parent Task'); ?> -->
-
-<?php 
-
-$data = array('class' => 'form-control',
-			  'name' => 'parent_task_id',
-			  'placeholder' => "parent task id");
-
-$data = ['parent_task_id'=>$_GET['parent_task_id']];
-			  
-?>
-
-<?php echo form_hidden($data,$_GET['parent_task_id']);  ?>
-
-</div>
 
 
 
@@ -141,6 +123,7 @@ if ($this->session->userdata('approved')==0)
 
 	foreach($user_data as $user)
 	{
+		
 		$options[$user['id']]=$user['username'];
 	}
 
@@ -153,40 +136,41 @@ else
 
 ?>
 
-</div>
-
-<div class="form-group">
-
-<!-- <?php echo form_label('Group ID'); ?> -->
-
-<?php 
-
-$data = array('class' => 'form-control',
-			  'name' => 'groupid',
-			  'placeholder' => $_GET['groupid']);
-
-$data = ['groupid' => $_GET['groupid']]
-?>
-
-<?php echo form_hidden($data);  ?>
-
-
-
-</div>
 <div class="form-group">
 
 
 <?php 
 
 $data = array('class' => 'form-control',
-			  'name' => 'approved');
-
-echo form_hidden('approved',$this->session->userdata('approved')); 
-			  
+			  'name' => 'status');
 ?>
 
+<?php echo form_input($data,$task[0]["status"]);  ?>
 
 
+
+</div>
+
+
+<div class="form-group">
+
+
+<?php 
+
+$data = array('class' => 'form-control',
+			  'name' => 'approved1');
+?>
+
+<?php echo form_input($data,$task[0]["approved"]);  ?>
+
+
+
+</div>
+
+
+
+
+</div>
 
 
 <div class="form-group col-xs-10">
@@ -200,6 +184,9 @@ $data = array('class' => 'btn btn-success btn-lg',
 
 <?php echo form_submit($data);  ?>
 </div>
+
+
+
 
 
 <!-- <?php echo form_close(); ?> -->

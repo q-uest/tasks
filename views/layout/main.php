@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
   <style>
 
 
@@ -90,7 +91,7 @@ body {
 
 .leftbord{
      #border: 2px solid red;
-     border-left: 3px solid #666633;
+     border-left: 2px solid #666633;
      #margin-left: -15px;
      padding-left: 0px;
      padding-right: 0px;
@@ -170,7 +171,7 @@ body {
 .bothr {
 
   margin-top:0px;
-  margin-bottom:5px;
+  margin-bottom:0px;
   padding-top: 0px;
   padding-bottom: 0px;
  border: 1.5px dotted  #666633;
@@ -244,6 +245,43 @@ border-left: 10px solid #063852;
 #background-color:#897F7F ;
 #color:#8A4117;
 
+}
+
+.tskhglt
+{
+
+background-color:orange;
+cursor:pointer;
+
+#color: white;
+#color:#2E4053;
+}
+
+.rtdiv {
+  
+  font-size: 20px; 
+  font-weight: bold; 
+  padding-bottom:2px;
+  padding-top: 10px;
+  margin-bottom:12px;
+  }
+
+.rtdivmov {
+  font-size: 20px; 
+  font-weight: bold; 
+  padding-bottom:2px;
+  padding-top: 10px;
+  margin-bottom:10px;
+  border-bottom: 2px solid red;
+}
+
+.rtdivmot {
+  font-size: 20px; 
+  font-weight: bold; 
+  padding-bottom:2px;
+  padding-top: 10px;
+#  border-bottom:'';
+  margin-bottom:12px;
 }
 
 .rtname{

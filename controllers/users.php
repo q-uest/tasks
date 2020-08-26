@@ -92,6 +92,41 @@ if ($this->form_validation->run() == FALSE )
 
    }
 	
+   public function get_user_lastloggedin() {
+
+	echo '[{"last_loggedin_at":"'.$_SESSION['last_loggedin'].'"}]' ;
+}
+public function js_get_user_lastloggedin()
+{
+?>
+	<script> type="text/javascript" 
+	var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://localhost/ci/users/get_user_lastloggedin", true);
+    console.log('this is after xhttp.open statement');
+    xhttp.send();
+    console.log('this is after xhttp.send');
+  
+          xhttp.onreadystatechange = function() 
+    			{
+            
+      			if (this.readyState == 4 && this.status == 200)
+      			{
+      				console.log("responseText=".concat(this.responseText));
+      				//if (this.responseText.length > 3)
+      				//{
+      					var vlast_loggedin = JSON.parse(this.responseText); 
+      					console.log("vlast_loggedin="+vlast_loggedin[0].last_loggedin_at);
+      					var vlog=vlast_loggedin[0].last_loggedin_at;
+      				//}
+      			}
+      			return(vlog);
+                
+           }
+
+
+		</script>
+<?php
+   }
 
 
 	public function login() {
@@ -131,16 +166,20 @@ if ($this->form_validation->run() == FALSE )
 			$password = $this->input->post('password');
 
 			$user_id=$this->user_model->login_user($username,$password);
+			$last_logged_time=$this->user_model->get_last_loggedin_time($username);
 			echo "userid=".$user_id;
 
 			if ($user_id) 
 			{
 				echo "if user_id check is through";
+				echo "last logged time=".$last_logged_time;
+				// write the userinfo into session array for later use
+				
 				$user_data = array(
-
 					'user_id' => $user_id,
 					'username' => $username,
-					'logged_in' => TRUE 
+					'logged_in' => TRUE,
+					'last_loggedin' => $last_logged_time
 
 				);
 
@@ -174,8 +213,11 @@ if ($this->form_validation->run() == FALSE )
 	}
 
 
+
+
 	public function logout() {
 		echo "this is users/logout() func";
+		$user_id=$this->user_model->last_logged_time($_SESSION['username']);
 		$this->session->sess_destroy();
 		redirect('home/index');
 	}

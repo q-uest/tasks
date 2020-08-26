@@ -43,6 +43,63 @@ class User_model extends CI_Model {
 	}
 
 
+	public function get_user()
+	{	
+		$this->db->select('id,username');
+		$result = $this->db->get('users')->result_array();
+#		$result = $rawres->result_array();
+		echo "from user_model username=".$result[0]['username'];
+		return $result;
+
+	}
+
+	public function curtime()
+	{
+
+		$query=$this->db->query(
+		"SELECT NOW() ct");
+		
+		return $query->row();	
+	}
+
+	public function last_logged_time($username)
+	{
+
+		$ctime=$this->user_model->curtime();
+		#$row=$query->row();
+		echo $ctime->ct;
+        	
+		
+		
+		$update_set = array(
+			'last_loggedin' => $ctime->ct
+		);
+		$this->db->where('username',$username);
+		$this->db->update('users',$update_set);
+	}
+
+
+	public function get_last_loggedin_time($username)
+	{
+		$this->db->select('last_loggedin');
+		$this->db->where('username',$username);
+		
+		$result = $this->db->get('users')->result_array();
+		return $result[0]['last_loggedin'];
+
+
+	}
+	
+
+public function db_getuser($userid)
+{
+
+	$this->db->where('id',$userid);
+	$task=$this->db->get('users');
+	return $task->result_array();
+}
+
+
 	public function login_user($username,$password) 
 	{
 
@@ -72,7 +129,7 @@ class User_model extends CI_Model {
 			}
 			else
 			{
-					echo "password verif failed";
+					echo "password verification failed";
 					return false;
 
 			}

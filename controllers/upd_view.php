@@ -78,7 +78,7 @@ $data = array('class' => 'form-control',
 			'rows'=>2);
 ?>
 
-<?php echo form_textarea($data);  ?>
+<?php echo form_textarea($data,$task['task_body']);  ?>
 
 
 
@@ -92,33 +92,15 @@ $data = array('class' => 'form-control',
 
 $data = array('class' => 'form-control',
 			  'name' => 'due_date',
-			  'placeholder' => $_GET['due_date']);
+			  'placeholder' => $task['due_date']);
 ?>
 
-<?php echo form_input($data,$_GET['due_date']);  ?>
+<?php echo form_input($data,$task['due_date']);  ?>
 
 
 
 </div>
 
-
-<div class="form-group">
-
-<!--<?php echo form_label('Parent Task'); ?> -->
-
-<?php 
-
-$data = array('class' => 'form-control',
-			  'name' => 'parent_task_id',
-			  'placeholder' => "parent task id");
-
-$data = ['parent_task_id'=>$_GET['parent_task_id']];
-			  
-?>
-
-<?php echo form_hidden($data,$_GET['parent_task_id']);  ?>
-
-</div>
 
 
 
@@ -157,18 +139,16 @@ else
 
 <div class="form-group">
 
-<!-- <?php echo form_label('Group ID'); ?> -->
+<?php echo form_label('Group ID'); ?>
 
 <?php 
 
 $data = array('class' => 'form-control',
 			  'name' => 'groupid',
 			  'placeholder' => $_GET['groupid']);
-
-$data = ['groupid' => $_GET['groupid']]
 ?>
 
-<?php echo form_hidden($data);  ?>
+<?php echo form_input($data,$_GET['groupid']);  ?>
 
 
 
@@ -179,12 +159,12 @@ $data = ['groupid' => $_GET['groupid']]
 <?php 
 
 $data = array('class' => 'form-control',
-			  'name' => 'approved');
+			  'name' => 'approved',
+			  'placeholder' => "1");
 
 echo form_hidden('approved',$this->session->userdata('approved')); 
 			  
 ?>
-
 
 
 
@@ -202,7 +182,10 @@ $data = array('class' => 'btn btn-success btn-lg',
 </div>
 
 
-<!-- <?php echo form_close(); ?> -->
+
+
+
+#<?php echo form_close(); ?>
 </div>
 </div>
 </body>
