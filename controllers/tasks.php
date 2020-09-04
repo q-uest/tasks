@@ -493,7 +493,8 @@ public function validate_upd_task()
 				$clo_date=date('Y-m-d');
 			#	echo "clo_date=".$clo_date;
 			}
-	
+			
+			$v_latestupd_datetime=date('Y-m-d H:i');
 			#echo "status=".$this->input->post('status');
 
 			$task = array(
@@ -505,15 +506,13 @@ public function validate_upd_task()
 				'status'=>$this->input->post('status'),
 				'approved' =>$this->session->userdata['task']['approved'],
 				'clo_comments'=>$clo_comments,
-				'clo_date'=>$clo_date
+				'clo_date'=>$clo_date,
+				'latest_update'=>$this->input->post('latest_update'),
+				'latestupd_datetime'=>$v_latestupd_datetime
 			);
 
-		#	echo "APPROVED=".$this->session->userdata['task']['approved'];
-		#	echo "status set;post status=".$this->input->post('status');
-		#	echo "<br><br> DUE_DATE to be passed to db_upd_task".$this->input->post('due_date');
 			$xs=$this->task_model->db_upd_task($task);
 
-		#	echo "<br>Firing after form validate func";
 			
 			if($xs)
 			{

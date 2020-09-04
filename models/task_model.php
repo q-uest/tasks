@@ -82,7 +82,7 @@ public function db_fetch_task($id)
 
 {
 
-	$query=$this->db->query("SELECT `id`, `task_name`, `task_body`, `parent_task_id`, `userid`, `approved`, `status`, `project_id`, date_format(`due_date`,'%d-%b-%Y') as due_date,`groupid`,`clo_comments` FROM tasks where id='$id'");
+	$query=$this->db->query("SELECT `id`, `task_name`, `task_body`, `parent_task_id`, `userid`, `approved`, `status`, `project_id`, date_format(`due_date`,'%d-%b-%Y') as due_date,`groupid`,`clo_comments`,latest_update,latestupd_datetime FROM tasks where id='$id'");
 
 	#$this->db->select("`id`, `task_name`, `task_body`, `parent_task_id`, `userid`, `approved`, `status`, `project_id`, `due_date`, `groupid`");
 

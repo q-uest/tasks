@@ -241,7 +241,7 @@ border-bottom: var(--outbrdr);
 
 .divc1_lvl1 {
 
-  height:300px;
+  height:325px;
   border-left: 10px solid #2E4053;
   border-right: 10px solid #2E4053;
   #background-color:#897F7F ;
@@ -254,7 +254,7 @@ border-bottom: var(--outbrdr);
 }
 
 .divc1_gt_lvl1 {
-height:300px;
+height:325px;
 border-left: 10px solid #5CB3FF;
 border-right: 10px solid #5CB3FF;
 color:#2E4053;

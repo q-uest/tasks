@@ -241,11 +241,25 @@ $data = array('class' => 'form-control',
 
 </div>
 
+<div>
+
+<?php echo form_label('Latest Update'); ?>
+
+<?php 
+
+$data = array('class' => 'form-control',
+			  'name' => 'latest_update',
+			  'placeholder' => 'updates....',
+			'rows'=>2);
+?>
+
+<?php echo form_textarea($data,$task[0]["latest_update"]);  ?>
 
 
 
+</div>
 
-
+<br>
 
 <div class="form-group " id="savediv" style="text-align: center">
 <!-- <div class="col-xs-5"> -->

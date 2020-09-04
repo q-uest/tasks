@@ -266,7 +266,7 @@ if($this->session->flashdata('project_inserted'))
 
 
 
-
+        
         for (i=0;i<tasksArr.length;i++)
         {
           console.log(tasksArr[i].id,tasksArr[i].task_name,tasksArr[i].parent_task_id,tasksArr[i].lvl,tasksArr[i].has_child);
@@ -277,7 +277,7 @@ if($this->session->flashdata('project_inserted'))
           
           prevlvl=currlvl;
           currlvl=tasksArr[i].lvl;
-          
+        
           // capture assignee & duedate to pass on to the URL for button click event
 
           var vassignee=tasksArr[i].assignee;
@@ -285,6 +285,14 @@ if($this->session->flashdata('project_inserted'))
           
           console.log("VASSIGNEE="+vassignee);
           console.log("username="+tasksArr[i].username);
+
+
+          //find the owner of the main task which is to be used to display "AskForUpdate" button
+          if (currlvl==1)
+            mt_owner=vassignee;
+
+
+          login_user=tasksArr[i].username;
 
           // Add unique parent tasks to partsk array
 
@@ -422,7 +430,6 @@ if($this->session->flashdata('project_inserted'))
             pt_assignee=tasksArr[parent_taskidx].assignee;
             pt_ddate=tasksArr[parent_taskidx].due_date;
             console.log("PARENT TASK ptsk="+ptsk+' pt_ddate='+pt_ddate+'parent_taskidx='+parent_taskidx);
-                   
           }
           else 
           {
@@ -436,7 +443,7 @@ if($this->session->flashdata('project_inserted'))
           console.log("pt_assignee="+pt_assignee);
           updencdiv=document.createElement('div');
           updencdiv.className="col-xs-12";
-          updencdiv.style="font-weight:bold;font-size:10px"
+          //updencdiv.style="font-weight:bold;font-size:10px;margin-bottom:10px"
           upddiv=document.createElement('div');
           upddiv.id='upddiv'+taskid;
           upddiv.className="col-xs-12";
@@ -457,10 +464,11 @@ if($this->session->flashdata('project_inserted'))
           //updtxt.className="col-xs-6";
           updbtndiv=document.createElement('div');
 
+
           // add_updbtn variable for adding button only when the conditions are met, otherwise that part is to be excluded from executing
           
           add_updbtn="false";
-          if (tasksArr[i].username==vassignee || pt_assignee==tasksArr[i].username) 
+          if (tasksArr[i].username==vassignee || pt_assignee==tasksArr[i].username ||mt_owner==login_user) 
           {
             updbtn=document.createElement("BUTTON");
             updbtn.className="btn btn-success";
@@ -471,9 +479,10 @@ if($this->session->flashdata('project_inserted'))
           {
             console.log("Provide Update button fired");
             updbtn.innerHTML="Provide Update";
+
             updbtn.value="Provide Update";
           }
-          else if (tasksArr[i].username==pt_assignee)
+          else if (tasksArr[i].username==pt_assignee|| mt_owner==login_user)
           {
             console.log("Ask for Update button fired");
             updbtn.innerHTML="Ask For Update";
@@ -488,11 +497,11 @@ if($this->session->flashdata('project_inserted'))
           updtxt.rows=2;
           updtxt.maxLength=200;
           updtxt.readOnly=true;
-          updtxt.cols=80;
+          updtxt.cols=90;
           updtxt.style="background-color:#2E4053;color:white";
-          updtxtdiv.className="col-xs-9";
-
-          updbtndiv.className="col-xs-3";
+          updtxtdiv.className="col-xs-12";
+          updtxtdiv.style="margin-bottom:10px;"
+          updbtndiv.className="col-xs-12";
           
           
           updtxtdiv.appendChild(updtxt);
@@ -500,32 +509,63 @@ if($this->session->flashdata('project_inserted'))
           //updtxtdiv.style="font-color:#2E4053;color:#2E4053;background-color:#2E4053";
           upddiv.appendChild(updtxtdiv);
           
-          if (add_updbtn=='true')
-          {
-            updbtndiv.appendChild(updbtn);
-            upddiv.appendChild(updbtndiv);
-          }
           
           console.log("LAST UPDATE DATE="+tasksArr[i].latestupd_datetime);
           if (tasksArr[i].latestupd_datetime!==null)
           {
             console.log("DATE VALUE IS AVAILABLE");
             upddatdiv=document.createElement('div');
-            upddat=document.createTextNode(" "+tasksArr[i].latestupd_datetime);
-            upddatdiv.className="col-xs-12";
+            upddatdiv.style="margin-top:10px;";
+            upddat=document.createTextNode(" Updated on "+tasksArr[i].latestupd_datetime);
+            upddatdiv.className="col-xs-6";
             iupdele=document.createElement("span");
             iupdele.id="iupdele";
             iupdele.className="glyphicon glyphicon-calendar";
           
             upddatdiv.appendChild(iupdele);
             upddatdiv.appendChild(upddat);
-            upddatdiv.style="color:#2E4053"
+            upddatdiv.style="color:#2E4053;"
             upddiv.appendChild(upddatdiv);
 
           }
+
+          if (add_updbtn=='true')
+          {
+            updbtndiv.style="margin-top:10px;"
+            updbtndiv.appendChild(updbtn);
+            upddiv.appendChild(updbtndiv);
+
+
+            updbtn.addEventListener('click', function(taskid,vassignee,pt_ddate,vduedate )
+            {
+              return function()
+              {
+                console.log("valueOfButton="+this.value);
+
+                if (this.value=="Ask For Update")
+                {
+                  this.innerHTML="Email has been Sent";
+                  this.className="btn btn-success glyphicon glyphicon-thumbs-up";
+            
+                  this.disabled="true";
+
+                  //WRITE THE LOGIC FOR SENDING OUT EMAIL TO THE TASK OWNER HERE.......
+                }
+                else if (this.value=="Provide Update")
+                {
+
+                  window.open("http://localhost/ci/tasks/js_upd_task/"+taskid+'?ddate='+vduedate+'&ptd='+pt_ddate,'_self');
+            
+                }
+              }
+            }(taskid,vassignee,pt_ddate,vduedate )) ;
+
+          }
+          
+
           //upddiv.appendChild(updlabeldiv);
           updencdiv.appendChild(upddiv);
-          updencdiv.style="margin-bottom: 20px; margin-top:10px; margin-left: 30px; margin-right: -50px; padding-right: 30px; border-left: 6px solid #008000; padding-bottom: 10px;";
+          updencdiv.style="margin-bottom: 20px; margin-top:10px; margin-left: 40px; margin-right: 10px; padding-right: 30px; border-left: 6px solid #008000; padding-bottom: 10px;";
 
           upddiv.style="margin-bottom: 15px;margin-left:-35px;margin-top:10px;";
 
@@ -834,12 +874,15 @@ if($this->session->flashdata('project_inserted'))
 
           if (currlvl==1 && tasksArr[i].has_child=='Y')
           {
-          
+ 
+
+
             // create outdiv_pt0 to hold all 1st level elements of different group_id
 
             pt0divid='p'+project_id+'_outdiv_pt0';
             pt0div=document.getElementById(pt0divid);
             endhrid='hr_'+taskid;
+            
             if (pt0div == null)
             {
               pt0div=document.createElement('div');
