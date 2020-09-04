@@ -16,13 +16,20 @@ class Projects extends CI_Controller {
 			redirect('home/index');
 			
 
+
 		}
 
  	}
 
 	public function index() {
 		
+		# The below is fired after performing update against tasks 
 
+
+		echo $this->session->flashdata('task_updated');
+		echo $this->session->flashdata('task_inserted');
+		echo $this->session->flashdata('task_deleted');
+		
 		$data['projects'] = $this->project_model->get_projects();
 
 		$data['main_view'] = "projects\index";

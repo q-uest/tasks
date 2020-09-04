@@ -54,10 +54,22 @@ echo "<h3>Tasks for <b>".$this->session->userdata('project_data')->project_name.
 
 <?php 
 
+if (isset($_POST["name"]))
+	$pname=$_POST["name"];
+else
+	$pname="";
+
 $data = array('class' => 'form-control',
 			  'name' => 'name',
-			  'placeholder' => 'Task Name');
+			  'placeholder' => "Task Name",
+			  'value' => $pname
+			);
+#set_value('name',$_POST["name"] );
+
+#echo '$_POST["name"]='.$_POST["name"];
 ?>
+
+
 
 <?php echo form_input($data);  ?>
 
@@ -72,9 +84,16 @@ $data = array('class' => 'form-control',
 
 <?php 
 
+if (isset($_POST["description"]))
+	$pdescription=$_POST["description"];
+else
+	$pdescription="";
+
+
 $data = array('class' => 'form-control',
 			  'name' => 'description',
 			  'placeholder' => 'Task Description',
+			  'value' => $pdescription,
 			'rows'=>2);
 ?>
 
@@ -86,16 +105,21 @@ $data = array('class' => 'form-control',
 
 <div class="form-group">
 
-<?php echo form_label('To Be Completed on'); ?>
+<?php echo form_label('To Be Completed Before [ Should be <'.$this->session->userdata['vddate'][0]['ddate'].' & >'.$this->session->userdata['cdate'][0]['today'].' ]'); ?>
 
 <?php 
 
 $data = array('class' => 'form-control',
 			  'name' => 'due_date',
-			  'placeholder' => $_GET['due_date']);
+			  'type'=>'date',
+			  'value' => $this->session->userdata['vddate2']
+			);
+
+#echo "vdue_Date=".$this->session->userdata['vddate2'];
+
 ?>
 
-<?php echo form_input($data,$_GET['due_date']);  ?>
+<?php echo form_input($data,$this->session->userdata['vddate2']);  ?>
 
 
 
@@ -110,13 +134,15 @@ $data = array('class' => 'form-control',
 
 $data = array('class' => 'form-control',
 			  'name' => 'parent_task_id',
-			  'placeholder' => "parent task id");
+			  'value' =>  $this->session->userdata['vparent_task_id'],
+			  'placeholder' => $this->session->userdata['vparent_task_id']
+			);
 
-$data = ['parent_task_id'=>$_GET['parent_task_id']];
+$data = ['parent_task_id'=>$this->session->userdata['vparent_task_id']];
 			  
 ?>
 
-<?php echo form_hidden($data,$_GET['parent_task_id']);  ?>
+<?php echo form_hidden($data,$this->session->userdata['vparent_task_id']);  ?>
 
 </div>
 
@@ -139,7 +165,7 @@ if ($this->session->userdata('approved')==0)
 
 	$options=array();
 
-	foreach($user_data as $user)
+	foreach ($this->session->userdata('user_data') as $user)
 	{
 		$options[$user['id']]=$user['username'];
 	}
@@ -163,12 +189,12 @@ else
 
 $data = array('class' => 'form-control',
 			  'name' => 'groupid',
-			  'placeholder' => $_GET['groupid']);
+			  'placeholder' => $this->session->userdata('vgroupid'));
 
-$data = ['groupid' => $_GET['groupid']]
+$data = ['groupid' => $this->session->userdata('vgroupid')]
 ?>
 
-<?php echo form_hidden($data);  ?>
+<?php echo form_hidden($data,$this->session->userdata('vgroupid'));  ?>
 
 
 

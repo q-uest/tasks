@@ -239,6 +239,34 @@ border-bottom: var(--outbrdr);
 
 }
 
+.divc1_lvl1 {
+
+  height:300px;
+  border-left: 10px solid #2E4053;
+  border-right: 10px solid #2E4053;
+  #background-color:#897F7F ;
+  color:#2E4053;
+  padding-left:0px;
+  padding-right:0px;
+  border-radius: 25px; 
+  margin-bottom:1px;
+  transition-delay: 0.5s;
+}
+
+.divc1_gt_lvl1 {
+height:300px;
+border-left: 10px solid #5CB3FF;
+border-right: 10px solid #5CB3FF;
+color:#2E4053;
+padding-left:0px;
+padding-right:0px;
+border-radius: 15px;
+margin-bottom:1px;
+transition-delay: 0.5s;
+            
+
+
+}
 .rtdivc3 {
 
 border-left: 10px solid #063852;
@@ -258,7 +286,7 @@ cursor:pointer;
 }
 
 .rtdiv {
-  
+    
   font-size: 20px; 
   font-weight: bold; 
   padding-bottom:2px;

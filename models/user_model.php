@@ -48,7 +48,7 @@ class User_model extends CI_Model {
 		$this->db->select('id,username');
 		$result = $this->db->get('users')->result_array();
 #		$result = $rawres->result_array();
-		echo "from user_model username=".$result[0]['username'];
+		#echo "from user_model username=".$result[0]['username'];
 		return $result;
 
 	}
@@ -107,7 +107,7 @@ public function db_getuser($userid)
 		$rawres = $this->db->get('users');
 		$result = $rawres-> result_array();
 
-		echo "num rows=".$rawres->num_rows();
+		#echo "num rows=".$rawres->num_rows();
 		if ($rawres->num_rows() == 1 ) 
 		{	
 			#$options = ['cost' => 12];

@@ -284,6 +284,8 @@ if($this->session->flashdata('project_inserted'))
           var vduedate=tasksArr[i].due_date;
           
           console.log("VASSIGNEE="+vassignee);
+          console.log("username="+tasksArr[i].username);
+
           // Add unique parent tasks to partsk array
 
           ptsk=tasksArr[i].parent_task_id;
@@ -306,7 +308,6 @@ if($this->session->flashdata('project_inserted'))
           }
           // outermost div enclosing encdiv
 
-          
 
           prevomid=omdivid;
           omdivid='om'+taskid;
@@ -408,9 +409,125 @@ if($this->session->flashdata('project_inserted'))
           tndiv.id='tndiv'+taskid;
           tndiv.className="col-xs-12";
 
-          tname=document.createTextNode("  "+tasksArr[i].task_name+'('+tasksArr[i].id+')'+' '+tasksArr[i].lvl);
-          lbrk=document.createElement('br');
+          tname=document.createTextNode("  "+tasksArr[i].task_name.substring(0,25)+'('+tasksArr[i].id+')'+' '+tasksArr[i].lvl);
+          //lbrk=document.createElement('br');
           
+
+
+          // if parent task ==0, assign the current task's assignee & highest parent task date
+
+          if ( ptsk>0)
+          {
+            parent_taskidx=find_task_idx(ptsk,tasksArr);
+            pt_assignee=tasksArr[parent_taskidx].assignee;
+            pt_ddate=tasksArr[parent_taskidx].due_date;
+            console.log("PARENT TASK ptsk="+ptsk+' pt_ddate='+pt_ddate+'parent_taskidx='+parent_taskidx);
+                   
+          }
+          else 
+          {
+            pt_assignee=vassignee;
+            pt_ddate='9999-12-31';
+            console.log("PARENT TASK ptsk="+pt_assignee+' pt_ddate='+pt_ddate);
+            
+          }
+
+
+          console.log("pt_assignee="+pt_assignee);
+          updencdiv=document.createElement('div');
+          updencdiv.className="col-xs-12";
+          updencdiv.style="font-weight:bold;font-size:10px"
+          upddiv=document.createElement('div');
+          upddiv.id='upddiv'+taskid;
+          upddiv.className="col-xs-12";
+
+          
+          updlabeldiv=document.createElement('div');
+          updlabeldiv.className="col-xs-12";
+          updlabeldiv.id="updlabeldiv";
+          updlabeldiv.style="margin-bottom:10px"
+          updlabel=document.createTextNode("Latest Update");
+          updlabeldiv.style="font-weight:normal;font-style:oblique;margin-bottom:5px;color:#2E4053";
+          updlabeldiv.appendChild(updlabel);
+
+          upddiv.appendChild(updlabeldiv);
+
+          updtxtdiv=document.createElement('div');
+          updtxt=document.createElement("TEXTAREA");
+          //updtxt.className="col-xs-6";
+          updbtndiv=document.createElement('div');
+
+          // add_updbtn variable for adding button only when the conditions are met, otherwise that part is to be excluded from executing
+          
+          add_updbtn="false";
+          if (tasksArr[i].username==vassignee || pt_assignee==tasksArr[i].username) 
+          {
+            updbtn=document.createElement("BUTTON");
+            updbtn.className="btn btn-success";
+            add_updbtn="true";
+          }
+
+          if (tasksArr[i].username==vassignee)
+          {
+            console.log("Provide Update button fired");
+            updbtn.innerHTML="Provide Update";
+            updbtn.value="Provide Update";
+          }
+          else if (tasksArr[i].username==pt_assignee)
+          {
+            console.log("Ask for Update button fired");
+            updbtn.innerHTML="Ask For Update";
+            updbtn.value="Ask For Update";
+          }
+
+          if (tasksArr[i].latest_update!==null)
+            updtxt.defaultValue=tasksArr[i].latest_update;
+          else
+            updtxt.defaultValue="No updates available!";
+          
+          updtxt.rows=2;
+          updtxt.maxLength=200;
+          updtxt.readOnly=true;
+          updtxt.cols=80;
+          updtxt.style="background-color:#2E4053;color:white";
+          updtxtdiv.className="col-xs-9";
+
+          updbtndiv.className="col-xs-3";
+          
+          
+          updtxtdiv.appendChild(updtxt);
+          //updtxtdiv.appendChild(updbtn);
+          //updtxtdiv.style="font-color:#2E4053;color:#2E4053;background-color:#2E4053";
+          upddiv.appendChild(updtxtdiv);
+          
+          if (add_updbtn=='true')
+          {
+            updbtndiv.appendChild(updbtn);
+            upddiv.appendChild(updbtndiv);
+          }
+          
+          console.log("LAST UPDATE DATE="+tasksArr[i].latestupd_datetime);
+          if (tasksArr[i].latestupd_datetime!==null)
+          {
+            console.log("DATE VALUE IS AVAILABLE");
+            upddatdiv=document.createElement('div');
+            upddat=document.createTextNode(" "+tasksArr[i].latestupd_datetime);
+            upddatdiv.className="col-xs-12";
+            iupdele=document.createElement("span");
+            iupdele.id="iupdele";
+            iupdele.className="glyphicon glyphicon-calendar";
+          
+            upddatdiv.appendChild(iupdele);
+            upddatdiv.appendChild(upddat);
+            upddatdiv.style="color:#2E4053"
+            upddiv.appendChild(upddatdiv);
+
+          }
+          //upddiv.appendChild(updlabeldiv);
+          updencdiv.appendChild(upddiv);
+          updencdiv.style="margin-bottom: 20px; margin-top:10px; margin-left: 30px; margin-right: -50px; padding-right: 30px; border-left: 6px solid #008000; padding-bottom: 10px;";
+
+          upddiv.style="margin-bottom: 15px;margin-left:-35px;margin-top:10px;";
 
           // adding toolbar, only if approved=0
 
@@ -463,28 +580,7 @@ if($this->session->flashdata('project_inserted'))
           tlbrdiv.className="col-xs-3";
           tlbrdiv.style="margin-top:20px;width:200px;float:right;";
           
-          // if parent task ==0, assign the current task's assignee & highest parent task date
-
-          if ( ptsk>0)
-          {
-            parent_taskidx=find_task_idx(ptsk,tasksArr);
-            pt_assignee=tasksArr[parent_taskidx].assignee;
-            pt_ddate=tasksArr[parent_taskidx].due_date;
-            console.log("PARENT TASK ptsk="+ptsk+' pt_ddate='+pt_ddate+'parent_taskidx='+parent_taskidx);
-                   
-          }
-          else 
-          {
-            pt_assignee=vassignee;
-            pt_ddate='9999-12-31';
-            console.log("PARENT TASK ptsk="+pt_assignee+' pt_ddate='+pt_ddate);
-            
-          }
-
-
           
-          
-
           if (vapproved==0 )
           {
             
@@ -534,18 +630,32 @@ if($this->session->flashdata('project_inserted'))
                 //var assigneeid=document.getElementById(iassgneleid).value;
                
 
-                window.open("http://localhost/ci/tasks/js_add_task/"+project_id+'?assignee='+vassignee+'?parent_task_id='+taskid+'?groupid='+grpid+'?due_date='+vduedate+'?pt_duedate='+pt_ddate,'_self');
+                window.open("http://localhost/ci/tasks/js_add_task/"+project_id+'?assignee='+vassignee+'&parent_task_id='+taskid+'&groupid='+grpid+'&due_date='+vduedate+'&pt_duedate='+pt_ddate,'_self');
 
 
               }
             }(project_id,vassignee,taskid,grpid,vduedate,pt_ddate));
 
 
+            // del button click event
+
+            delbtn.addEventListener('click', function(taskid,grpid)
+            {
+              return function()
+              {
+                //window.confirm("Are you sure you want to delete the task "+taskid);
+
+                if (confirm("Confirm delete task "+taskid))
+                    window.open("http://localhost/ci/tasks/js_del_task/"+taskid+'?groupid='+grpid,'_self');
+
+
+              }
+            }(taskid,grpid));
+
+
+
 
             // add sibling button click event
-            
-
-
             
             addsibbtn.addEventListener('click', function(project_id,vassignee,ptsk,grpid,vduedate,pt_ddate)
             {
@@ -555,7 +665,7 @@ if($this->session->flashdata('project_inserted'))
                 //var assigneeid=document.getElementById(iassgneleid).value;
                 
                 
-                window.open("http://localhost/ci/tasks/js_add_task/"+project_id+'?assignee='+pt_assignee+'&parent_task_id='+ptsk+'&groupid='+grpid+'&due_date='+vduedate+'?pt_duedate='+pt_ddate,'_self');
+                window.open("http://localhost/ci/tasks/js_add_task/"+project_id+'?assignee='+pt_assignee+'&parent_task_id='+ptsk+'&groupid='+grpid+'&due_date='+vduedate+'&pt_duedate='+pt_ddate,'_self');
 
               }
             }(project_id,vassignee,ptsk,grpid,vduedate,pt_ddate));
@@ -646,8 +756,6 @@ if($this->session->flashdata('project_inserted'))
           }
           else if (vapproved==1 && tasksArr[i].username==pt_assignee)
           {
-
-
             console.log("SHOW APPROVE BUTTON");
             appbtn=document.createElement('button');
             appbtn.id='appbtn'+taskid;
@@ -747,13 +855,14 @@ if($this->session->flashdata('project_inserted'))
             // set style for divc1
             
 
-
-            divc1.style="height:150px;border-left: 10px solid #2E4053;border-right: 10px solid #2E4053;#background-color:#897F7F ;color:#2E4053;padding-left:0px;padding-right:0px;border-radius: 25px; margin-bottom:1px;transition-delay: 0.5s;" ;
+            divc1.classList.add('divc1_lvl1');
+          
+          //  divc1.style="height:175px;border-left: 10px solid #2E4053;border-right: 10px solid #2E4053;#background-color:#897F7F ;color:#2E4053;padding-left:0px;padding-right:0px;border-radius: 25px; margin-bottom:1px;transition-delay: 0.5s;" ;
 
             
             rtdiv=document.createElement('div');
             rtdiv.id='rtdiv'+taskid;
-            rtdiv.className="col-xs-9 rtdiv";
+            rtdiv.className="col-xs-6 rtdiv";
 
                       
             rtdiv.appendChild(spanele);
@@ -792,7 +901,9 @@ if($this->session->flashdata('project_inserted'))
 
             // set style for tasks whose level > 1
 
-            divc1.style="height:150px;border-left: 10px solid #5CB3FF;border-right: 10px solid #5CB3FF;color:#2E4053;padding-left:0px;padding-right:0px;border-radius: 15px; margin-bottom:1px;transition-delay: 0.5s";
+            divc1.classList.add('divc1_gt_lvl1');
+
+          //  divc1.style="height:175px;border-left: 10px solid #5CB3FF;border-right: 10px solid #5CB3FF;color:#2E4053;padding-left:0px;padding-right:0px;border-radius: 15px; margin-bottom:1px;transition-delay: 0.5s";
             
 
             // display task values in <h4>
@@ -801,7 +912,7 @@ if($this->session->flashdata('project_inserted'))
             rtdiv=document.createElement('div');
             rtdiv.id='rtdiv'+taskid;
            // rtdiv.style="font-size: 20px; font-weight: bold; padding-top: 10px;"
-            rtdiv.className="col-xs-5 rtdiv";
+            rtdiv.className="col-xs-7 rtdiv";
             //var h=document.createElement("H4");          
 
             rtdiv.appendChild(spanele);
@@ -813,8 +924,7 @@ if($this->session->flashdata('project_inserted'))
 
            // cntdiv.appendChild(vstdiv);
             cntdiv.appendChild(rtdiv);
-            
-            cntdiv.style="margin-bottom:10px;"
+            //cntdiv.style="margin-bottom:10px;"
             //cntdiv.style="font-size:15px;font-weight:bold;";
           }
 
@@ -827,8 +937,10 @@ if($this->session->flashdata('project_inserted'))
           divc1.appendChild(cntdiv);
           //divc1.appendChild(vstdiv);
         
+          divc1.appendChild(updencdiv);
           divc1.appendChild(c1div);
           
+
           //divc1.appendChild(bothr);
 
           tdiv.appendChild(divc1);
@@ -849,7 +961,6 @@ if($this->session->flashdata('project_inserted'))
 
           if (prevdivid == outdivid && rowcnt > 1)
           {
-           // console.log("MULTIrow candidate...prevdivid="+prevdivid+' outdivid='+outdivid+' rowcnt='+rowcnt);
             outdiv.classList.remove("singlerow");
             outdiv.classList.add("multirows"+grpid);
           }
@@ -869,7 +980,6 @@ if($this->session->flashdata('project_inserted'))
               pt0div.appendChild(endhr);
             
             }
-            
             
             pt0div.appendChild(outdiv);
             projrw.appendChild(pt0div);
@@ -895,6 +1005,7 @@ if($this->session->flashdata('project_inserted'))
         
         
           // Note: Enclosure function is used, as the current value of the // parameter in the loop could not be passed
+          
           var iknele=document.getElementById(ikid);
           console.log("ADD EVEN LISTENER TO... ="+ikid);
           iknele.addEventListener('click', function(tasksArr,i)
@@ -1018,7 +1129,7 @@ if($this->session->flashdata('project_inserted'))
         }, false);
 
 
-        divc1.addEventListener("dblclick", function( vassignee,vusername,pt_assignee,vstatus,vapproved,pt_ddate ) 
+        divc1.addEventListener("dblclick", function( vassignee,vusername,pt_assignee,vstatus,vapproved,pt_ddate,vduedate ) 
         {
           return function()   
           {
@@ -1040,7 +1151,7 @@ if($this->session->flashdata('project_inserted'))
             if ((vstatus !== 3 && vusername==pt_assignee) ||(vusername==vassignee && vapproved==0  && vstatus <3 && vstatus!==null))
             {
                 console.log("UPDATE TASK IS TO BE CALLED");
-              window.open("http://localhost/ci/tasks/js_upd_task/"+taskid+'?pardate='+pt_ddate,'_self');
+                window.open("http://localhost/ci/tasks/js_upd_task/"+taskid+'?ddate='+vduedate+'&ptd='+pt_ddate,'_self');
             }
             else
             {
@@ -1048,7 +1159,7 @@ if($this->session->flashdata('project_inserted'))
             }
           }
          
-          } (vassignee,vusername,pt_assignee,vstatus,vapproved,pt_ddate ) );
+          } (vassignee,vusername,pt_assignee,vstatus,vapproved,pt_ddate,vduedate ) );
 
 
 

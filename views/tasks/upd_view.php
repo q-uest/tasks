@@ -52,7 +52,10 @@
 <div class="form-group">
 
 
+
 <?php 
+
+echo form_label('Task'); 
 
 $data = array('class' => 'form-control',
 			  'name' => 'task_name',
@@ -86,16 +89,19 @@ $data = array('class' => 'form-control',
 
 <div class="form-group">
 
-<?php echo form_label('To Be Completed on'); ?>
+<?php echo form_label('To Be Completed Before [Must be <'.$this->session->userdata['vddate'].' & >'.$this->session->userdata['today'].' ]'); ?>
+
 
 <?php 
 
 $data = array('class' => 'form-control',
 			  'name' => 'due_date',
-			  'placeholder' => $task[0]['due_date']);
+			  'type'=>'date',
+			  'value' => $this->session->userdata['task']['defvddate'],
+			  'placeholder' => $this->session->userdata['task']['defvddate']);
 ?>
 
-<?php echo form_input($data,$task[0]['due_date']);  ?>
+<?php echo form_input($data,$this->session->userdata['task']['defvddate']);  ?>
 
 
 
@@ -136,20 +142,88 @@ else
 
 ?>
 
-<div class="form-group">
+</div>
+
+<div class="form-group" id="statdiv">
+
+<?php echo form_label('Status'); ?>
+
+
+	
+	
 
 
 <?php 
 
 $data = array('class' => 'form-control',
+				'id' => 'status',
 			  'name' => 'status');
+
+ 	$stoptions=array(1=>'Open',2 =>'In Progress',3 => 'Completed');
+	echo form_dropdown('status', $stoptions,$task[0]["status"],'onChange="check_for_compl();" id="status" class="form-control"'); 	
 ?>
 
-<?php echo form_input($data,$task[0]["status"]);  ?>
+<script type="text/javascript">
+
+dditm=document.getElementById("status");
+console.log("The script of onchange is firing..");
+function check_for_compl() {
+	cmtdiv=document.getElementById("cmtdiv");
+	cmtcol=document.getElementById('clo_comments');
+	if (dditm.value==3)
+	{
+		console.log("Completed has been choosen");
+		
+			cmtdiv.style="display:block";
+			cmtcol.style="display:block";
+	}
+	else
+	{
+			console.log("other than completed has been choosen"+dditm.value);
+			cmtdiv.style="display:none";
+			cmtcol.style="display:none";
+	}
+
+}
+
+
+</script>
+
+
 
 
 
 </div>
+
+<?php if ($task[0]["status"]==3)
+{
+?>
+<div class="form-group" id="cmtdiv" style="display:block">
+<?php }
+else
+{
+?>
+<div class="form-group" id="cmtdiv" style="display:none">
+<?php
+}
+?>
+
+<?php echo form_label('Closing Comments'); 
+
+
+
+
+$data = array('class' => 'form-control',
+			  'name' => 'clo_comments',
+			  'id'=>'clo_comments',
+			  'placeholder' => 'Closing Comments',
+				'rows'=>2);
+?>
+
+<?php echo form_textarea($data,$task[0]["clo_comments"]);  ?>
+
+</div>
+
 
 
 <div class="form-group">
@@ -158,10 +232,10 @@ $data = array('class' => 'form-control',
 <?php 
 
 $data = array('class' => 'form-control',
-			  'name' => 'approved1');
+			  'name' => 'approved');
 ?>
 
-<?php echo form_input($data,$task[0]["approved"]);  ?>
+<?php echo form_hidden($data,$task[0]["approved"]);  ?>
 
 
 
@@ -170,20 +244,22 @@ $data = array('class' => 'form-control',
 
 
 
-</div>
 
 
-<div class="form-group col-xs-10">
-<div class="col-xs-5">
+
+<div class="form-group " id="savediv" style="text-align: center">
+<!-- <div class="col-xs-5"> -->
 <?php 
 
 $data = array('class' => 'btn btn-success btn-lg',
 			  'name' => 'save',
 			  'value' => 'Save');
 ?>
-
-<?php echo form_submit($data);  ?>
-</div>
+<?php 
+$attributes = array('id'=>'save');
+echo form_submit($data,'','" id="save" ');  
+?>
+<!-- </div> -->
 
 
 
