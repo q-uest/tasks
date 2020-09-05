@@ -373,6 +373,7 @@ public function js_upd_task($id)
 	$task['due_date']=$data['task'][0]["due_date"];
 	$task['approved']=$data['task'][0]["approved"];
 	$task['status']=$data['task'][0]["status"];
+	$task['latest_update']=$data['task'][0]["latest_update"];
 	if ($task['status']==3)
 		$task['clo_comments']=$data['task'][0]["clo_comments"];
 	
@@ -493,11 +494,15 @@ public function validate_upd_task()
 				$clo_date=date('Y-m-d');
 			#	echo "clo_date=".$clo_date;
 			}
-			
-			$v_latestupd_datetime=date('Y-m-d H:i');
-			#echo "status=".$this->input->post('status');
 
-			$task = array(
+			echo "latest_upate=".$this->session->userdata['task']['latest_update'];
+
+			if ($this->input->post('latest_update') !== $this->session->userdata['task']['latest_update'])
+			{
+				echo "The latest update has been edited";
+				$v_latestupd_datetime=date('Y-m-d H:i');
+
+				$task = array(
 				'id'=> $this->session->userdata['task']['task_id'],
 				'task_name' => $this->input->post('task_name'),
 				'task_body' => $this->input->post('description'),
@@ -508,8 +513,24 @@ public function validate_upd_task()
 				'clo_comments'=>$clo_comments,
 				'clo_date'=>$clo_date,
 				'latest_update'=>$this->input->post('latest_update'),
-				'latestupd_datetime'=>$v_latestupd_datetime
-			);
+				'latestupd_datetime'=>$v_latestupd_datetime);
+			}
+			else
+			{
+				$task = array(
+				'id'=> $this->session->userdata['task']['task_id'],
+				'task_name' => $this->input->post('task_name'),
+				'task_body' => $this->input->post('description'),
+				'due_date' => $vdue_date,
+				'userid' => $this->input->post('userid'),
+				'status'=>$this->input->post('status'),
+				'approved' =>$this->session->userdata['task']['approved'],
+				'clo_comments'=>$clo_comments,
+				'clo_date'=>$clo_date);
+			}
+
+			
+			#echo "status=".$this->input->post('status');
 
 			$xs=$this->task_model->db_upd_task($task);
 
@@ -539,7 +560,7 @@ public function validate_upd_task()
 			}
 
 			
-			redirect('projects');
+			#redirect('projects');
 
 		}
 }
