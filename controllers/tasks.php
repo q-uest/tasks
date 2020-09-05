@@ -560,7 +560,7 @@ public function validate_upd_task()
 			}
 
 			
-			redirect('projects');
+			#redirect('projects');
 
 		}
 }
