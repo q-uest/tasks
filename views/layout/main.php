@@ -118,11 +118,16 @@ body {
 .encdiv {
   overflow-y: hidden;
   overflow-x: scroll;
+  white-space: nowrap;
+  height:325px;
+#  width:1000px;
  # border: 2px solid red;
   #padding-left: calc(var( --rtlvl ) * 1 ) ;
 }
 
-
+.tdiv {
+  width: var(--scrollper);
+  }
 
 .lftpad {
  padding-left: calc(var( --rtlvl ) * 1 ) ;  

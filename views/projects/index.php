@@ -214,7 +214,8 @@ if($this->session->flashdata('project_inserted'))
             var j=0;
             for (j=0;j<chldtsk.length;j++)
             {
-              console.log("DISPLAY TASKS inner="+tasksArr[chldtsk[j]].id,' '+tasksArr[chldtsk[j]].task_name+' '+tasksArr[chldtsk[j]].parent_task_id+' '+tasksArr[chldtsk[j]].has_child);
+              console.log("DISPLAY TASKS inner="+tasksArr[chldtsk[j]].
+                id,' '+tasksArr[chldtsk[j]].task_name+' '+tasksArr[chldtsk[j]].parent_task_id+' '+tasksArr[chldtsk[j]].has_child);
 
               //tskid[chldcnt]=tasksArr[chldtsk[j]].id;
               tskid[chldcnt]=chldtsk[j];
@@ -340,6 +341,16 @@ if($this->session->flashdata('project_inserted'))
           tdiv=document.createElement('div');
           tdivid='tdiv'+taskid;
           tdiv.id=tdivid;
+          
+          if (currlvl>10)
+          {
+            tdiv.classList.add('tdiv');
+            encdiv.classList.add('encdiv');
+            scrolladj=currlvl*2*15;
+            scrollper=100+Math.round((1/(1023/scrolladj)*100),1);
+            console.log("SCROLLPERCENT="+scrollper);              
+            tdiv.style.setProperty('--scrollper', scrollper+'%' );    
+          }
 
 
           // horizontal line
@@ -617,7 +628,7 @@ if($this->session->flashdata('project_inserted'))
           
           tlbrdiv=document.createElement('div');
           tlbrdiv.id='tlbrdiv'+taskid;
-          tlbrdiv.className="col-xs-3";
+          tlbrdiv.className="col-xs-5";
           tlbrdiv.style="margin-top:20px;width:200px;float:right;";
           
           
@@ -629,17 +640,18 @@ if($this->session->flashdata('project_inserted'))
             addchlbtn=document.createElement("button");
             modbtn=document.createElement("button");
             delbtn=document.createElement('button');
-
+ 
             addsibbtn.id="asbtn"+taskid;
             addchlbtn.id="acbtn"+taskid;
             modbtn.id="mdbtn"+taskid;
             delbtn.id="dlbtn"+taskid;
-
+ 
             addsibbtn.className="glyphicon glyphicon-plus";
             addchlbtn.className="glyphicon glyphicon-subscript";
             modbtn.className="glyphicon glyphicon-pencil";
             delbtn.className="glyphicon glyphicon-remove";
 
+ 
             // show add sibling only if the level is not equal to 1
 
             if (currlvl > 1)
@@ -651,13 +663,67 @@ if($this->session->flashdata('project_inserted'))
             tlbrdiv.appendChild(addchlbtn);
             tlbrdiv.appendChild(modbtn);
             tlbrdiv.appendChild(delbtn);
-
             
             tlbrdiv.style="display:none";
 
+            if (currlvl==1)
+            {
+              // expand recursively button
+              expbtn=document.createElement('button');
+            
+              
+              expbtn.id="exbtn"+taskid;
+              expbtn.className="glyphicon glyphicon-triangle-bottom";
+              
+              tlbrdiv.appendChild(expbtn);
+              
+              // Listener for expandAll button
 
+              expbtn.addEventListener('click', function(project_id,taskid,grpid)
+              {
+                return function()
+                {
+                  console.log(taskid+' button clicked'+vassignee);
+                  for (i=0;i<tasksArr.length;i++)
+                  {
+                    if (tasksArr[i].group_id==grpid)
+                    {
+                      icn="ic"+tasksArr[i].id;
+                      icnid=document.getElementById(icn);
+                      icnid.className='glyphicon glyphicon-minus-sign';
+                      console.log("icn="+icn);
+                      if (tasksArr[i].has_child=='N')
+                      {
+                        icnid.className='glyphicon glyphicon-minus-sign disabled';
+                      }
+                      else
+                      {
+                       icnid.className='glyphicon glyphicon-minus-sign'; 
+                      }
+                        console.log("taskWithParent="+tasksArr[i].id+' '+tasksArr[i].parent_task_id+' '+tasksArr[i].task_name+" "+tasksArr[i].lvl+" "+tasksArr[i].has_child);
+                        
+                        divid="outdiv_pt"+tasksArr[i].parent_task_id+"_L"+tasksArr[i].lvl+"_"+tasksArr[i].group_id;
+                        console.log("divid="+divid);
+
+                        divele=document.getElementById(divid);
+                        if (tasksArr[i].lvl>1)
+                          divele.style="padding-left:20px;display:block";
+                        //divele.style.display="block";
+                      //}
+                    }
+
+                    }
+                  
+                }
+              }(project_id,taskid,grpid));
+
+
+            
+            }
 
             // add event listener to all buttons
+
+
 
 
             // add children button click event
@@ -1146,7 +1212,7 @@ if($this->session->flashdata('project_inserted'))
           if (vapproved==0)
           {
             tlbrdiv=document.getElementById('tlbrdiv'+taskid);
-            tlbrdiv.style="display:block;margin-top:20px;width:200px;float:right;";
+            tlbrdiv.style="display:block;margin-top:20px;#width:200px;float:right;";
           }
             
           }, false);
