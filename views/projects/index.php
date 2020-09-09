@@ -668,7 +668,7 @@ if($this->session->flashdata('project_inserted'))
             
             
               
-              // Listener for expandAll button
+            // Listener for expandAll button
 
             if (has_child=='Y')
             {
@@ -681,9 +681,6 @@ if($this->session->flashdata('project_inserted'))
             }
              
 
-
-
-
               if (currlvl==1)
               {
                 
@@ -691,6 +688,11 @@ if($this->session->flashdata('project_inserted'))
                 {
                 return function()
                 {
+
+                  expbtn.id="exbtn"+taskid;
+                  expbtn=document.getElementById(expbtn);
+                  expbtn.className="glyphicon glyphicon-triangle-bottom disabled";
+              
                   console.log(taskid+' button clicked'+vassignee);
                   for (i=0;i<tasksArr.length;i++)
                   {
@@ -738,6 +740,8 @@ if($this->session->flashdata('project_inserted'))
                   {
                     return function()
                  {
+                  
+                  
                   console.log("this task is..."+taskid);
                   
                   vtasksarr=[];
@@ -756,6 +760,16 @@ if($this->session->flashdata('project_inserted'))
                       icnid=document.getElementById(icn);
                       icnid.className='glyphicon glyphicon-minus-sign';
                       console.log("icn="+icn);
+
+                      // disable expbutn only if the task has child
+
+                      if (tasksArr[idpos].has_child=="Y")
+                      {
+                        expbtn_id="exbtn"+tasksArr[idpos].id;
+                        expbtn=document.getElementById(expbtn_id);
+                        expbtn.className="glyphicon glyphicon-triangle-bottom disabled";
+                      }
+              
 
 
                       
