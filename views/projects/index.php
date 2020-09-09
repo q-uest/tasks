@@ -689,8 +689,8 @@ if($this->session->flashdata('project_inserted'))
                 return function()
                 {
 
-                  expbtn.id="exbtn"+taskid;
-                  expbtn=document.getElementById(expbtn);
+                  expbtn_id="exbtn"+taskid;
+                  expbtn=document.getElementById(expbtn_id);
                   expbtn.className="glyphicon glyphicon-triangle-bottom disabled";
               
                   console.log(taskid+' button clicked'+vassignee);
@@ -758,7 +758,7 @@ if($this->session->flashdata('project_inserted'))
                       //console.log("this task POS=..."+idpos+' '+tasksArr[idpos].has_child+"taskid="+tasksArr[idpos].id);
                       icn="ic"+tasksArr[idpos].id;
                       icnid=document.getElementById(icn);
-                      icnid.className='glyphicon glyphicon-minus-sign';
+                      
                       console.log("icn="+icn);
 
                       // disable expbutn only if the task has child
@@ -768,7 +768,11 @@ if($this->session->flashdata('project_inserted'))
                         expbtn_id="exbtn"+tasksArr[idpos].id;
                         expbtn=document.getElementById(expbtn_id);
                         expbtn.className="glyphicon glyphicon-triangle-bottom disabled";
+                        // change the task icon from plus to minus
+                        icnid.className='glyphicon glyphicon-minus-sign';
                       }
+                      else
+                        icnid.className='glyphicon glyphicon-minus-sign disabled';
               
 
 
@@ -1228,7 +1232,7 @@ if($this->session->flashdata('project_inserted'))
               thistaskid=tasksArr[i].id;
               thisgrpid=tasksArr[i].group_id;
 
-
+                            
 
               function find_child_tasks(pid)
                     {
@@ -1281,6 +1285,17 @@ if($this->session->flashdata('project_inserted'))
                 }
 
               }
+
+              //expand all button should be enabled/disabled per the task icon
+
+              expbtn_id="exbtn"+tasksArr[i].id;
+              expbtn=document.getElementById(expbtn_id);
+                
+              if (tasksArr[i].has_child=="Y" && icn.className=='glyphicon glyphicon-minus-sign')
+                   expbtn.className="glyphicon glyphicon-triangle-bottom disabled";
+              else
+                 expbtn.className="glyphicon glyphicon-triangle-bottom";
+              
 
             }
           }(tasksArr,i));
