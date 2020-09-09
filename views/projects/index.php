@@ -278,7 +278,7 @@ if($this->session->flashdata('project_inserted'))
           
           prevlvl=currlvl;
           currlvl=tasksArr[i].lvl;
-        
+          has_child=tasksArr[i].has_child;
           // capture assignee & duedate to pass on to the URL for button click event
 
           var vassignee=tasksArr[i].assignee;
@@ -663,24 +663,32 @@ if($this->session->flashdata('project_inserted'))
             tlbrdiv.appendChild(addchlbtn);
             tlbrdiv.appendChild(modbtn);
             tlbrdiv.appendChild(delbtn);
-            
             tlbrdiv.style="display:none";
 
-            if (currlvl==1)
-            {
-              // expand recursively button
-              expbtn=document.createElement('button');
+            
             
               
+              // Listener for expandAll button
+
+            if (has_child=='Y')
+            {
+            
+              expbtn=document.createElement('button');
               expbtn.id="exbtn"+taskid;
               expbtn.className="glyphicon glyphicon-triangle-bottom";
               
               tlbrdiv.appendChild(expbtn);
-              
-              // Listener for expandAll button
+            }
+             
 
-              expbtn.addEventListener('click', function(project_id,taskid,grpid)
+
+
+
+              if (currlvl==1)
               {
+                
+                expbtn.addEventListener('click', function(project_id,taskid,grpid)
+                {
                 return function()
                 {
                   console.log(taskid+' button clicked'+vassignee);
@@ -715,11 +723,90 @@ if($this->session->flashdata('project_inserted'))
                     }
                   
                 }
-              }(project_id,taskid,grpid));
+                }(project_id,taskid,grpid));
 
 
             
-            }
+              }
+              else if (currlvl>1 & has_child=='Y')
+              {
+
+                // expand recursively button, if a task has children tasks
+            
+            
+                expbtn.addEventListener('click', function(project_id,taskid,grpid,currlvl,has_child)
+                  {
+                    return function()
+                 {
+                  console.log("this task is..."+taskid);
+                  
+                  vtasksarr=[];
+                  vtasksarr[0]=taskid;
+                  
+                  while (vtasksarr.length>0)
+                  {
+                    k=0;
+                    tasks2=[];
+                    for (i=0;i<vtasksarr.length;i++)
+                    {
+                                       
+                      idpos=find_task_idx(vtasksarr[i],tasksArr);
+                      //console.log("this task POS=..."+idpos+' '+tasksArr[idpos].has_child+"taskid="+tasksArr[idpos].id);
+                      icn="ic"+tasksArr[idpos].id;
+                      icnid=document.getElementById(icn);
+                      icnid.className='glyphicon glyphicon-minus-sign';
+                      console.log("icn="+icn);
+
+
+                      
+                      chldtasks=find_child_tasks(tasksArr[idpos].id);
+                      for (j=0;j<chldtasks.length;j++)
+                      {
+                          chidpos=find_task_idx(chldtasks[j],tasksArr);
+                         // console.log("childtaskID to be procssed="+chldtasks[j]+"j="+j);
+                        
+                        icn="ic"+tasksArr[chidpos].id;
+                        icnid=document.getElementById(icn);
+                        icnid.className='glyphicon glyphicon-minus-sign';
+                        console.log("icn="+icn);
+        
+                          
+                          pid=tasksArr[chidpos].parent_task_id;
+                          chldlvl=tasksArr[chidpos].lvl;
+                          divid="outdiv_pt"+pid+"_L"+chldlvl+"_"+grpid;
+                          console.log("divid="+divid);
+                          divele1=document.getElementById(divid);
+                          console.log("divele1="+divele1);
+                          divele1.style="padding-left:20px;display:block;"
+                          
+                          if (tasksArr[chidpos].has_child=='N')
+                          {
+                            icnid.className='glyphicon glyphicon-minus-sign disabled';
+                          }
+                          
+                          has_child=tasksArr[chidpos].has_child;
+                          console.log("the new has_child="+tasksArr[chidpos].id+" "+has_child);
+                          
+                          tasks2[k]=chldtasks[j];
+                          k=k+1;
+                        
+                      }
+                        
+                    }
+                    vtasksarr=tasks2;
+                    
+                    
+                  }
+                    
+                  }
+
+                  
+                }(project_id,taskid,grpid,currlvl,has_child));
+
+              }
+
+
+              
 
             // add event listener to all buttons
 
@@ -1194,14 +1281,14 @@ if($this->session->flashdata('project_inserted'))
 
         divc1.addEventListener("mouseover", function( event ) {   
           // highlight the mouseover target
-          console.log("MOUSEOVER event fired");
+          //console.log("MOUSEOVER event fired");
           //this.style.backgroundColor = "orange";
           //this.style.cursor = "pointer";
           //this.style.color = "white";
           this.classList.add('tskhglt');
           taskid=this.id.substring(5);
 
-          console.log("this id="+this.id+'.'+taskid);
+        //  console.log("this id="+this.id+'.'+taskid);
           rtdiv=document.getElementById('rtdiv'+taskid);
           //rtdiv.style="margin-bottom:10px;border-bottom: 2px solid red";
           rtdiv.classList.remove("rtdiv");
@@ -1219,7 +1306,7 @@ if($this->session->flashdata('project_inserted'))
 
         divc1.addEventListener("mouseout", function( event ) {   
           // highlight the mouseover target
-          console.log("MOUSEOUT event fired");
+          //console.log("MOUSEOUT event fired");
           //this.style.backgroundColor = "";   
           //this.style.color = "";
           //this.style.cursor = "default";
@@ -1243,9 +1330,9 @@ if($this->session->flashdata('project_inserted'))
           return function()   
           {
             // disable display of new record indicator, if any
-            console.log("MOUSE DOUBLE CLICK event fired");
+            //console.log("MOUSE DOUBLE CLICK event fired");
             taskid=this.id.substring(5);
-            console.log("this id="+this.id+'.'+taskid);
+            //console.log("this id="+this.id+'.'+taskid);
 
 
             newimgitm=document.getElementById('img'+taskid);
