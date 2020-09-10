@@ -232,7 +232,7 @@ a:hover {
 border-right: var(--outbrdr);
 border-left: var(--outbrdr);
 border-bottom: var(--outbrdr);
-  
+margin-bottom:10px; 
 }
 
 .txthlt {

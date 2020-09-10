@@ -15,6 +15,12 @@ class Task_model extends CI_Model
 		return $insert_id;
 	}
 
+public function upd_root_task($taskid)
+{
+	$stat=$this->db->query("update tasks set groupid='$taskid' where id='$taskid'");
+	return $stat;
+
+}
 
 public function get_list_tasks($project_id,$username) 
 {

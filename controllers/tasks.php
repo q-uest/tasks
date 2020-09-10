@@ -50,6 +50,60 @@ public function get_task($taskid) {
 
 }
 
+public function js_add_root_task($id)
+{
+
+
+		$data['project_data']=$this->project_model->get_project($id);
+		$data['user_data']=$this->user_model->get_user();
+
+		
+
+		// check the current user with the owner of the task
+
+		//$data['vassignee']=strtolower($_GET['assignee']);
+		$logged_inas = $_SESSION['username'];
+
+		# Get parent task owner
+
+		$data['vparent_task_id']=0;
+		$taskid=$data['vparent_task_id'];
+		$tskowner=$logged_inas;
+
+	
+
+
+		#echo "tasks.php BEFORE CHG DEF FORMAT DUE_DATE=".$data['vdue_date'];
+		#$data['vgroup_id']=$_GET['groupid'];
+		#$ddt=$this->task_model->chg_duedate_fmt($newdt);
+
+		#$data['vddate']=$this->task_model->chg_duedate_def_datetype($data['vdue_date']);
+		
+
+		#$data['vddate2']=date('Y-m-d',strtotime($data['vdue_date']));
+		#echo "tasks.php AFTER CHG DEF FORMAT DUE_DATE=".$data['vddate2'];
+
+		$data['cdate']=$this->task_model->get_currdate();
+		#echo "tasks.php today=".$data['cdate'][0]['today'];
+		#$data['vparent_task_id']=$_GET['parent_task_id'];
+ 		#$data['vgroupid']=$_GET['groupid'];
+
+ 		$this->session->set_userdata($data);
+#		$data['add_task_func']="true";
+
+			
+			$data['approved']=0;
+			$data['status']=1;
+				
+		
+		
+		$this->session->set_userdata($data);
+		$data['main_view']='tasks\js_insert_root_task';
+		$this->load->view('layout\main.php',$data);
+
+
+}
+
 public function js_add_task($id)
 {
 
@@ -68,7 +122,13 @@ public function js_add_task($id)
 
 		$data['vparent_task_id']=$_GET['parent_task_id'];
 		$taskid=$data['vparent_task_id'];
-		$tskowner=$this->get_task($taskid);
+
+		# if taskid != 0, get parent task's user id, otherwise assign the current login_user as the taskowner
+		
+		if ($taskid!=0)
+			$tskowner=$this->get_task($taskid);
+		else
+			$tskowner=$logged_inas;
 
 		$data['vdue_date']=$_GET['due_date'];
 
@@ -100,7 +160,7 @@ public function js_add_task($id)
 		}
 		else
 		{
-			#echo "task owner & logged in ownr are same";
+			# when "task owner & logged in ownr are same";
 			$data['approved']=0;
 			$data['status']=1;
 		}
@@ -111,6 +171,110 @@ public function js_add_task($id)
 		$this->load->view('layout\main.php',$data);
 
 }
+
+
+
+public function validate_root_task() 
+{
+			
+		$this->form_validation->set_rules('name','Task Name','trim|required|min_length[3]');
+		$this->form_validation->set_rules('description','Task Description','trim|required|min_length[3]');
+		$this->form_validation->set_rules('due_date','Due_Date','required|callback_due_date_validate');
+		$this->form_validation->set_rules('parent_task_id','Parent Task Id','required');
+		
+		#$this->form_validation->set_rules('groupid','Group ID','required');
+
+		$this->form_validation->set_rules('userid','User ID','required');
+
+
+		
+		if($this->form_validation->run() == FALSE)
+		{
+			#echo "form errors occurred";
+			$taskerr = array(
+			'taskerrors' => validation_errors());
+
+			#echo $taskerr['taskerrors'];
+			$this->session->set_flashdata($taskerr);
+
+			if ($this->session->userdata('add_task_func')=="false")
+			{
+			
+				$url="tasks/cre_task/".$this->session->userdata('project_data')->id;
+			}
+			else
+			{
+				$url="tasks/js_add_task/".$this->session->userdata('project_data')->id.'?assignee='.$this->session->userdata('vassignee').'&parent_task_id='.$this->session->userdata('vparent_task_id').'&groupid='.$this->session->userdata('vgroupid').'&due_date='.$this->session->userdata('vdue_date');
+			
+			}	
+			   #redirect($url);
+
+			$data['main_view']='tasks\js_insert_task';
+			$this->load->view('layout\main.php',$data);
+			return;
+		}
+
+		else
+
+		{
+
+			
+			$convertDate=date('Y-m-d',strtotime($this->input->post('due_date')));
+			#echo '<br>due_date='.$this->input->post('due_date');
+
+			#echo '<br>converDate='.$convertDate;
+
+			#echo "user_id=".$this->input->post('user_id');
+
+			#echo "user logged in=".$this->session->userdata('user_id');
+			#echo "tasks.php validate() status=".$this->input->post('status');
+
+			$task = array(
+				'project_id' =>$this->session->userdata('project_data')->id,
+				'task_name' => $this->input->post('name'),
+				'task_body' => $this->input->post('description'),
+				'due_date' => $convertDate,
+				'approved' =>$this->input->post('approved'),
+				'status'=>$this->session->userdata('status'),
+				'userid' =>$this->input->post('userid'),
+				'parent_task_id' => $this->input->post('parent_task_id'),
+				'groupid'=> $this->input->post('groupid')
+			);
+			
+			$insert_id=$this->task_model->ins_task($task);
+
+
+
+			if($insert_id)
+			{
+				echo "successfully inserted.Taskid=".$insert_id;
+				$insert_id=$this->task_model->upd_root_task($insert_id);
+				$this->session->set_flashdata('task_inserted','<p class="bg-success">The Task has been added </p>');
+				?>
+				<script>
+				
+				//window.close();
+
+				</script>
+				<?php
+			}
+			
+			
+			
+			if(isset($add_task_func))
+			{
+				echo "add_Task";
+			}
+			else
+			 {	
+			 #	echo "tasks.php validate_func status=".$task['status'];
+			 	#redirect('/projects');
+			 }
+			#$this->output->set_output("done at php");
+
+		}
+}
+
 
 
 

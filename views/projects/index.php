@@ -46,7 +46,8 @@ if($this->session->flashdata('project_inserted'))
 			console.log("get_projectid is fired...icon="+projicon.className);
       fstitmid="p"+project_id+'_outdiv_pt0';
       fstitm=document.getElementById(fstitmid);
-
+      prjendhrid="prjendhr"+project_id;
+      prjendhr=document.getElementById(prjendhrid);
 
 
       if (projicon.className  == "glyphicon glyphicon-expand" && fstitm==null)
@@ -63,6 +64,7 @@ if($this->session->flashdata('project_inserted'))
             
       			if (this.readyState == 4 && this.status == 200)
       			{
+              console.log("readstate=4 & status=200");
       				if (this.responseText.length > 3)
       				{
       					var tasksArr = JSON.parse(this.responseText); 
@@ -82,13 +84,20 @@ if($this->session->flashdata('project_inserted'))
                 console.log("The calling of functions ends here...!!");
         				  
         			}
+              else
+              {
+                window.open("http://localhost/ci/tasks/js_add_root_task/"+project_id+'?parent_task_id=0','_self');
+
+
+              }
             }
           }
           
       }
       else if ((projicon.className  == "glyphicon glyphicon-expand" && fstitm !==null))
       {
-        console.log("current value=glyphicon glyphicon-expand");
+        console.log("current value=glyphicon glyphicon-expand..fstitmid="+fstitmid+'prjendhrid='+prjendhrid);
+
         projicon.className="glyphicon glyphicon-collapse-down";
         
         fstitm.classList.toggle('hiditm');
@@ -97,7 +106,8 @@ if($this->session->flashdata('project_inserted'))
       }
       else if (projicon.className=="glyphicon glyphicon-collapse-down")
       {
-        console.log("current value=glyphicon-collapse-down ");
+        console.log("current value=glyphicon-collapse-down fstitmid="+fstitmid+'prjendhrid='+prjendhrid);
+
         projicon.className="glyphicon glyphicon-expand";
         //projrw='projrw'+project_id;
         fstitm.classList.toggle('hiditm');
@@ -289,6 +299,7 @@ if($this->session->flashdata('project_inserted'))
 
 
           //find the owner of the main task which is to be used to display "AskForUpdate" button
+
           if (currlvl==1)
             mt_owner=vassignee;
 
@@ -652,13 +663,7 @@ if($this->session->flashdata('project_inserted'))
             delbtn.className="glyphicon glyphicon-remove";
 
  
-            // show add sibling only if the level is not equal to 1
-
-            if (currlvl > 1)
-            {
-              console.log("add sibling NOT ALLOWED");
-              tlbrdiv.appendChild(addsibbtn);
-            }
+             tlbrdiv.appendChild(addsibbtn);
             
             tlbrdiv.appendChild(addchlbtn);
             tlbrdiv.appendChild(modbtn);
@@ -681,7 +686,7 @@ if($this->session->flashdata('project_inserted'))
             }
              
 
-              if (currlvl==1)
+              if (currlvl==1 && has_child=='Y')
               {
                 
                 expbtn.addEventListener('click', function(project_id,taskid,grpid)
@@ -965,7 +970,7 @@ if($this->session->flashdata('project_inserted'))
             c2div.appendChild(c4div);
 
           }
-          else if (vapproved==1 && tasksArr[i].username==pt_assignee)
+          else if (vapproved==1 && tasksArr[i].username==pt_assignee && tasksArr[i].lvl > 1)
           {
             console.log("SHOW APPROVE BUTTON");
             appbtn=document.createElement('button');
@@ -1043,9 +1048,9 @@ if($this->session->flashdata('project_inserted'))
 
 
 
-          if (currlvl==1 && tasksArr[i].has_child=='Y')
+          if (currlvl==1 )
           {
- 
+            //&& tasksArr[i].has_child=='Y'
 
 
             // create outdiv_pt0 to hold all 1st level elements of different group_id
@@ -1396,11 +1401,16 @@ if($this->session->flashdata('project_inserted'))
           // end of the for Loop
         }
 
+        // prjendhr=Project End Horizontal Line
         prjendhr=document.createElement('hr');
         prjendhrid="prjendhr"+project_id;
         prjendhr.id=prjendhrid;
-        prjendhr.className="prjendhr col-xs-10";
-        projrw.appendChild(prjendhr);
+        prjendhr.className="prjendhr col-xs-12";
+
+        // prjrtid=project root (task) id
+        prjrtid="p"+project_id+'_outdiv_pt0';
+        prjrt=document.getElementById(prjrtid);
+        prjrt.appendChild(prjendhr);
 
         
         function find_child_tasks(pid)
