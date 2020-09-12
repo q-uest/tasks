@@ -45,9 +45,10 @@ class Projects extends CI_Controller {
 
 		$data['project_data'] = $this->project_model->get_project($id);
 
-
 		echo "project_data[id]=".$data['project_data']->id;
-		$data['task_data'] = $this->task_model->get_list_tasks($data['project_data']->id);
+		echo "username=".$this->session->userdata('username');
+		$data['task_data'] = $this->task_model->get_list_tasks($data['project_data']->id,$this->session->userdata('username'));
+
 
 		$this->session->set_userdata($data);
 
@@ -62,12 +63,12 @@ class Projects extends CI_Controller {
 
 	public function create() {
 
-			echo "this is create() ";
+			#echo "this is create() ";
 	
 			$data['dml_op'] = 'I';
 	    	$this->session->set_userdata($data);
 
-	    	echo "create() dml_op=".$this->session->userdata('dml_op');
+	    	#echo "create() dml_op=".$this->session->userdata('dml_op');
 
 			$data['main_view'] = "projects\create_proj";
 			$this->load->view('layout/main',$data);

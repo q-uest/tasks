@@ -10,7 +10,7 @@ class Home extends CI_Controller {
 		if($this->session->userdata('logged_in'))
 		{
 			#echo "List the users projects here....";
-			echo "home.php user_id=".$this->session->userdata('user_id');
+			#echo "home.php user_id=".$this->session->userdata('user_id');
 			$data['projects'] = $this->project_model->list_user_projects($this->session->userdata('user_id'));
 
 		}

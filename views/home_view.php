@@ -6,9 +6,9 @@
 	endif;
 
 
-	if($this->session->flashdata('login_success')):
-		echo $this->session->flashdata('login_success');
-	endif;
+	#if($this->session->flashdata('login_success')):
+	#	echo $this->session->flashdata('login_success');
+	#endif;
 
 
 	if($this->session->flashdata('login_failure')):
@@ -25,7 +25,7 @@
 
 <?php if($this->session->userdata('logged_in')): ?>
 
-<table class="table table-hover">
+<table style="width:75%;" class="table table-hover">
 	<thead>
 	<tr>
 		<th>

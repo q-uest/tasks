@@ -353,7 +353,7 @@ if($this->session->flashdata('project_inserted'))
           tdivid='tdiv'+taskid;
           tdiv.id=tdivid;
           
-          if (currlvl>10)
+          if (currlvl>20)
           {
             tdiv.classList.add('tdiv');
             encdiv.classList.add('encdiv');
@@ -425,7 +425,9 @@ if($this->session->flashdata('project_inserted'))
 
           divc1=document.createElement('div');
           divc1.id='divc1'+taskid;
-          divc1.className="col-xs-12";
+          //divc1.className="col-xs-12";
+            divc1.className="col-xs-8";
+          
           divc1.classList.add("divc1");
 
           divtn=document.createElement('div');
@@ -519,7 +521,7 @@ if($this->session->flashdata('project_inserted'))
           updtxt.rows=2;
           updtxt.maxLength=200;
           updtxt.readOnly=true;
-          updtxt.cols=90;
+          updtxt.cols=80;
           updtxt.style="background-color:#2E4053;color:white";
           updtxtdiv.className="col-xs-12";
           updtxtdiv.style="margin-bottom:10px;"
@@ -958,7 +960,7 @@ if($this->session->flashdata('project_inserted'))
             iapprele.className="glyphicon glyphicon-warning-sign";
             
             tapproved="Approval Pending";
-
+            divc1.style.setProperty('--incheight', 50 );
             tapprove=document.createTextNode(" "+tapproved);
             
             
@@ -973,6 +975,7 @@ if($this->session->flashdata('project_inserted'))
           else if (vapproved==1 && tasksArr[i].username==pt_assignee && tasksArr[i].lvl > 1)
           {
             console.log("SHOW APPROVE BUTTON");
+            divc1.style.setProperty('--incheight', 50 );
             appbtn=document.createElement('button');
             appbtn.id='appbtn'+taskid;
             appbtn.className="btn btn-success";
@@ -1065,23 +1068,24 @@ if($this->session->flashdata('project_inserted'))
               pt0div.id=pt0divid;
               pt0div.className="col-xs-10";
               pt0div.classList.add("outrbrdr");
+              pt0div.classList.add("scrollit");
             }
 
             outdiv=document.createElement('div');  
             outdiv.id=outdivid;
-            
           
+            
             // set style for divc1
             
 
             divc1.classList.add('divc1_lvl1');
           
-          //  divc1.style="height:175px;border-left: 10px solid #2E4053;border-right: 10px solid #2E4053;#background-color:#897F7F ;color:#2E4053;padding-left:0px;padding-right:0px;border-radius: 25px; margin-bottom:1px;transition-delay: 0.5s;" ;
+            //  divc1.style="height:175px;border-left: 10px solid #2E4053;border-right: 10px solid #2E4053;#background-color:#897F7F ;color:#2E4053;padding-left:0px;padding-right:0px;border-radius: 25px; margin-bottom:1px;transition-delay: 0.5s;" ;
 
             
             rtdiv=document.createElement('div');
             rtdiv.id='rtdiv'+taskid;
-            rtdiv.className="col-xs-6 rtdiv";
+            rtdiv.className="col-xs-7 rtdiv";
 
                       
             rtdiv.appendChild(spanele);
@@ -1092,11 +1096,12 @@ if($this->session->flashdata('project_inserted'))
               rtdiv.appendChild(newimg);
 
             // change tname (task name) style properties 
-           // rtdiv.style="padding-bottom:20px;"
+            // rtdiv.style="padding-bottom:20px;"
 
             cntdiv.appendChild(rtdiv);
-            
-            cntdiv.style="font-size:20px;font-weight:bold;padding-top:10px";
+            cntdiv.className="col-xs-12 cntdiv0";
+
+            //cntdiv.style="font-size:20px;font-weight:bold;padding-top:10px;border-bottom:2px solid red";
             
             //cntdiv.appendChild(vsttxt);
 
@@ -1122,7 +1127,7 @@ if($this->session->flashdata('project_inserted'))
 
             divc1.classList.add('divc1_gt_lvl1');
 
-          //  divc1.style="height:175px;border-left: 10px solid #5CB3FF;border-right: 10px solid #5CB3FF;color:#2E4053;padding-left:0px;padding-right:0px;border-radius: 15px; margin-bottom:1px;transition-delay: 0.5s";
+             //  divc1.style="height:175px;border-left: 10px solid #5CB3FF;border-right: 10px solid #5CB3FF;color:#2E4053;padding-left:0px;padding-right:0px;border-radius: 15px; margin-bottom:1px;transition-delay: 0.5s";
             
 
             // display task values in <h4>
@@ -1143,12 +1148,15 @@ if($this->session->flashdata('project_inserted'))
 
            // cntdiv.appendChild(vstdiv);
             cntdiv.appendChild(rtdiv);
+
+            cntdiv.className="col-xs-12 cntdiv_lvl_gt_1";
             //cntdiv.style="margin-bottom:10px;"
             //cntdiv.style="font-size:15px;font-weight:bold;";
           }
 
+
           // color properties for the rtdiv
-          rtdiv.style="color:#2E4053;font-weight:bold;transition-delay: 0.5s;"
+          rtdiv.style="font-weight:bold;transition-delay: 0.5s;"
          // divc1.style="transition-delay: 0.5s;"
           
         
@@ -1163,10 +1171,13 @@ if($this->session->flashdata('project_inserted'))
           //divc1.appendChild(bothr);
 
           tdiv.appendChild(divc1);
-          tdiv.appendChild(bothr);
 
-          if (currlvl>1)
-            encdiv.appendChild(tophr);
+          // comment the below for square shape tasks
+          //          tdiv.appendChild(bothr);
+
+          // comment the below for square shape tasks
+          //  if (currlvl>1)
+            //  encdiv.appendChild(tophr);
 
           encdiv.appendChild(tdiv);
           omdiv.appendChild(encdiv);
@@ -1654,15 +1665,15 @@ if($this->session->flashdata('project_inserted'))
 				
 				tskdiv="t"+tasksOrdArr[i].id+"l"+tasksOrdArr[i].lvl;
       					
-      			omdiv='om'+tskdiv;
-      			omdivele=document.getElementById(omdiv);
+  			omdiv='om'+tskdiv;
+  			omdivele=document.getElementById(omdiv);
 
 				encdiv='enc'+tskdiv;
 				encdivele=document.getElementById(encdiv);
 				encdivele.classList.add('encdiv');
       			
       			
-      			scrolladj=tasksOrdArr[i].lvl*2*15;
+      	scrolladj=tasksOrdArr[i].lvl*2*15;
 				scrollper=100+Math.round((1/(1023/scrolladj)*100),1);
 				console.log("SCROLLPERCENT="+scrollper);				   		
 		
@@ -2159,29 +2170,42 @@ if($this->session->flashdata('project_inserted'))
 		
 </script>
 		
-		<?php foreach($projects as $project): ?>
-		
-		<?php echo "<div id='projrw".$project->id."'>" ?>	
+ 
+
+  
+<?php
+
+  	foreach($projects as $project)
+		{ 
+      
+		   echo "<div id='projrw".$project->id."' >" ;
     
-		<?php echo "<div id='divhglt".$project->id."' class='col-xs-10'>" ?> 
-		<?php echo "<div class='col-xs-3'>" ?>
-		<?php echo '<h4><span  id="projicon'. $project->id .'" class="glyphicon glyphicon-expand"></span>'.'<a id="ahglt'.$project->id.'" href='. base_url() ."projects/display/". $project->id .">"." ".$project->project_name . "</a></h4>" ?>
+		  echo "<div id='divhglt".$project->id."' class='col-xs-10'>" ;
+		  echo "<div class='col-xs-3'>" ;
+		  echo '<h4><span  id="projicon'. $project->id .'" class="glyphicon glyphicon-expand"></span>'.'<a id="ahglt'.$project->id.'" href='. base_url() ."projects/display/". $project->id .">"." ".$project->project_name . "</a></h4>" ;
 
-		<?php echo "</div>" ?>			
+		  echo "</div>" ;
 	
-		<?php echo "<div class='col-xs-7'>" ?>
-		<?php echo "<h4>".$project->project_body."</h4>" ?>
-		<?php echo "</div>" ?>			
+		  echo "<div class='col-xs-7'>";
+		  echo "<h4>".$project->project_body."</h4>";
+		  echo "</div>"			;
 
 	
-		<?php echo "<div class='col-xs-1, pl-0'>" ?>
+		  echo "<div class='col-xs-1, pl-0'>";
 	
-		<a class="btn btn-primary" href='<?php echo base_url() ."projects/del_proj/". $project->id ?>'><span class="glyphicon glyphicon-remove"></span></a>
+	     echo  '<a class="btn btn-primary" href='.base_url() ."projects/del_proj/". $project->id.'><span class="glyphicon glyphicon-remove"></span></a>';
 
-    <?php echo "</div>" ?>
-    <?php echo "</div>" ?>
-        
+      echo "</div>";
+      echo "</div>";
+  
     
+
+   
+    
+
+    
+
+    ?>
 
 		<script> type="text/javascript" 
 	
@@ -2201,12 +2225,18 @@ if($this->session->flashdata('project_inserted'))
 		
 		<?php echo "</div>" ?>      
     
+    <?php } ?>
 
-		
+	
 
-	<?php endforeach ?>
+
+  <?php     echo '<div class="col-xs-12" style="margin-left:20px;margin-top:20px;"> <a class="btn btn-primary" href='.base_url() .'projects/create/>Add New Project</a></div>';
+ ?>
+
 		
 		<?php echo "</div>" ?>	
+
+
 		<?php echo "</p>" ?>					
 		<?php echo "</p>" ?>				
 	

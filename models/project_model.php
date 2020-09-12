@@ -31,7 +31,7 @@ class Project_model extends CI_Model {
 	public function list_user_projects($user_id)
 	{
 
-		echo "model list_user_projects() user_id".$user_id;
+#		echo "model list_user_projects() user_id".$user_id;
 
 		$this->db->where('project_user_id',$user_id);
 		$query = $this->db->get('projects');

@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  
   <style>
 
 
@@ -22,6 +21,7 @@
   --rtlvlnum : 1px;
   --vertln : 1px solid #9A3F36 ;
   --outbrdr :5px solid #2E4053;  
+  --incheight: 0;
 }
 
 .vldivout {
@@ -32,7 +32,8 @@
 
 
 body {
-  background-color: #F4F6F6;
+#  background-color: #F4F6F6;
+background-color: #f7f7f2;
 }
 .vldivin {
   
@@ -115,12 +116,23 @@ body {
 
 }
 
-.encdiv {
-  overflow-y: hidden;
+.scrollit {
+
+  overflow-y: scroll;
   overflow-x: scroll;
   white-space: nowrap;
-  height:325px;
-#  width:1000px;
+  height:500px;
+  #height:325px;
+  #width:750px;
+
+}
+
+.encdiv {
+  #overflow-y: hidden;
+  #overflow-x: scroll;
+  #white-space: nowrap;
+  #height:325px;
+  #width:750px;
  # border: 2px solid red;
   #padding-left: calc(var( --rtlvl ) * 1 ) ;
 }
@@ -246,19 +258,44 @@ margin-bottom:10px;
 
 .divc1_lvl1 {
 
-  height:325px;
-  border-left: 10px solid #2E4053;
-  border-right: 10px solid #2E4053;
-  #background-color:#897F7F ;
+  height:350px;
+  width: 750px;
+
+  border: 5px solid #3271a8;
+ # border-left: 10px solid #2E4053;
+#  border-right: 10px solid #2E4053;
+  background-color:#edf2f7 ;
   color:#2E4053;
   padding-left:0px;
   padding-right:0px;
-  border-radius: 25px; 
-  margin-bottom:1px;
+  #border-radius: 25px; 
+  margin-bottom:15px;
   transition-delay: 0.5s;
+  box-shadow: 5px 5px #7d8185;      
 }
 
 .divc1_gt_lvl1 {
+#height:350px;
+
+width: 750px;
+height: calc(350 + var(--incheight ) ) px;
+border: 5px solid #3271a8;
+#border-right: 10px solid #5CB3FF;
+color:#2E4053;
+background-color: #edf2f7;
+padding-left:0px;
+padding-right:0px;
+#border-radius: 15px;
+margin-bottom:15px;
+transition-delay: 0.5s;
+box-shadow: 5px 5px #7d8185;      
+
+
+}
+
+
+
+#.divc1_gt_lvl1_bak {
 height:325px;
 border-left: 10px solid #5CB3FF;
 border-right: 10px solid #5CB3FF;
@@ -290,7 +327,7 @@ cursor:pointer;
 #color:#2E4053;
 }
 
-.rtdiv {
+.rtdiv_bak {
     
   font-size: 20px; 
   font-weight: bold; 
@@ -298,6 +335,38 @@ cursor:pointer;
   padding-top: 10px;
   margin-bottom:12px;
   }
+
+  .cntdiv0 {
+    font-size:20px;
+    font-weight:bold;
+    padding-top:10px;
+    border-bottom:2px solid red;
+    background-color: #691314;
+    #background-color: #063852;
+    color: white;
+  }
+
+.cntdiv_lvl_gt_1 {
+  font-size:20px;
+    font-weight:bold;
+    padding-top:10px;
+    border-bottom:2px solid red;
+    background-color: #3271a8;
+    #background-color: #063852;
+    color: white;
+  
+
+}
+.rtdiv {
+    
+  font-size: 20px; 
+  font-weight: bold; 
+  padding-bottom:2px;
+  padding-top: 10px;
+  margin-bottom:12px;
+  #border-bottom:2px solid red;
+  }
+
 
 .rtdivmov {
   font-size: 20px; 
@@ -352,7 +421,7 @@ a:active {
 
 <body>
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -361,7 +430,9 @@ a:active {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-      </button>
+      
+
+       </button>
       <a class="navbar-brand" href="<?php echo base_url(); ?>">Ardhas</a>
     </div>
 
@@ -371,9 +442,7 @@ a:active {
         <li class="active"><a href="<?php echo base_url(); ?>">Home<span class="sr-only">(current)</span></a></li>
         <li><a href="<?php echo base_url() ?>users/register">Register</a></li>
          <li><a href="<?php echo base_url() ?>projects">Projects</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          </ul>
+        </ul>
         </li>
       </ul>
 
@@ -392,10 +461,9 @@ a:active {
 </nav>
 
 
-
 <div class="container-fluid">
 	
-	<div class="col-xs-1">
+	<div class="col-xs-2">
 
 	<?php 
 	if($this->session->flashdata('loginerr')):
@@ -413,7 +481,7 @@ a:active {
 	</div>
 
 
-	<div class="col-xs-11">
+	<div class="col-xs-10">
 
     <?php $this->load->view($main_view); ?>
 
