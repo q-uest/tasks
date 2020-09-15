@@ -24,7 +24,7 @@ public function upd_root_task($taskid)
 
 public function get_list_tasks($project_id,$username) 
 {
-	$query=$this->db->query("select `lvl`, `id`, `task_name`, `task_body`, `assignee`, `parent_task_id`, `due_date`, `created_on`, `approved`, `status`, `project_id`, `group_id`, `username`, `last_loggedin`, `state`, `latest_update`, Date_format(`latestupd_datetime`,'%d-%b-%Y %H:%i') as 'latestupd_datetime' from tasks_hierarch_view where 
+	$query=$this->db->query("select `lvl`, `id`, `task_name`, `task_body`, `assignee`, `parent_task_id`, `due_date`, `created_on`, `approved`, `status`, `project_id`, `group_id`, `username`, `last_loggedin`, `state`, `latest_update`, Date_format(`latestupd_datetime`,'%d-%b-%Y %H:%i') as 'latestupd_datetime',`alert` from tasks_hierarch_view where 
 	project_id='$project_id' AND username='$username' ");
 	return $query->result_array();
 

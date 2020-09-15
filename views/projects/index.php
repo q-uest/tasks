@@ -668,7 +668,7 @@ if($this->session->flashdata('project_inserted'))
             delbtn.className="glyphicon glyphicon-remove";
 
  
-             tlbrdiv.appendChild(addsibbtn);
+            tlbrdiv.appendChild(addsibbtn);
             
             tlbrdiv.appendChild(addchlbtn);
             tlbrdiv.appendChild(modbtn);
@@ -922,8 +922,11 @@ if($this->session->flashdata('project_inserted'))
           c3div=document.createElement('div');
           c4div=document.createElement('div');
 
+          c3div.id='c3div_'+taskid;
+
           c2div.className="col-xs-5";
-          c3div.className="col-xs-3";
+          c3div.className="col-xs-2";
+
           //c4div.className="col-xs-10";
 
         
@@ -1053,24 +1056,9 @@ if($this->session->flashdata('project_inserted'))
           c3div.style="margin-bottom:30px;float:right";
           
           
-          // if task level == 1 (root task), assign a different style from the ones having level > 1
           
           ptsk=tasksArr[i].parent_task_id;          
           
-          // if (grpidarr[grpcnt][0] !== grpid)  
-          // {
-          //   grpidarr[grpcnt]=[grpidarr[grpcnt][0],grprows];
-          //   console.log("grpid="+grpid+'grpidarr[grpcnt]= '+grpidarr[grpcnt]);
-          //   grpcnt=grpcnt+1;
-          //   grpidarr[grpcnt]=[grpid,0];
-          //   grprows=0;
-
-          //   // hey ram....just checking.....
-          // }
-          // else
-          // {
-          //      grprows=grprows+1;
-          // }
           
           if (grpidarr[grpcnt][0] !== grpid)  
           {
@@ -1109,10 +1097,7 @@ if($this->session->flashdata('project_inserted'))
               pt0div.id=pt0divid;
               pt0div.className="col-xs-10";
               pt0div.classList.add("outrbrdr");
-
-              
             }
-            
 
             pt0div.style.setProperty('--noitems', 500+'px' );
             pt0div.classList.add('scrollit');
@@ -1125,12 +1110,12 @@ if($this->session->flashdata('project_inserted'))
             
             // set style for divc1
             
-
+            
             divc1.classList.add('divc1_lvl1');
           
             //  divc1.style="height:175px;border-left: 10px solid #2E4053;border-right: 10px solid #2E4053;#background-color:#897F7F ;color:#2E4053;padding-left:0px;padding-right:0px;border-radius: 25px; margin-bottom:1px;transition-delay: 0.5s;" ;
 
-            
+
             rtdiv=document.createElement('div');
             rtdiv.id='rtdiv'+taskid;
             rtdiv.className="col-xs-7 rtdiv";
@@ -1217,7 +1202,7 @@ if($this->session->flashdata('project_inserted'))
           
 
           //divc1.appendChild(bothr);
-
+            
           tdiv.appendChild(divc1);
 
           // comment the below for square shape tasks
@@ -1276,6 +1261,17 @@ if($this->session->flashdata('project_inserted'))
             outdiv.style="display:none";
           }
 
+
+
+          if (tasksArr[i].Alert=='Y')
+          {
+             c3div_id='c3div_'+taskid;
+             console.log("ALERT SET TDIV BORDER TO RED"+c3div_id);
+             
+             c3divele=document.getElementById(c3div_id);
+              c3divele.style="padding-left:10px;border:2px solid red;"  ;
+             divc1.style="border:5px solid red;"  ;
+          }
 
 
           // add event listener on each of the collapse/expand icon
