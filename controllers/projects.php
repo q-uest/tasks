@@ -45,8 +45,8 @@ class Projects extends CI_Controller {
 
 		$data['project_data'] = $this->project_model->get_project($id);
 
-		echo "project_data[id]=".$data['project_data']->id;
-		echo "username=".$this->session->userdata('username');
+		#echo "project_data[id]=".$data['project_data']->id;
+		#echo "username=".$this->session->userdata('username');
 		$data['task_data'] = $this->task_model->get_list_tasks($data['project_data']->id,$this->session->userdata('username'));
 
 

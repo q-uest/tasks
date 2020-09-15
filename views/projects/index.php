@@ -268,7 +268,10 @@ if($this->session->flashdata('project_inserted'))
         var hrgrpcnt=1;
         var partsk=[];
         var pcnt=0;
-
+        grprows=0;
+        grprc=1;
+        grpcnt=0;
+        grpidarr[grpcnt]=[tasksArr[0].group_id,0];
         // calling get_user_lastloggedin function
 
         var lstlogin=get_user_lastloggedin();
@@ -283,7 +286,7 @@ if($this->session->flashdata('project_inserted'))
           console.log(tasksArr[i].id,tasksArr[i].task_name,tasksArr[i].parent_task_id,tasksArr[i].lvl,tasksArr[i].has_child);
 
           taskid=tasksArr[i].id;
-          grpidarr[grpcnt]=grpid;
+          
           grpid=tasksArr[i].group_id;
           
           prevlvl=currlvl;
@@ -688,6 +691,7 @@ if($this->session->flashdata('project_inserted'))
             }
              
 
+
               if (currlvl==1 && has_child=='Y')
               {
                 
@@ -699,7 +703,26 @@ if($this->session->flashdata('project_inserted'))
                   expbtn_id="exbtn"+taskid;
                   expbtn=document.getElementById(expbtn_id);
                   expbtn.className="glyphicon glyphicon-triangle-bottom disabled";
-              
+                  
+                  function find_grpid_loc(id)
+                  {
+                    for(i=0;i<grpidarr.length;i++)
+                    {
+                      if (grpidarr[i][0]==id)
+                         break;
+                    }
+                     return i;
+                  }
+
+                  grploc=find_grpid_loc(grpid);
+                  console.log("setting noitems to "+grpidarr[grploc]);
+                  vheight=grpidarr[grploc][2];
+                  vinihgt=grpidarr[grploc][3];
+
+                  if (vheight<vinihgt)
+                    vheight=vinihgt;
+                  
+                  pt0div.style.setProperty('--noitems', vheight+'px' );
                   console.log(taskid+' button clicked'+vassignee);
                   for (i=0;i<tasksArr.length;i++)
                   {
@@ -708,7 +731,7 @@ if($this->session->flashdata('project_inserted'))
                       icn="ic"+tasksArr[i].id;
                       icnid=document.getElementById(icn);
                       icnid.className='glyphicon glyphicon-minus-sign';
-                      console.log("icn="+icn);
+                      //console.log("icn="+icn);
                       if (tasksArr[i].has_child=='N')
                       {
                         icnid.className='glyphicon glyphicon-minus-sign disabled';
@@ -717,10 +740,10 @@ if($this->session->flashdata('project_inserted'))
                       {
                        icnid.className='glyphicon glyphicon-minus-sign'; 
                       }
-                        console.log("taskWithParent="+tasksArr[i].id+' '+tasksArr[i].parent_task_id+' '+tasksArr[i].task_name+" "+tasksArr[i].lvl+" "+tasksArr[i].has_child);
+                        //console.log("taskWithParent="+tasksArr[i].id+' '+tasksArr[i].parent_task_id+' '+tasksArr[i].task_name+" "+tasksArr[i].lvl+" "+tasksArr[i].has_child);
                         
                         divid="outdiv_pt"+tasksArr[i].parent_task_id+"_L"+tasksArr[i].lvl+"_"+tasksArr[i].group_id;
-                        console.log("divid="+divid);
+                        //console.log("divid="+divid);
 
                         divele=document.getElementById(divid);
                         if (tasksArr[i].lvl>1)
@@ -1034,13 +1057,31 @@ if($this->session->flashdata('project_inserted'))
           
           ptsk=tasksArr[i].parent_task_id;          
           
-          if (grpidarr[grpcnt] !== grpid)  
-          {
-            grpcnt=grpcnt+1;
-            grpidarr[grpcnt]=grpid;
-          }
-          
+          // if (grpidarr[grpcnt][0] !== grpid)  
+          // {
+          //   grpidarr[grpcnt]=[grpidarr[grpcnt][0],grprows];
+          //   console.log("grpid="+grpid+'grpidarr[grpcnt]= '+grpidarr[grpcnt]);
+          //   grpcnt=grpcnt+1;
+          //   grpidarr[grpcnt]=[grpid,0];
+          //   grprows=0;
 
+          //   // hey ram....just checking.....
+          // }
+          // else
+          // {
+          //      grprows=grprows+1;
+          // }
+          
+          if (grpidarr[grpcnt][0] !== grpid)  
+          {
+            console.log("grpid="+grpid+'grpidarr[grpcnt]= '+grpidarr[grpcnt]);
+          
+              grprows=0;
+              grpcnt=grpcnt+1;
+              grpidarr[grpcnt]=[grpid,grprows];
+          }      
+          grprows=grprows+1;
+          grpidarr[grpcnt]=[grpid,grprows];
           prevdivid=outdivid;
           outdivid='outdiv_pt'+ptsk+'_L'+currlvl+'_'+grpid;
 
@@ -1068,11 +1109,18 @@ if($this->session->flashdata('project_inserted'))
               pt0div.id=pt0divid;
               pt0div.className="col-xs-10";
               pt0div.classList.add("outrbrdr");
-              pt0div.classList.add("scrollit");
+
+              
             }
+            
+
+            pt0div.style.setProperty('--noitems', 500+'px' );
+            pt0div.classList.add('scrollit');
+            
 
             outdiv=document.createElement('div');  
             outdiv.id=outdivid;
+            outdiv.classList.add('outdiv_pt0');
           
             
             // set style for divc1
@@ -1247,7 +1295,7 @@ if($this->session->flashdata('project_inserted'))
               icn=document.getElementById(thisid);
               thistaskid=tasksArr[i].id;
               thisgrpid=tasksArr[i].group_id;
-
+              console.log("thistaskid="+thistaskid);
                             
 
               function find_child_tasks(pid)
@@ -1273,10 +1321,43 @@ if($this->session->flashdata('project_inserted'))
               vlvl=tasksArr[i].lvl;
               vlvl=Number(vlvl)+1;
 
-              chldid='outdiv_pt'+thistaskid+'_L'+vlvl+'_'+thisgrpid;
-              console.log("chldid whose display property to be changed..."+chldid);
-              chld=document.getElementById(chldid);
-                  
+              // ptnode = parent node
+            
+              ptnode='outdiv_pt'+thistaskid+'_L'+vlvl+'_'+thisgrpid;
+              console.log("the parent node whose display property to be changed..."+ptnode[0]);
+              
+
+              pt=document.getElementById(ptnode);
+              ptlen=pt.querySelectorAll('div[id^="outrow"]').length;
+              
+                //chldlen=chld.children.length ;
+                console.log("ptlength="+ptlen);
+                vchldval=((ptlen/2)*50)+350;
+                vnoitems=pt0div.style.getPropertyValue('--noitems');
+                vnoitval=vnoitems.substring(vnoitems.length-2,-(vnoitems.length));
+                console.log("vnoitval=vchldval=vheight=vinihgt"+vnoitval+' '+vchldval+' '+vheight+' '+vinihgt);
+              
+
+              
+              
+              function find_grpid_loc(id)
+                  {
+                    for(j=0;j<grpidarr.length;j++)
+                    {
+                      if (grpidarr[j][0]==id)
+                         break;
+                    }
+                     return j;
+                  }
+
+              // get initial height to be set for the project from array - grpidarr 
+
+                  grploc=find_grpid_loc(thisgrpid);
+                  console.log("setting noitems to "+grpidarr[grploc]);
+                  vinihgt=grpidarr[grploc][3];
+
+
+
 
               if (tasksArr[i].has_child=='Y')
               {
@@ -1287,7 +1368,21 @@ if($this->session->flashdata('project_inserted'))
                   
                   // set div id's  display off
 
-                  chld.style="padding-left:20px;display:none";
+                  pt.style="padding-left:20px;display:none";
+                  //pt0div.style.setProperty('--noitems', vinihgt+'px' );
+
+                  
+                  vnoitval2=Number(vnoitval)-Number(vchldval);
+
+                  
+                  if (vnoitval2<vinihgt)
+                  {
+                    console.log("resetting vnoitval2="+vnoitval2+' to '+vinihgt);
+                    vnoitval2=vinihgt;
+                  }
+
+                  pt0div.style.setProperty('--noitems',vnoitval2+'px');
+                  
                   
                 }
                 else if (icn.className=='glyphicon glyphicon-plus-sign')
@@ -1297,7 +1392,10 @@ if($this->session->flashdata('project_inserted'))
 
                   // set div id's display on
                   
-                  chld.style="padding-left:20px;display:block";
+                  pt.style="padding-left:20px;display:block";
+                  vnoitval2=Number(vnoitval)+Number(vchldval);
+                  console.log("vnoitval2="+vnoitval2);
+                  pt0div.style.setProperty('--noitems',vnoitval2+'px');
                 }
 
               }
@@ -1308,7 +1406,9 @@ if($this->session->flashdata('project_inserted'))
               expbtn=document.getElementById(expbtn_id);
                 
               if (tasksArr[i].has_child=="Y" && icn.className=='glyphicon glyphicon-minus-sign')
+              {
                    expbtn.className="glyphicon glyphicon-triangle-bottom disabled";
+              }
               else
                  expbtn.className="glyphicon glyphicon-triangle-bottom";
               
@@ -1409,8 +1509,42 @@ if($this->session->flashdata('project_inserted'))
 
 
 
-          // end of the for Loop
+          // end of the main for Loop
         }
+        
+        console.log("OUTSIDE OF FOR LOOP grpid="+grpid+'grpidarr[grpcnt]= '+grpidarr[grpcnt]);
+          
+        console.log("the size of tasks array="+tasksArr.length);
+
+        for(i=0;i<grpidarr.length;i++)
+        {
+          grpid=grpidarr[i][0];
+          grpcnt=grpidarr[i][1];
+          console.log("grpid=grpcnt="+grpid+' '+grpcnt);
+          tskoutdivid='outdiv_pt0_L1_'+grpid;
+          tskoutdiv=document.getElementById(tskoutdivid);
+          console.log("GRPIDARR tskoutdivid="+tskoutdivid);
+          vheight=((grpcnt/2 ) * 50 )+ 350;
+       
+          console.log("grpid="+grpid+" grpcnt="+grpcnt+"vheight="+vheight);
+
+          // find the combined size of ALL the root tasks (L1) in a project & set it as an initial height
+
+        prjoutdivid='p'+project_id+'_outdiv_pt0';
+        prjoutdiv=document.getElementById(prjoutdivid);
+        pt0len=prjoutdiv.getElementsByClassName('outdiv_pt0').length;
+        
+        
+        //pt0len=Number(pt0len)-1;
+        vinihgt=pt0len * 350;
+        console.log("prjoutdivid & vinithgt="+prjoutdivid+' '+vinihgt);
+        grpidarr[i]=[grpid,grpcnt,vheight,vinihgt];
+       
+        }        
+        
+
+         prjoutdiv.style.setProperty('--noitems', vinihgt+'px' );
+        
 
         // prjendhr=Project End Horizontal Line
         prjendhr=document.createElement('hr');
@@ -1445,12 +1579,12 @@ if($this->session->flashdata('project_inserted'))
               
         for (g=0;g<grpidarr.length;g++)
         {
-           console.log("grpid array="+grpidarr[g]);
+           console.log("grpid array="+grpidarr[g][0]);
 
         
             // drawing vertical Line 
 
-            grpid=grpidarr[g];
+            grpid=grpidarr[g][0];
             dividlst=document.getElementsByClassName("multirows"+grpid);
 
             for (i=0;i<dividlst.length;i++)
@@ -2172,9 +2306,13 @@ if($this->session->flashdata('project_inserted'))
 		
  
 
-  
-<?php
+  <h1>PROJECTS</h1>
 
+  <?php     echo '<div class="col-xs-12" style="#margin-left:20px;padding-left:0px;margin-top:10px;margin-bottom:20px;"> <a class="btn btn-primary" href='.base_url() .'projects/create/>Add New Project</a></div>';
+ ?>
+
+<?php
+    
   	foreach($projects as $project)
 		{ 
       
@@ -2230,9 +2368,7 @@ if($this->session->flashdata('project_inserted'))
 	
 
 
-  <?php     echo '<div class="col-xs-12" style="margin-left:20px;margin-top:20px;"> <a class="btn btn-primary" href='.base_url() .'projects/create/>Add New Project</a></div>';
- ?>
-
+  
 		
 		<?php echo "</div>" ?>	
 

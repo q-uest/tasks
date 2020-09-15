@@ -2,9 +2,9 @@
 
 
 
-<?php echo "<h1>Project Name:". $project_data->project_name ."</h1>"?>
-<?php echo  "Created Date:".$project_data->created_date; ?>
-<?php echo  "<h1>Description:</h1><h3>". $project_data->project_body ."</h3>" ?>
+<?php echo "<h1>PROJECT NAME:<h1><h3><b>". $project_data->project_name ."</h3></b>"?>
+<?php echo  "Created Date: <b>".$project_data->created_date; "</b>"?>
+<?php echo  "<h1>DESCRIPTION:</h1><h3>". $project_data->project_body ."</h3>" ?>
 
 </div>
 
@@ -51,6 +51,7 @@
 
 <?php
 			
+	
 	if($this->session->flashdata('task_deleted'))
 	{
 
@@ -62,7 +63,10 @@
 ?>
 
 </p>
-<a href="<?php echo base_url()."tasks/cre_task/".$project_data->id?>"><button type="button" class="btn btn-primary btn-lg">Add Tasks</button></a>
+
+
+
+ <!-- <a href="<?php echo base_url()."tasks/cre_task/".$project_data->id?>"><button type="button" class="btn btn-primary btn-lg">Add Tasks</button></a>
 
 <?php if($task_data): ?>
 
@@ -107,7 +111,9 @@
 
 </table>
 
-</div>
+ </div>
 </div>
 
 <?php endif; ?>
+-->
+

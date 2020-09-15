@@ -9,10 +9,11 @@
 	<?php endif; ?>
 
 
+<div class="col-xs-12">
 
+ <h1>User Registration</h1>
 
- <h2>Registration Form</h2>
-
+<div class="col-xs-8">
 
 <?php $attributes = array('id'=>'register_form','class'=> 'form_horizontal'); ?>
 
@@ -29,7 +30,7 @@
 
 $data = array('class' => 'form-control',
 			  'name' => 'first_name',
-			  'placeholder' => 'Enter Firstname');
+			  'placeholder' => 'Firstname');
 ?>
 
 <?php echo form_input($data);  ?>
@@ -44,7 +45,7 @@ $data = array('class' => 'form-control',
 
 $data = array('class' => 'form-control',
 			  'name' => 'last_name',
-			  'placeholder' => 'Enter Lastname');
+			  'placeholder' => 'Lastname');
 ?>
 
 <?php echo form_input($data);  ?>
@@ -60,7 +61,7 @@ $data = array('class' => 'form-control',
 
 $data = array('class' => 'form-control',
 			  'name' => 'email',
-			  'placeholder' => 'Enter Email');
+			  'placeholder' => 'Email');
 ?>
 
 <?php echo form_input($data);  ?>
@@ -77,7 +78,7 @@ $data = array('class' => 'form-control',
 
 $data = array('class' => 'form-control',
 			  'name' => 'username',
-			  'placeholder' => 'Enter Username');
+			  'placeholder' => 'Username');
 ?>
 
 <?php echo form_input($data);  ?>
@@ -93,7 +94,7 @@ $data = array('class' => 'form-control',
 
 $data = array('class' => 'form-control',
 			  'name' => 'password',
-			  'placeholder' => 'Enter Password');
+			  'placeholder' =>  'Password');
 ?>
 
 <?php echo form_password($data);  ?>

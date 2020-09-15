@@ -21,7 +21,7 @@ class Project_model extends CI_Model {
 
 		$this->db->where('id',$id);
 		$query = $this->db->get('projects');
-		echo "No of row=".$query->num_rows();
+		#echo "No of row=".$query->num_rows();
 		return $query->row();
 
 

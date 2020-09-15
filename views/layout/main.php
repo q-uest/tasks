@@ -22,6 +22,8 @@
   --vertln : 1px solid #9A3F36 ;
   --outbrdr :5px solid #2E4053;  
   --incheight: 0;
+  --noitems : 5000;
+  
 }
 
 .vldivout {
@@ -121,7 +123,12 @@ background-color: #f7f7f2;
   overflow-y: scroll;
   overflow-x: scroll;
   white-space: nowrap;
-  height:500px;
+  #height: 300px;
+  height: var(--noitems );
+  #height: calc(350 + var(--incheight ) ) px;
+
+  #height:5000px;
+  #height: 5000px;
   #height:325px;
   #width:750px;
 
