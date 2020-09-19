@@ -97,7 +97,8 @@ background-color: #f7f7f2;
 
 .leftbord{
      #border: 2px solid red;
-     border-left: 2px solid #666633;
+     #border-left: 2px solid #666633;
+     border-left: 2px solid lightgray;
      #margin-left: -15px;
      padding-left: 0px;
      padding-right: 0px;
@@ -257,6 +258,12 @@ border-bottom: var(--outbrdr);
 margin-bottom:10px; 
 }
 
+
+.divhglt {
+  border:2px solid lightgray;
+  padding-top:5px;
+  #padding-bottom:5px;
+}
 .txthlt {
  background-color:#2E4053   ;
  ##8A4117;
@@ -359,6 +366,7 @@ cursor:pointer;
 .cntdiv_lvl_gt_1 {
   font-size:20px;
     font-weight:bold;
+    height:75px;
     padding-top:10px;
     border-bottom:2px solid red;
     background-color: #3271a8;
@@ -377,6 +385,32 @@ cursor:pointer;
   #border-bottom:2px solid red;
   }
 
+.lnkdiv {
+  overflow-y: scroll;
+  overflow-x: scroll;
+  position:relative;
+  display:inline;
+  top:50px;
+  left:50px;
+  width:200px;
+  height:100px;
+  border:1px solid black;
+  font-size:10px;
+  background-color: #3271a8;
+  color:white;
+}
+
+.css-style
+{
+  background-color: gray;
+  color:white;
+}
+.tlbrdiv{
+  margin-top:5px;
+  width:200px;
+  float:right;
+  font-size: 20px; 
+}
 
 .rtdivmov {
   font-size: 20px; 

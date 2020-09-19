@@ -110,7 +110,7 @@ public function js_add_task($id)
 	
 		$data['project_data']=$this->project_model->get_project($id);
 		$data['user_data']=$this->user_model->get_user();
-
+		$data['task_data']=$this->task_model->populate_dependson_tasks($id,$_SESSION['username']);
 		
 
 		// check the current user with the owner of the task
@@ -268,7 +268,7 @@ public function validate_root_task()
 			else
 			 {	
 			 #	echo "tasks.php validate_func status=".$task['status'];
-			 	#redirect('/projects');
+			 	redirect('/projects');
 			 }
 			#$this->output->set_output("done at php");
 
@@ -291,7 +291,15 @@ public function validate_task()
 		$this->form_validation->set_rules('userid','User ID','required');
 
 
+		$t=$_POST['depends_on_task'];
 		
+		var_dump($_POST['depends_on_task']);
+			#echo "task_name=".$t[0];
+		$deptask=implode(",",$t);
+
+		#echo "multi select task_name=".sizeof($_POST['task_name']) ;
+		
+
 		if($this->form_validation->run() == FALSE)
 		{
 			#echo "form errors occurred";
@@ -342,7 +350,8 @@ public function validate_task()
 				'status'=>$this->session->userdata('status'),
 				'userid' =>$this->input->post('userid'),
 				'parent_task_id' => $this->input->post('parent_task_id'),
-				'groupid'=> $this->input->post('groupid')
+				'groupid'=> $this->input->post('groupid'),
+				'depends_on_task'=> $deptask
 			);
 			
 			$insert_id=$this->task_model->ins_task($task);
@@ -537,6 +546,10 @@ public function js_upd_task($id)
 	$task['due_date']=$data['task'][0]["due_date"];
 	$task['approved']=$data['task'][0]["approved"];
 	$task['status']=$data['task'][0]["status"];
+	#$task['depends_on_task']=$data['task'][0]["depends_on_task"];
+	echo "existing depends_on_task=".$data['task'][0]["depends_on_task"];
+	$task['depends_on_task']=explode(",",$data['task'][0]["depends_on_task"]);
+	#echo "$task[depends_on_task][0]=".$task['depends_on_task'][0];
 	$task['latest_update']=$data['task'][0]["latest_update"];
 	if ($task['status']==3)
 		$task['clo_comments']=$data['task'][0]["clo_comments"];
@@ -661,6 +674,8 @@ public function validate_upd_task()
 
 			echo "latest_upate=".$this->session->userdata['task']['latest_update'];
 
+			$dep_tsk=implode(",",$this->input->post('depends_on_task'));			
+
 			if ($this->input->post('latest_update') !== $this->session->userdata['task']['latest_update'])
 			{
 				echo "The latest update has been edited";
@@ -676,6 +691,7 @@ public function validate_upd_task()
 				'approved' =>$this->session->userdata['task']['approved'],
 				'clo_comments'=>$clo_comments,
 				'clo_date'=>$clo_date,
+				'depends_on_task'=>$dep_tsk,
 				'latest_update'=>$this->input->post('latest_update'),
 				'latestupd_datetime'=>$v_latestupd_datetime);
 			}
@@ -689,6 +705,7 @@ public function validate_upd_task()
 				'userid' => $this->input->post('userid'),
 				'status'=>$this->input->post('status'),
 				'approved' =>$this->session->userdata['task']['approved'],
+				'depends_on_task'=>$dep_tsk,
 				'clo_comments'=>$clo_comments,
 				'clo_date'=>$clo_date);
 			}

@@ -17,6 +17,7 @@
 <style>
 	body{
 	background-color: #5F6363;
+	#background-color:white;
 	color: white;
 		}
 
@@ -144,7 +145,7 @@ $data = ['parent_task_id'=>$this->session->userdata['vparent_task_id']];
 
 <?php echo form_hidden($data,$this->session->userdata['vparent_task_id']);  ?>
 
-</div>
+
 
 
 
@@ -211,12 +212,38 @@ echo form_hidden('approved',$this->session->userdata('approved'));
 			  
 ?>
 
+</div>
+
+<div class="form-group"  >
 
 
 
+<?php
+
+	echo form_label('Dependent on Tasks'); 	
+
+	$data=array('class' => 'form-control',
+			  'name' => 'depends_on_task[]'
+				);
+
+	$selected=array();
+	
+	foreach ($this->session->userdata('task_data') as $task)
+	{
+	
+		#echo "<option value=".$options[$task['id']].">".$task['task_name']."</option>";
+	
+		$selected[$task['id']]=$task['task_name'];
+	}
+
+	#echo form_input($task,'class="form-control"'); 	
+	echo form_multiselect('depends_on_task[]', $selected, set_value('depends_on_task'),"class='css-style col-xs-12'");
+?>
+
+</div>
 
 <div class="form-group col-xs-10">
-<div class="col-xs-5">
+<div class="col-xs-5" style="margin-top:20px;left:45%">
 <?php 
 
 $data = array('class' => 'btn btn-success btn-lg',

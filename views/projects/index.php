@@ -421,6 +421,8 @@ if($this->session->flashdata('project_inserted'))
           // content div 
 
           cntdiv=document.createElement('div');
+          cntdiv_id='cntdiv'+taskid;
+          cntdiv.id=cntdiv_id;
           cntdiv.className='col-xs-12';
 
 
@@ -444,7 +446,7 @@ if($this->session->flashdata('project_inserted'))
           tndiv.id='tndiv'+taskid;
           tndiv.className="col-xs-12";
 
-          tname=document.createTextNode("  "+tasksArr[i].task_name.substring(0,25)+'('+tasksArr[i].id+')'+' '+tasksArr[i].lvl);
+          tname=document.createTextNode("  "+tasksArr[i].task_name.substring(0,50)+'('+tasksArr[i].id+')'+' '+tasksArr[i].lvl+'    ');
           //lbrk=document.createElement('br');
           
 
@@ -644,8 +646,8 @@ if($this->session->flashdata('project_inserted'))
           
           tlbrdiv=document.createElement('div');
           tlbrdiv.id='tlbrdiv'+taskid;
-          tlbrdiv.className="col-xs-5";
-          tlbrdiv.style="margin-top:20px;width:200px;float:right;";
+          tlbrdiv.className="col-xs-4 tlbrdiv";
+          //tlbrdiv.style="margin-top:20px;width:200px;float:right;";
           
           
           if (vapproved==0 )
@@ -903,10 +905,9 @@ if($this->session->flashdata('project_inserted'))
               return function()
               {
                 console.log(taskid+' button clicked'+vassignee);
-                //var assigneeid=document.getElementById(iassgneleid).value;
                 
                 
-                window.open("http://localhost/ci/tasks/js_add_task/"+project_id+'?assignee='+pt_assignee+'&parent_task_id='+ptsk+'&groupid='+grpid+'&due_date='+vduedate+'&pt_duedate='+pt_ddate,'_self');
+                window.open("http://localhost/ci/tasks/js_add_task/"+project_id+'?assignee='+pt_assignee+'&parent_task_id='+ptsk+'&groupid='+grpid+'&due_date='+pt_ddate+'&pt_duedate='+pt_ddate,'_self');
 
               }
             }(project_id,vassignee,ptsk,grpid,vduedate,pt_ddate));
@@ -1130,7 +1131,7 @@ if($this->session->flashdata('project_inserted'))
 
             // change tname (task name) style properties 
             // rtdiv.style="padding-bottom:20px;"
-
+            
             cntdiv.appendChild(rtdiv);
             cntdiv.className="col-xs-12 cntdiv0";
 
@@ -1154,24 +1155,31 @@ if($this->session->flashdata('project_inserted'))
               
             }
 
-            console.log("DISPLAY TASKS=LEVEL>1 loop.lvl="+currlvl);
+            depicn=document.createElement("span");
+            depicn_id="dep"+taskid;
+            depicn.id=depicn_id;
+            depicn.style="font-size:1.5em;color:rgb(255, 26, 26);float:right;background-color:#f2f2f2;";
+            depicn.className='glyphicon glyphicon-link'; 
+            
+            c5div=document.createElement('div');
+            c5div_id="c5div"+taskid;
+            c5div.classList.add('col-xs-1');
 
+
+            
             // set style for tasks whose level > 1
 
             divc1.classList.add('divc1_gt_lvl1');
 
-             //  divc1.style="height:175px;border-left: 10px solid #5CB3FF;border-right: 10px solid #5CB3FF;color:#2E4053;padding-left:0px;padding-right:0px;border-radius: 15px; margin-bottom:1px;transition-delay: 0.5s";
-            
+             
 
             // display task values in <h4>
 
 
             rtdiv=document.createElement('div');
             rtdiv.id='rtdiv'+taskid;
-           // rtdiv.style="font-size: 20px; font-weight: bold; padding-top: 10px;"
             rtdiv.className="col-xs-7 rtdiv";
-            //var h=document.createElement("H4");          
-
+           
             rtdiv.appendChild(spanele);
             rtdiv.appendChild(tname);
             
@@ -1179,7 +1187,108 @@ if($this->session->flashdata('project_inserted'))
             if (recstate=='new')
               rtdiv.appendChild(newimg);
 
-           // cntdiv.appendChild(vstdiv);
+          // if the task is dependent, indicate it with icon
+
+          vdepends_on_task=tasksArr[i].depends_on_task;
+           if (vdepends_on_task !== null)
+            {
+                console.log("DEPENDS_ON_TASK="+tasksArr[i].depends_on_task);
+                cntdiv.appendChild(depicn);
+
+                depicn.addEventListener("mouseover", function(taskid,vdepends_on_task)
+                {   
+                   return function()
+                   {
+                  console.log("mouseover on the DEPENDS_ON_TASK icon");
+                  
+                  lnkdiv_id='lnkdiv'+taskid;
+                  lnkdiv=document.getElementById(lnkdiv_id);
+                  console.log("lnkdiv exists="+lnkdiv);
+                  
+                  if (lnkdiv == null)
+                  {
+                    lnkdiv=document.createElement('div');
+                    lnkdiv.id=lnkdiv_id;
+                    lnkdiv.className='col-xs-5';
+                    lnkdiv.classList.add('lnkdiv');
+
+                    lnkindiv=document.createElement('div');
+                    lnkindiv_id='lnkdiv'+taskid;
+                    lnkindiv.id=lnkindiv_id;
+                    lnkindiv.className='col-xs-12';
+
+                    var i=0;
+                    var tsk=[];
+                    var stpos=0;
+                    var idx=0;
+                    
+                    idx=vdepends_on_task.indexOf(',',stpos);
+
+
+                    while (idx !== -1)
+                    {
+                      
+                      tsk[i]=vdepends_on_task.substring(stpos,idx);
+                      console.log("vdepends_on_task="+tsk[i]);
+                      stpos=idx+1;
+                      i=i+1;
+                      
+                      idx=vdepends_on_task.indexOf(',',stpos);
+                    }
+
+                      tsk[i]=vdepends_on_task.substring(stpos);
+                      console.log("vdepends_on_task[last]="+tsk[i]);
+                    
+                      for(i=0;i<tsk.length;i++)
+                      {
+                        idx2=find_task_idx(tsk[i],tasksArr);
+                        console.log('task name='+tasksArr[idx2].task_name);
+                        console.log('status='+tasksArr[idx2].status);
+                        console.log('assignee='+tasksArr[idx2].assignee);
+
+                        lnktsk=document.createTextNode(tasksArr[idx2].task_name.substring(0,50));
+                        vstatus2=tasksArr[idx2].status;
+
+
+                        if (vstatus2==1)
+                          vstatustxt=" Open";
+                        else if (vstatus2==2)
+                          vstatustxt=" In Progress";
+                        else if (vstatus2==3)
+                          vstatustxt=" Completed";
+                        else if (vstatus2==null)
+                          vstatustxt=" Pending Approval";
+
+                        lnksta=document.createTextNode(" "+vstatus2);
+
+                        lnkddt=document.createTextNode(" "+tasksArr[idx2].due_date);
+            
+                        lnkass=document.createTextNode(" "+tasksArr[idx2].assignee);
+                        br=document.createElement("br");
+
+                        lnkindiv.appendChild(lnktsk);
+                        lnkindiv.appendChild(lnksta);
+                        lnkindiv.appendChild(lnkddt);
+                        lnkindiv.appendChild(lnkass);
+                        lnkindiv.appendChild(br);
+                        //lnkdiv.appendChild('<br>');
+                      
+                      }
+
+                        lnkdiv.appendChild(lnkindiv);
+                        cntdiv_id="cntdiv"+taskid;
+                        cntdiv=document.getElementById(cntdiv_id);
+                        console.log("cntdiv exists?="+cntdiv);
+                        
+                        cntdiv.appendChild(lnkdiv);
+                  }
+
+                  }
+                }(taskid,vdepends_on_task));
+                               
+            }
+  
+
             cntdiv.appendChild(rtdiv);
 
             cntdiv.className="col-xs-12 cntdiv_lvl_gt_1";
@@ -1191,10 +1300,14 @@ if($this->session->flashdata('project_inserted'))
           // color properties for the rtdiv
           rtdiv.style="font-weight:bold;transition-delay: 0.5s;"
          // divc1.style="transition-delay: 0.5s;"
-          
         
-          cntdiv.appendChild(tlbrdiv);
+
+        
+        
+          //cntdiv.appendChild(tlbrdiv);
+
           divc1.appendChild(cntdiv);
+          divc1.appendChild(tlbrdiv);
           //divc1.appendChild(vstdiv);
         
           divc1.appendChild(updencdiv);
@@ -1227,7 +1340,11 @@ if($this->session->flashdata('project_inserted'))
             outdiv.classList.remove("singlerow");
             outdiv.classList.add("multirows"+grpid);
           }
-          
+
+
+
+
+
               
           if (currlvl == 1)
           {
@@ -1412,6 +1529,7 @@ if($this->session->flashdata('project_inserted'))
             }
           }(tasksArr,i));
 
+          
 
 
           // mouse over event on divc1
@@ -1440,7 +1558,7 @@ if($this->session->flashdata('project_inserted'))
           if (vapproved==0)
           {
             tlbrdiv=document.getElementById('tlbrdiv'+taskid);
-            tlbrdiv.style="display:block;margin-top:20px;#width:200px;float:right;";
+            tlbrdiv.style="display:block;";
           }
             
           }, false);
@@ -1465,6 +1583,8 @@ if($this->session->flashdata('project_inserted'))
           }
         }, false);
 
+
+        
 
         divc1.addEventListener("dblclick", function( vassignee,vusername,pt_assignee,vstatus,vapproved,pt_ddate,vduedate ) 
         {
@@ -1497,7 +1617,6 @@ if($this->session->flashdata('project_inserted'))
           }
          
           } (vassignee,vusername,pt_assignee,vstatus,vapproved,pt_ddate,vduedate ) );
-
 
 
         // End of mouse over/mouse enter event triggers
@@ -2314,9 +2433,12 @@ if($this->session->flashdata('project_inserted'))
       
 		   echo "<div id='projrw".$project->id."' >" ;
     
-		  echo "<div id='divhglt".$project->id."' class='col-xs-10'>" ;
+		  echo "<div id='divhglt".$project->id."' class='col-xs-10 divhglt'>" ;
 		  echo "<div class='col-xs-3'>" ;
-		  echo '<h4><span  id="projicon'. $project->id .'" class="glyphicon glyphicon-expand"></span>'.'<a id="ahglt'.$project->id.'" href='. base_url() ."projects/display/". $project->id .">"." ".$project->project_name . "</a></h4>" ;
+		  #echo '<h4><span  id="projicon'. $project->id .'" class="glyphicon glyphicon-expand"></span>'.'<a id="ahglt'.$project->id.'" href='. base_url() ."projects/display/". $project->id .">"." ".$project->project_name . "</a></h4>" ;
+
+
+      echo '<h4><span  id="projicon'. $project->id .'" class="glyphicon glyphicon-expand"></span>'.'<a id="ahglt'.$project->id.'" href='. base_url() ."projects/display/". $project->id .">"." ".$project->project_name . "</a></h4>" ;
 
 		  echo "</div>" ;
 	
@@ -2355,7 +2477,40 @@ if($this->session->flashdata('project_inserted'))
 		}
 		);
 	
+  </script>
+
+  <script> type="text/javascript" 
+
+    document.getElementById('divhglt<?php echo $project->id ?>').addEventListener('mouseover',function(){
+      
+      
+
+      this.style="background-color:MediumSeaGreen;";
+      
+      
+
+  
+    }
+    );
+  
 		</script>
+
+<script> type="text/javascript" 
+
+    document.getElementById('divhglt<?php echo $project->id ?>').addEventListener('mouseout',function(){
+      
+      
+
+      this.style="";
+      
+      
+
+  
+    }
+    );
+  
+    </script>
+  
 		
 		<?php echo "</div>" ?>      
     
@@ -2376,3 +2531,4 @@ if($this->session->flashdata('project_inserted'))
 
    	
 ?>			
+

@@ -239,7 +239,40 @@ $data = array('class' => 'form-control',
 
 
 
+<div class="form-group">
+
+<?php
+
+	echo form_label('Dependent on Tasks'); 	
+
+	$data=array('class' => 'form-control',
+			  'name' => 'depends_on_task[]'			  
+				);
+
+	$selected=array();
+	
+	foreach ($this->session->userdata('task_data') as $task)
+	{
+	
+		#echo "<option value=".$options[$task['id']].">".$task['task_name']."</option>";
+	
+		$selected[$task['id']]=$task['task_name'];
+	}
+
+	#echo form_input($task,'class="form-control"'); 	
+	#echo form_multiselect('depends_on_task[]', $selected, set_value('depends_on_task'),"class='css-style col-xs-12'");
+
+	#echo set_select('depends_on_task[]',$this->session->userdata('depends_on_task'));
+
+	echo "default selected=".$this->session->userdata['task']["depends_on_task"][0];
+	echo form_multiselect('depends_on_task[]', $selected, $this->session->userdata['task']["depends_on_task"],"class='css-style col-xs-12'");
+	
+?>
+
 </div>
+
+
+
 
 <div>
 
@@ -253,7 +286,7 @@ $data = array('class' => 'form-control',
 			'rows'=>2);
 ?>
 
-<?php echo form_textarea($data,$task[0]["latest_update"]);  ?>
+<?php echo form_textarea($data,$this->session->userdata['task']["latest_update"]);  ?>
 
 
 
