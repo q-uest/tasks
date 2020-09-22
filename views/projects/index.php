@@ -472,6 +472,7 @@ if($this->session->flashdata('project_inserted'))
           console.log("pt_assignee="+pt_assignee);
           updencdiv=document.createElement('div');
           updencdiv.className="col-xs-12";
+          updencdiv.id='updencdiv'+taskid;
           //updencdiv.style="font-weight:bold;font-size:10px;margin-bottom:10px"
           upddiv=document.createElement('div');
           upddiv.id='upddiv'+taskid;
@@ -1154,7 +1155,7 @@ if($this->session->flashdata('project_inserted'))
               rowcnt=1;
               
             }
-
+            console.log("CREATING LINK ICON FOR THIS TASK");
             depicn=document.createElement("span");
             depicn_id="dep"+taskid;
             depicn.id=depicn_id;
@@ -1190,33 +1191,79 @@ if($this->session->flashdata('project_inserted'))
           // if the task is dependent, indicate it with icon
 
           vdepends_on_task=tasksArr[i].depends_on_task;
+          console.log("VDEPENDS_ON_TASK="+taskid+" "+vdepends_on_task);
            if (vdepends_on_task !== null)
             {
                 console.log("DEPENDS_ON_TASK="+tasksArr[i].depends_on_task);
                 cntdiv.appendChild(depicn);
 
+                // Adding Listener for depends_on_task icon
+
                 depicn.addEventListener("mouseover", function(taskid,vdepends_on_task)
                 {   
                    return function()
                    {
-                  console.log("mouseover on the DEPENDS_ON_TASK icon");
+                  //console.log("mouseover on the DEPENDS_ON_TASK icon");
                   
                   lnkdiv_id='lnkdiv'+taskid;
                   lnkdiv=document.getElementById(lnkdiv_id);
                   console.log("lnkdiv exists="+lnkdiv);
                   
+                  // create divs for the columns 
+
+                  function cre_coldivs(j)
+                  {
+
+                        ltskdiv=document.createElement('div');
+                        ltskdiv.id='ltskdiv'+j;
+                    
+                        lstadiv=document.createElement('div');
+                        lstadiv.id='lstadiv'+j;
+                    
+                        lddtdiv=document.createElement('div');
+                        lddtdiv.id='lddtdiv'+j;
+                    
+                        ltskdiv.className="lnkcol";
+                        lstadiv.className="lnkcol";
+                        lddtdiv.className="lnkcol";
+
+                        ltskdiv.style="width:60%;float:left;";
+                        lstadiv.style="width:20%;float:left;";
+                        lddtdiv.style="width:20%;float:left;";
+
+    
+                  }
+
                   if (lnkdiv == null)
                   {
+                    
+                    // create lnkdiv (link div)
+
                     lnkdiv=document.createElement('div');
                     lnkdiv.id=lnkdiv_id;
-                    lnkdiv.className='col-xs-5';
+                    lnkdiv.className='col-xs-8';
                     lnkdiv.classList.add('lnkdiv');
 
-                    lnkindiv=document.createElement('div');
-                    lnkindiv_id='lnkdiv'+taskid;
-                    lnkindiv.id=lnkindiv_id;
-                    lnkindiv.className='col-xs-12';
+                    
 
+
+                    // create inner div named lnkindiv
+
+                    lnkindiv=document.createElement('div');
+                    lnkindiv_id='lnkindiv'+taskid;
+                    lnkindiv.id=lnkindiv_id;
+                    
+                    lnkindiv.style="font-size:20px; padding-left:0px;width:700px;"
+
+                    
+                    //lassdiv=document.createElement('div');
+                    //lassdiv.id='lassdiv'+taskid;
+                    //lassdiv.className="col-xs-2 lnkcol";
+                    //lasslbl=document.createTextNode('Assignee');
+
+                    // add column labels to column div's
+
+                    
                     var i=0;
                     var tsk=[];
                     var stpos=0;
@@ -1241,12 +1288,48 @@ if($this->session->flashdata('project_inserted'))
                     
                       for(i=0;i<tsk.length;i++)
                       {
-                        idx2=find_task_idx(tsk[i],tasksArr);
-                        console.log('task name='+tasksArr[idx2].task_name);
-                        console.log('status='+tasksArr[idx2].status);
-                        console.log('assignee='+tasksArr[idx2].assignee);
 
-                        lnktsk=document.createTextNode(tasksArr[idx2].task_name.substring(0,50));
+                        // div's for the columns
+
+
+                       cre_coldivs(i);
+
+                        if (i==0)
+                        {
+
+                          
+                          ltsklbl=document.createTextNode('Task');
+                          lstalbl=document.createTextNode('Status');
+                          lddtlbl=document.createTextNode('Due Date');
+
+
+                          ltskdiv.appendChild(ltsklbl);
+                          lstadiv.appendChild(lstalbl);
+                          lddtdiv.appendChild(lddtlbl);
+                          
+                          ltskdiv.style.fontWeight="bold";
+                          lstadiv.style.fontWeight="bold";
+                          lddtdiv.style.fontWeight="bold";
+
+                          ltskdiv.style.textAlign="center";
+                          lstadiv.style.textAlign="center";
+                          lddtdiv.style.textAlign="center";
+                          
+                          lnkindiv.appendChild(ltskdiv);
+                          lnkindiv.appendChild(lstadiv);
+                          lnkindiv.appendChild(lddtdiv);
+
+                                                  
+                          lnkdiv.appendChild(lnkindiv);
+                          
+                          cre_coldivs(i);
+
+                   
+                        }
+
+                        idx2=find_task_idx(tsk[i],tasksArr);
+                   
+                        lnktsk=document.createTextNode(tasksArr[idx2].task_name.substring(0,40)+'...');
                         vstatus2=tasksArr[idx2].status;
 
 
@@ -1259,42 +1342,60 @@ if($this->session->flashdata('project_inserted'))
                         else if (vstatus2==null)
                           vstatustxt=" Pending Approval";
 
-                        lnksta=document.createTextNode(" "+vstatus2);
+
+
+                        lnksta=document.createTextNode(" "+vstatustxt.substring(0,10));
 
                         lnkddt=document.createTextNode(" "+tasksArr[idx2].due_date);
             
-                        lnkass=document.createTextNode(" "+tasksArr[idx2].assignee);
-                        br=document.createElement("br");
-
-                        lnkindiv.appendChild(lnktsk);
-                        lnkindiv.appendChild(lnksta);
-                        lnkindiv.appendChild(lnkddt);
-                        lnkindiv.appendChild(lnkass);
-                        lnkindiv.appendChild(br);
-                        //lnkdiv.appendChild('<br>');
                       
+                        ltskdiv.appendChild(lnktsk);
+                        lstadiv.appendChild(lnksta);
+                        lddtdiv.appendChild(lnkddt);
+                       
+                        lnkindiv.appendChild(ltskdiv);
+                        lnkindiv.appendChild(lstadiv);
+                        lnkindiv.appendChild(lddtdiv);
+                        lnkdiv.appendChild(lnkindiv);                        
                       }
 
-                        lnkdiv.appendChild(lnkindiv);
-                        cntdiv_id="cntdiv"+taskid;
-                        cntdiv=document.getElementById(cntdiv_id);
-                        console.log("cntdiv exists?="+cntdiv);
                         
-                        cntdiv.appendChild(lnkdiv);
+                        updencdiv_id="updencdiv"+taskid;
+                        updencdiv=document.getElementById(updencdiv_id);
+                        
+                        updencdiv.appendChild(lnkdiv);
+
+
+                        // add event listner to linkdiv element
+
+                        console.log("moseout event added for lnkdiv_id "+lnkdiv_id);
+                        lnkdiv.addEventListener('mouseleave',function(event)    {   
+                       
+                          console.log("mouse out event on linkdiv is fired");
+                          lnkdiv.style="display:none";
+                        });
+
+
+                  }
+                  else {
+                      lnkdiv.style="display:block";
                   }
 
                   }
                 }(taskid,vdepends_on_task));
+
+
+            
                                
             }
-  
+
+
+            
 
             cntdiv.appendChild(rtdiv);
 
             cntdiv.className="col-xs-12 cntdiv_lvl_gt_1";
-            //cntdiv.style="margin-bottom:10px;"
-            //cntdiv.style="font-size:15px;font-weight:bold;";
-          }
+            }
 
 
           // color properties for the rtdiv

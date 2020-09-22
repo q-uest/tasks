@@ -385,19 +385,28 @@ cursor:pointer;
   #border-bottom:2px solid red;
   }
 
+.lnkcol {
+  border:1px solid white;
+  padding-left:5px;
+  #word-wrap: break-word;
+}
+
 .lnkdiv {
-  overflow-y: scroll;
+ # overflow-y: scroll;
   overflow-x: scroll;
-  position:relative;
+  position:absolute;
   display:inline;
-  top:50px;
-  left:50px;
-  width:200px;
-  height:100px;
-  border:1px solid black;
-  font-size:10px;
-  background-color: #3271a8;
+  margin-left: 0px;
+  padding-left: 0px;
+  top:-40px;
+  left:200px;
+  width:500px;
+  #height:150px;
+  height:80%;
+  border:3px solid greenyellow;
+  background-color: red;
   color:white;
+  
 }
 
 .css-style
