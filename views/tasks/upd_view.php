@@ -49,6 +49,29 @@
 <?php echo form_open('tasks/validate_upd_task',$attributes); ?>
 
 
+
+<div class="form-group">
+
+
+
+<?php 
+
+#echo form_label('Task_id'); 
+
+$data = array('class' => 'form-control',
+			  'name' => 'task_id',
+			  'value'=> $task[0]["id"]);
+?>
+
+<?php echo form_hidden($data,$task[0]["id"]);  ?>
+
+
+
+</div>
+
+
+
+
 <div class="form-group">
 
 
@@ -144,23 +167,47 @@ else
 
 </div>
 
-<div class="form-group" id="statdiv">
 
-<?php echo form_label('Status'); ?>
+<div class="form-group">
 
+<?php 
 
-	
-	
+echo form_label('Status'); 
+#echo "Task's status=".$this->session->userdata['task']["status"];
+if ($this->session->userdata['task']["status"] != 4 )
+{
+?>
+
+<div class='form-group' id='statdiv'>
 
 
 <?php 
+
+
 
 $data = array('class' => 'form-control',
 				'id' => 'status',
 			  'name' => 'status');
 
- 	$stoptions=array(1=>'Open',2 =>'In Progress',3 => 'Completed');
+ 	$stoptions=array(1=>'Open',2 =>'In Progress',3 => 'Completed',4 => 'Unscheduled');
 	echo form_dropdown('status', $stoptions,$task[0]["status"],'onChange="check_for_compl();" id="status" class="form-control"'); 	
+
+ } 
+
+ else 
+ {
+
+ 	$data = array('class' => 'form-control',
+				'id' => 'status',
+			  'name' => 'status');
+
+ 	$stoptions=array(4=>'Unscheduled');
+ 	echo form_dropdown('status', $stoptions,$task[0]["status"],'id="status" class="form-control"');
+
+
+
+ }
+
 ?>
 
 <script type="text/javascript">
@@ -198,12 +245,16 @@ function check_for_compl() {
 <?php if ($task[0]["status"]==3)
 {
 ?>
+
 <div class="form-group" id="cmtdiv" style="display:block">
 <?php }
+
 else
 {
 ?>
+
 <div class="form-group" id="cmtdiv" style="display:none">
+
 <?php
 }
 ?>
@@ -239,24 +290,26 @@ $data = array('class' => 'form-control',
 
 
 
-<div class="form-group">
+<div class="form-group" id='statdiv'>
 
 <?php
 
 	echo form_label('Dependent on Tasks'); 	
 
-	$data=array('class' => 'form-control',
+	$data=array('class' => 'form-group',
 			  'name' => 'depends_on_task[]'			  
 				);
 
 	$selected=array();
 	
+
 	foreach ($this->session->userdata('task_data') as $task)
 	{
 	
 		#echo "<option value=".$options[$task['id']].">".$task['task_name']."</option>";
 	
 		$selected[$task['id']]=$task['task_name'];
+		
 	}
 
 	#echo form_input($task,'class="form-control"'); 	
@@ -264,9 +317,19 @@ $data = array('class' => 'form-control',
 
 	#echo set_select('depends_on_task[]',$this->session->userdata('depends_on_task'));
 
-	echo "default selected=".$this->session->userdata['task']["depends_on_task"][0];
-	echo form_multiselect('depends_on_task[]', $selected, $this->session->userdata['task']["depends_on_task"],"class='css-style col-xs-12'");
-	
+#$this->session->userdata['task']["status"]
+
+
+	if ($this->session->userdata['task']["depends_on_task"] != NULL)
+	{
+
+		echo "default selected=".$this->session->userdata['task']["depends_on_task"][0];
+		echo form_multiselect('depends_on_task[]', $selected, $this->session->userdata['task']["depends_on_task"],"class='css-style col-xs-12' style='margin-bottom:20px;'");
+	}
+	else
+	{
+		echo form_multiselect('depends_on_task[]', $selected, NULL,"class='css-style col-xs-12' style='margin-bottom:20px;'");	
+	}
 ?>
 
 </div>
@@ -275,6 +338,8 @@ $data = array('class' => 'form-control',
 
 
 <div>
+
+
 
 <?php echo form_label('Latest Update'); ?>
 

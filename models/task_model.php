@@ -31,13 +31,84 @@ public function get_list_tasks($project_id,$username)
 
 }
 
-public function populate_dependson_tasks($project_id,$username) 
+public function get_dot_values($taskid) {
+
+####
+# get depends_on_tasks column value for the given taskid
+###########
+
+echo "firing get_dot_values";
+
+
+$this->db->select('project_id,id,depends_on_task');
+$this->db->like('depends_on_task', $taskid);
+	
+$this->db->from('tasks');
+$query=$this->db->get();
+
+echo  "num_rows=".$query->num_rows();
+$val=$query->result_array();
+$err="FALSE";
+for ($i=0;$i<sizeof($val);$i++)
 {
+	$dot=explode(",",$val[$i]["depends_on_task"]);
+	$res[$i]=$this->task_model->check_deptask_stat($val[$i]['project_id'],$dot);
+	echo "<br/>taskid=".$val[$i]["id"];
+	$taskid=$val[$i]["id"];
+	echo "<br/>size of result array=".sizeof($res[$i]);
+	if (sizeof($res[$i])==0)
+	{
+		$stat=$this->db->query("update tasks set status=1 where id='$taskid' ");
+		echo "upd stat=".$stat;
+		if ($stat !== 1)
+			$err="TRUE";
+		
+
+	}
+
+}
+	return $err;
+
+}
+
+public function check_deptask_stat($id,$deptasks)
+{
+
+###############
+# Usage:
+#Check the statuses of the listed tasks in depends_on_task column, if they are "NOT CLOSED"
+# deptasks is an array with the dependent_tasks
+########
+
+
+	$this->db->where('project_id', $id);
+	$this->db->where_in('id', $deptasks);
+	
+	# find if any row has status other than "complete"
+	
+	$this->db->where('status!=', 3);
+	$this->db->select('id,status');
+	$this->db->from('tasks');
+	$query=$this->db->get();
+
+	echo  "<br/>num_rows=".$query->num_rows();
+	return $query->result_array();
+
+}
+public function populate_dependson_tasks($project_id,$username,$id) 
+{
+	echo "populate_dependson_tasks project_id=".$project_id." username=".$username;
 	$query=$this->db->query("select  `id`, `task_name`, `task_body`,   `due_date` from tasks_hierarch_view where 
-	project_id='$project_id' AND username='$username' ");
+	 project_id='$project_id' AND username='$username' AND parent_task_id !=0 AND  id !='$id'");
 	return $query->result_array();
 
 
+}
+
+public function upd_tskdepon($id,$newlst)
+{
+	$stat=$this->db->query("update tasks set depends_on_task='$newlst' where id='$id'");
+	return($stat);
 }
 
 
@@ -90,6 +161,19 @@ public function delete_tasks($taskslis)
 
  }
 
+
+public function chk_opn_chldtsk($id)
+{
+	########
+	# Check if there are any child tasks which are not closed yet
+	##################
+
+	$query=$this->db->query("select id from tasks where parent_task_id='$id' and status !=3");
+
+	echo "</br>The unclosed & unscheduled rows=".$query->num_rows()." for ".$id;
+	return $query->num_rows();
+
+}
 
 public function db_fetch_task($id)
 
@@ -178,18 +262,18 @@ public function get_tasks($taskid,$grpid,$olddt,$newdt)
 	$sql="WITH
     recursive task_main AS(
     SELECT
-        `users`.`tasks`.`id` AS `id`
+        `tasks`.`tasks`.`id` AS `id`
     FROM
-        `users`.`tasks`
+        `tasks`.`tasks`
     WHERE
-        `users`.`tasks`.`parent_task_id` = '$taskid' and `users`.`tasks`.`groupid`='$grpid' and  ((`users`.`tasks`.`due_date`=str_to_date('$olddt','%d-%b-%Y'))
-        or (`users`.`tasks`.`due_date`>str_to_date('$newdt','%Y-%m-%d')))
+        `tasks`.`tasks`.`parent_task_id` = '$taskid' and `tasks`.`tasks`.`groupid`='$grpid' and  ((`tasks`.`tasks`.`due_date`=str_to_date('$olddt','%d-%b-%Y'))
+        or (`tasks`.`tasks`.`due_date`>str_to_date('$newdt','%Y-%m-%d')))
     UNION ALL
 SELECT
     `st`.`id` AS `id`
   FROM
     (
-        `users`.`tasks` `st`
+        `tasks`.`tasks` `st`
             JOIN `task_main` `p`
     )
 WHERE
@@ -214,17 +298,17 @@ public function del_task($taskid,$grpid)
 	$sql="WITH
     recursive task_main AS(
     SELECT
-        `users`.`tasks`.`id` AS `id`
+        `tasks`.`tasks`.`id` AS `id`
     FROM
-        `users`.`tasks`
+        `tasks`.`tasks`
     WHERE
-        `users`.`tasks`.`parent_task_id` = '$taskid' and `users`.`tasks`.`groupid`='$grpid' 
+        `tasks`.`tasks`.`parent_task_id` = '$taskid' and `tasks`.`tasks`.`groupid`='$grpid' 
     UNION ALL
 SELECT
     `st`.`id` AS `id`
   FROM
     (
-        `users`.`tasks` `st`
+        `tasks`.`tasks` `st`
             JOIN `task_main` `p`
     )
 WHERE

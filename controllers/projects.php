@@ -26,9 +26,15 @@ class Projects extends CI_Controller {
 		# The below is fired after performing update against tasks 
 
 
-		echo $this->session->flashdata('task_updated');
+		if ($this->session->flashdata('deptsks_updated') == NULL)
+				echo $this->session->flashdata('task_updated');
+		else
+			echo $this->session->flashdata('deptsks_updated');
+				
 		echo $this->session->flashdata('task_inserted');
 		echo $this->session->flashdata('task_deleted');
+		echo $this->session->flashdata('cleanup_deptask');
+		
 		
 		$data['projects'] = $this->project_model->get_projects();
 

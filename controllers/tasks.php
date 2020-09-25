@@ -104,13 +104,35 @@ public function js_add_root_task($id)
 
 }
 
+public function js_upd_tskdepon($id)
+{
+	$tskarr=json_decode($_GET['tsk_arr']);
+	$tskstr=json_encode($tskarr);
+	echo "tskstr=".$tskstr;
+	print_r (explode(",",$tskstr));
+	$newlst=str_replace(']','',str_replace('"',"",str_replace('["',"",$tskstr)));
+	$stat=$this->task_model->upd_tskdepon($id,$newlst);
+	echo "stat=".$stat;
+	$this->session->set_flashdata('cleanup_deptask','<p class="bg-success">The depends_on_task has been cleaned up </p>');
+				
+				
+	redirect('/projects');
+}
+
+
 public function js_add_task($id)
 {
+
+
+		# Get parent task owner
+
+		$data['vparent_task_id']=$_GET['parent_task_id'];
+		$taskid=$data['vparent_task_id'];
 
 	
 		$data['project_data']=$this->project_model->get_project($id);
 		$data['user_data']=$this->user_model->get_user();
-		$data['task_data']=$this->task_model->populate_dependson_tasks($id,$_SESSION['username']);
+		$data['task_data']=$this->task_model->populate_dependson_tasks($id,$_SESSION['username'],$taskid);
 		
 
 		// check the current user with the owner of the task
@@ -118,11 +140,7 @@ public function js_add_task($id)
 		$data['vassignee']=strtolower($_GET['assignee']);
 		$logged_inas = $_SESSION['username'];
 
-		# Get parent task owner
-
-		$data['vparent_task_id']=$_GET['parent_task_id'];
-		$taskid=$data['vparent_task_id'];
-
+		
 		# if taskid != 0, get parent task's user id, otherwise assign the current login_user as the taskowner
 		
 		if ($taskid!=0)
@@ -154,6 +172,8 @@ public function js_add_task($id)
 		if (strtolower($tskowner) != strtolower($logged_inas))
 		{
 			#echo "tskowner is different from logged_inas";
+			# 1 for status means Pending Approval
+
 			$data['approved']=1;
 			$data['status']=NULL;
 				
@@ -161,6 +181,8 @@ public function js_add_task($id)
 		else
 		{
 			# when "task owner & logged in ownr are same";
+			# 1 for status means Open
+
 			$data['approved']=0;
 			$data['status']=1;
 		}
@@ -293,9 +315,33 @@ public function validate_task()
 
 		$t=$_POST['depends_on_task'];
 		
-		var_dump($_POST['depends_on_task']);
+		// for ($i=0;$i<sizeof($t);$i++)
+		// {
+
+		// 	echo "".$t[$i];
+
+		// }
+		// var_dump($_POST['depends_on_task']);
 			#echo "task_name=".$t[0];
 		$deptask=implode(",",$t);
+
+		echo "depttask=".$deptask." deptask-size=".sizeof($t);
+		$starr=$this->task_model->check_deptask_stat($this->session->userdata('project_data')->id,$t);
+		echo "sizeof(starr)=".sizeof($starr);
+		
+		if (sizeof($starr)>0 || $this->session->userdata('approved')==1)
+		{
+			echo "there is atleast 1 or more unfinished dependent tasks..hence set the status to UNSCHEDULED";
+			$vstatus=4;
+		}
+		else if (sizeof($starr)==0 || $this->session->userdata('approved')==1)
+
+		{
+			echo "No unfinished tasks...The task is to be set OPEN";
+			$vstatus=1;
+		}
+
+
 
 		#echo "multi select task_name=".sizeof($_POST['task_name']) ;
 		
@@ -347,7 +393,7 @@ public function validate_task()
 				'task_body' => $this->input->post('description'),
 				'due_date' => $convertDate,
 				'approved' =>$this->input->post('approved'),
-				'status'=>$this->session->userdata('status'),
+				'status'=>$vstatus,
 				'userid' =>$this->input->post('userid'),
 				'parent_task_id' => $this->input->post('parent_task_id'),
 				'groupid'=> $this->input->post('groupid'),
@@ -380,7 +426,7 @@ public function validate_task()
 			else
 			 {	
 			 #	echo "tasks.php validate_func status=".$task['status'];
-			 	redirect('/projects');
+			 	#redirect('/projects');
 			 }
 			#$this->output->set_output("done at php");
 
@@ -534,25 +580,75 @@ public function js_upd_task($id)
 	
 	$data['old_duedate']=$_GET['ddate'];
 	$data['parddt']=$_GET['ptd'];
+	$data['project_id']=$_GET['project_id'];
 	#echo "<br>js_upd_task parddt=".$data['parddt']." old duedate=".$data['old_duedate'];
 	
 	
 
 	$data['task']=$this->task_model->db_fetch_task($id);
 	$data['user_data']=$this->user_model->get_user();
+
+	# populate depends_on_tasks
+	$data['task_data']=$this->task_model->populate_dependson_tasks($data['project_id'],$_SESSION['username'],$id);
+	
+	echo "task_data =".sizeof($data['task_data']);
+	
+	# Create $task array & assign what is captured in $data[task] above
+
 	$task['task_id']=$data['task'][0]["id"];
 	$task['task_name']=$data['task'][0]["task_name"];
 	$task['group_id']=$data['task'][0]["groupid"];
 	$task['due_date']=$data['task'][0]["due_date"];
 	$task['approved']=$data['task'][0]["approved"];
 	$task['status']=$data['task'][0]["status"];
-	#$task['depends_on_task']=$data['task'][0]["depends_on_task"];
+	$task['depends_on_task']=$data['task'][0]["depends_on_task"];
 	echo "existing depends_on_task=".$data['task'][0]["depends_on_task"];
-	$task['depends_on_task']=explode(",",$data['task'][0]["depends_on_task"]);
+
+	#$depends_on_task=$data['task_data'][0]["depends_on_task"];
+
+	
+	$vdepends_on_task=$data['task'][0]["depends_on_task"];
+
+	if ($vdepends_on_task != NULL)
+	{
+		$task['depends_on_task']=explode(",",$vdepends_on_task);
+
+		$deptskstr=$data['task'][0]["depends_on_task"];
+
+		$starr=$this->task_model->check_deptask_stat($data['project_id'],$deptskstr);
+		echo "sizeof(starr)=".sizeof($starr);
+	
+		if (sizeof($starr)>0 || $this->session->userdata('approved')==1)
+		{
+			echo "there is atleast 1 or more unfinished dependent tasks..hence set the status to UNSCHEDULED";
+			$task['status']=4;
+		}
+		else if (sizeof($starr)==0 || $this->session->userdata('approved')==1)
+		{
+			echo "No unfinished tasks...The task is to be set OPEN";
+			$task['status']=1;
+		}
+	}
+	else if ($this->session->userdata('approved')==1)
+	{
+			$task['status']=1;
+	}
+
+	echo "status after if loop....".$task['status'];
+
+
 	#echo "$task[depends_on_task][0]=".$task['depends_on_task'][0];
 	$task['latest_update']=$data['task'][0]["latest_update"];
+	
 	if ($task['status']==3)
+	{
 		$task['clo_comments']=$data['task'][0]["clo_comments"];
+	#	$this->task_model->get_dot_values($task['task_id']);
+	}
+
+
+
+
 	
 	#echo "task closing comments".$data['task'][0]["clo_comments"];
 	#echo "<br>taskid=".$task['task_id'];
@@ -584,6 +680,8 @@ public function js_upd_task($id)
 
 	$this->session->set_userdata('task',$task);
 
+	echo "<br>ID to be passed to validate task=".$this->session->userdata['task']['task_id'];
+
 	#echo "js_upd_task....Group_id=".$this->session->userdata['task']['group_id'];
 	#echo "js_upd_task....task_name=".$this->session->userdata['task']['task_name'];
 	#echo "js_upd_task....due_Date=".$this->session->userdata['task']['due_date'];
@@ -592,7 +690,7 @@ public function js_upd_task($id)
 	
 	# accessing the variable named other than data
 
-	#echo "<br>ID=".$this->session->userdata['task']['task_id'];
+	
 			
 
 
@@ -625,6 +723,20 @@ public function validate_upd_task()
 		$this->form_validation->set_rules('description','Task Desscription','trim|required|min_length[3]');
 		$this->form_validation->set_rules('due_date','Due Date','required|callback_due_date_validate[$vdue_date]');
 
+		
+
+		echo 'from validate_upd_task task_id 2bpassed to validate_status='.$this->session->userdata["task"]["task_id"];
+
+
+		if ($this->input->post('status')==3)
+		{
+			$tid=$this->session->userdata['task']['task_id'];
+			#set_value('task_id', $tid); 
+			echo "validate status check for childtasks for id=".$tid;
+			$this->form_validation->set_rules('task_id','task_id','callback_id_validate');
+
+		}
+
 
 
 		if($this->form_validation->run() == FALSE)
@@ -639,7 +751,10 @@ public function validate_upd_task()
 
 			$this->session->set_flashdata($valerr);
 
-			redirect('tasks/js_upd_task/'.$this->session->userdata['task']['task_id'].'?ptd='.$this->session->userdata('parddt').'&ddate='.$this->session->userdata['vddate']);
+			#http://localhost/ci/tasks/js_upd_task/"+taskid+'?project_id='+project_id+'&ddate='+vduedate+'&ptd='+pt_ddate,'_self'
+
+
+			#redirect('tasks/js_upd_task/'.$this->session->userdata['task']['task_id'].'?project_id='.$this->session->userdata['project_id'].'&ptd='.$this->session->userdata('parddt').'&ddate='.$this->session->userdata['vddate']);
 
 		}
 		else
@@ -660,7 +775,7 @@ public function validate_upd_task()
 			#$data['task'][0]["task_name"];
 
 
-			if ($this->input->post('status')<3)
+			if ($this->input->post('status')!==3)
 			{
 				$clo_comments=NULL;
 				$clo_date=date('Y-m-d',strtotime('0000-00-00'));
@@ -672,9 +787,15 @@ public function validate_upd_task()
 			#	echo "clo_date=".$clo_date;
 			}
 
+			
 			echo "latest_upate=".$this->session->userdata['task']['latest_update'];
 
-			$dep_tsk=implode(",",$this->input->post('depends_on_task'));			
+			if ($this->input->post('depends_on_task') != NULL)
+				$dep_tsk=implode(",",$this->input->post('depends_on_task'));			
+			else
+				$dep_tsk=NULL;
+
+			# Update "latest_upd_datetime" only if the latest_update field is updated (with different value than the previous value)
 
 			if ($this->input->post('latest_update') !== $this->session->userdata['task']['latest_update'])
 			{
@@ -718,6 +839,21 @@ public function validate_upd_task()
 			
 			if($xs)
 			{
+
+				if ($this->input->post('status')==3)
+				{
+					echo "status=".$this->input->post('status');
+					echo "</b>The task is updated & firing get_dot_values() to update other tasks";
+					$stat=$this->task_model->get_dot_values($task['id']);
+					if ($stat=="TRUE")
+					{
+						echo "DEPENDENT TASKS UPDATED SUCCESSFULLY";
+						$this->session->set_flashdata('deptsks_updated','<p class="bg-success"> The task & its dependent task(s) has been updated </p>');
+
+					}
+
+				}
+
 				$this->session->set_flashdata('task_updated','<p class="bg-success"> The Task has been updated </p>');
 			}
 
@@ -744,6 +880,26 @@ public function validate_upd_task()
 			redirect('projects');
 
 		}
+}
+
+public function id_validate($taskid) {
+
+$taskid=$this->session->userdata['task']['task_id'];
+echo "Firing taskid_validate for task=".$taskid;
+$rwcnt=$this->task_model->chk_opn_chldtsk($taskid);
+echo "</br> rowcnt=".$rwcnt;
+
+if ($rwcnt>0)
+{
+	echo "</br>Children tasks found....The operation failed..";
+	$this->form_validation->set_message(__FUNCTION__, '<b><div style="color:red">The Task can not be closed, as there is still one or more "incomplete" child/sub tasks</div>');
+		
+	return FALSE;
+}
+else
+	return TRUE;
+
+
 }
 
 public function view_tasks($id)

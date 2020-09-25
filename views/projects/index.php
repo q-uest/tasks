@@ -614,14 +614,23 @@ if($this->session->flashdata('project_inserted'))
 
 
           vstatus=tasksArr[i].status;
-          if (vstatus==1)
-            vstatustxt=" Open";
-          else if (vstatus==2)
-            vstatustxt=" In Progress";
-          else if (vstatus==3)
-            vstatustxt=" Completed";
-          else if (vstatus==null)
-            vstatustxt=" Pending Approval";
+
+          vstatustxt=taskstat(vstatus);
+
+          function taskstat(stat)
+          {
+            if (stat==1)
+              vtxt=" Open";
+            else if (stat==2)
+              vtxt=" In Progress";
+            else if (stat==3)
+              vtxt=" Completed";
+            else if (stat==4)
+              vtxt=" Unscheduled";          
+            else if (stat==null)
+              vtxt=" Pending Approval";
+            return vtxt;
+          }
 
           istatus=document.createElement("span");
           istatus.id="istatus";
@@ -1159,7 +1168,13 @@ if($this->session->flashdata('project_inserted'))
             depicn=document.createElement("span");
             depicn_id="dep"+taskid;
             depicn.id=depicn_id;
-            depicn.style="font-size:1.5em;color:rgb(255, 26, 26);float:right;background-color:#f2f2f2;";
+
+            if (vstatus == 1 || vstatus == 3)
+              depicn.style="font-size:1.5em;color:green; float:right;background-color:#f2f2f2;";
+            else
+              depicn.style="font-size:1.5em;color:rgb(255, 26, 26);float:right;background-color:#f2f2f2;";
+
+              
             depicn.className='glyphicon glyphicon-link'; 
             
             c5div=document.createElement('div');
@@ -1188,14 +1203,56 @@ if($this->session->flashdata('project_inserted'))
             if (recstate=='new')
               rtdiv.appendChild(newimg);
 
+            // converts the depends_on_task column value string to array
+
+            function dep_str2arr(deptsks)
+            {
+              console.log("dep_str2arr fired..deptsks=".deptsks);
+              var tsk=[];
+              var stpos=0;
+              var idx=0;
+              var fi=0;
+              
+              idx=deptsks.indexOf(',',stpos);
+
+              while (idx !== -1)
+              {
+                tsk[fi]=deptsks.substring(stpos,idx);
+                console.log("vdepends_on_task="+tsk[fi]);
+                stpos=idx+1;
+                fi=fi+1;
+                idx=deptsks.indexOf(',',stpos);
+              }
+
+              // the below is to extract the last item left in the string or when depends_on_task has only one task
+
+              tsk[fi]=deptsks.substring(stpos);
+              console.log("vdepends_on_task[last]="+tsk[fi]);
+              return tsk;
+
+            }
+
+
+
+
+
+
+
           // if the task is dependent, indicate it with icon
 
           vdepends_on_task=tasksArr[i].depends_on_task;
           console.log("VDEPENDS_ON_TASK="+taskid+" "+vdepends_on_task);
            if (vdepends_on_task !== null)
             {
+
                 console.log("DEPENDS_ON_TASK="+tasksArr[i].depends_on_task);
                 cntdiv.appendChild(depicn);
+
+                 // write_arr_chg used for checking if any task found deleted but still part of the depends_on_task, the column needs to be updated.
+
+
+                var write_arr_chg="false";
+
 
                 // Adding Listener for depends_on_task icon
 
@@ -1208,28 +1265,28 @@ if($this->session->flashdata('project_inserted'))
                   lnkdiv_id='lnkdiv'+taskid;
                   lnkdiv=document.getElementById(lnkdiv_id);
                   console.log("lnkdiv exists="+lnkdiv);
-                  
+                    
                   // create divs for the columns 
 
                   function cre_coldivs(j)
                   {
 
-                        ltskdiv=document.createElement('div');
-                        ltskdiv.id='ltskdiv'+j;
-                    
-                        lstadiv=document.createElement('div');
-                        lstadiv.id='lstadiv'+j;
-                    
-                        lddtdiv=document.createElement('div');
-                        lddtdiv.id='lddtdiv'+j;
-                    
-                        ltskdiv.className="lnkcol";
-                        lstadiv.className="lnkcol";
-                        lddtdiv.className="lnkcol";
+                    ltskdiv=document.createElement('div');
+                    ltskdiv.id='ltskdiv'+j;
+                
+                    lstadiv=document.createElement('div');
+                    lstadiv.id='lstadiv'+j;
+                
+                    lddtdiv=document.createElement('div');
+                    lddtdiv.id='lddtdiv'+j;
+                
+                    ltskdiv.className="lnkcol";
+                    lstadiv.className="lnkcol";
+                    lddtdiv.className="lnkcol";
 
-                        ltskdiv.style="width:60%;float:left;";
-                        lstadiv.style="width:20%;float:left;";
-                        lddtdiv.style="width:20%;float:left;";
+                    ltskdiv.style="width:60%;float:left;";
+                    lstadiv.style="width:20%;float:left;";
+                    lddtdiv.style="width:20%;float:left;";
 
     
                   }
@@ -1243,8 +1300,6 @@ if($this->session->flashdata('project_inserted'))
                     lnkdiv.id=lnkdiv_id;
                     lnkdiv.className='col-xs-8';
                     lnkdiv.classList.add('lnkdiv');
-
-                    
 
 
                     // create inner div named lnkindiv
@@ -1264,30 +1319,44 @@ if($this->session->flashdata('project_inserted'))
                     // add column labels to column div's
 
                     
-                    var i=0;
+                    // var i=0;
+                    // var tsk=[];
+                    // var stpos=0;
+                    // var idx=0;
+                    
+                    // idx=vdepends_on_task.indexOf(',',stpos);
+
+
+                    // while (idx !== -1)
+                    // {
+                      
+                    //   tsk[i]=vdepends_on_task.substring(stpos,idx);
+                    //   console.log("vdepends_on_task="+tsk[i]);
+                    //   stpos=idx+1;
+                    //   i=i+1;
+                      
+                    //   idx=vdepends_on_task.indexOf(',',stpos);
+                    // }
+                    console.log("inside loop..vdepends_on_task="+vdepends_on_task+' taskid='+taskid);
                     var tsk=[];
-                    var stpos=0;
-                    var idx=0;
-                    
-                    idx=vdepends_on_task.indexOf(',',stpos);
+                    tsk=dep_str2arr(vdepends_on_task);
 
-
-                    while (idx !== -1)
-                    {
+                      //tsk[i]=vdepends_on_task.substring(stpos);
+                      //console.log("vdepends_on_task[last]="+tsk[i]);
                       
-                      tsk[i]=vdepends_on_task.substring(stpos,idx);
-                      console.log("vdepends_on_task="+tsk[i]);
-                      stpos=idx+1;
-                      i=i+1;
-                      
-                      idx=vdepends_on_task.indexOf(',',stpos);
-                    }
-
-                      tsk[i]=vdepends_on_task.substring(stpos);
-                      console.log("vdepends_on_task[last]="+tsk[i]);
-                    
+                     
+                      // tsk_chg array is a copy of tsk array, used for keeping track of non-existing elements and delete the same from database column, depends_on_task
+                     
+                      console.log("tsk.length B4 splice="+tsk.length);
+                          
+                      j=0;
+                      tskdel=[];
+                      tsk_chg=tsk;
+                      var i;
                       for(i=0;i<tsk.length;i++)
                       {
+
+                        console.log("tsk arr item="+tsk[i]);
 
                         // div's for the columns
 
@@ -1328,64 +1397,130 @@ if($this->session->flashdata('project_inserted'))
                         }
 
                         idx2=find_task_idx(tsk[i],tasksArr);
-                   
-                        lnktsk=document.createTextNode(tasksArr[idx2].task_name.substring(0,40)+'...');
-                        vstatus2=tasksArr[idx2].status;
+                        
+                        if (idx2 == -1)
+                        {
+                          // delete the task id which is not available in the database
+
+                          console.log("found item to be deleted "+tsk[i]);
 
 
-                        if (vstatus2==1)
-                          vstatustxt=" Open";
-                        else if (vstatus2==2)
-                          vstatustxt=" In Progress";
-                        else if (vstatus2==3)
-                          vstatustxt=" Completed";
-                        else if (vstatus2==null)
-                          vstatustxt=" Pending Approval";
+                          tskdel[j]=i;
+                          j=j+1;
+                          console.log("tsk.length aft splice="+tsk.length);
+                          
+                          //update the database excluding the inaccessible task
+                          
+                          write_arr_chg="true";
+                          continue;
+                        }
+                        else
+                        {
+                          lnktsk=document.createTextNode(tasksArr[idx2].task_name.substring(0,40)+'...');
+                          vstatus2=tasksArr[idx2].status;
+                          console.log("vstatus2="+vstatus2);
+
+                          vstatustxt=taskstat(vstatus2);
+
+                          // if (vstatus2==1)
+                          //   vstatustxt=" Open";
+                          // else if (vstatus2==2)
+                          //   vstatustxt=" In Progress";
+                          // else if (vstatus2==3)
+                          //   vstatustxt=" Completed";
+                          // else if (vstatus2==null)
+                          //   vstatustxt=" Pending Approval";
 
 
 
-                        lnksta=document.createTextNode(" "+vstatustxt.substring(0,10));
+                          lnksta=document.createTextNode(" "+vstatustxt.substring(0,10));
 
-                        lnkddt=document.createTextNode(" "+tasksArr[idx2].due_date);
-            
-                      
-                        ltskdiv.appendChild(lnktsk);
-                        lstadiv.appendChild(lnksta);
-                        lddtdiv.appendChild(lnkddt);
-                       
-                        lnkindiv.appendChild(ltskdiv);
-                        lnkindiv.appendChild(lstadiv);
-                        lnkindiv.appendChild(lddtdiv);
-                        lnkdiv.appendChild(lnkindiv);                        
+                          lnkddt=document.createTextNode(" "+tasksArr[idx2].due_date);
+              
+                        
+                          ltskdiv.appendChild(lnktsk);
+                          lstadiv.appendChild(lnksta);
+                          lddtdiv.appendChild(lnkddt);
+                         
+                          lnkindiv.appendChild(ltskdiv);
+                          lnkindiv.appendChild(lstadiv);
+                          lnkindiv.appendChild(lddtdiv);
+                          lnkdiv.appendChild(lnkindiv);
+                        }                        
                       }
 
+                      
+                      updencdiv_id="updencdiv"+taskid;
+                      updencdiv=document.getElementById(updencdiv_id);
+                      
+                      updencdiv.appendChild(lnkdiv);
+
+
+                      // add event listner to linkdiv element
+
+                  
+                      lnkdiv.addEventListener('mouseleave',function(event)    {   
                         
-                        updencdiv_id="updencdiv"+taskid;
-                        updencdiv=document.getElementById(updencdiv_id);
                         
-                        updencdiv.appendChild(lnkdiv);
+                        console.log("mouse out event on linkdiv is fired");
+                        //lnkdiv1=document.getElementById(this.lnkdiv_id);
+                        lnkdiv.style="display:none";
+                      
 
+                        // update depends_on_task to have only the existing tasks
 
-                        // add event listner to linkdiv element
+                        if (write_arr_chg=="true")
+                        {
+                          console.log("task found deleted");
+                          j=1;
+                          console.log("tskdel.length="+tskdel.length);
+                          for(i=0;i<tskdel.length;i++)
+                          {
+                            console.log("tskdel.length="+tskdel.length);
+                            console.log("i="+i+" pre splice loop="+tsk+" tskdel[i]="+tskdel[i]);
 
-                        console.log("moseout event added for lnkdiv_id "+lnkdiv_id);
-                        lnkdiv.addEventListener('mouseleave',function(event)    {   
-                       
-                          console.log("mouse out event on linkdiv is fired");
-                          lnkdiv.style="display:none";
+                            tsk2=tsk.splice(tskdel[i],1);
+
+                            if (j>=tskdel.length)
+                            {
+                              console.log("next iteration tskdel="+tsk+" tskdel[j]="+tskdel[j]);
+                            
+                              break;
+                            }
+                            else
+                            {
+                               tskdel[j]=tskdel[j]-j;
+                                j=j+1;
+                            }
+
+                            
+                            
+                          }
+
+                          console.log("tsk array at end="+tsk.length);
+                          window.open("http://localhost/ci/tasks/js_upd_tskdepon/"+taskid+'?tsk_arr='+JSON.stringify(tsk)+'&project_id='+project_id,'_self');
+                        }
+          
+                        
                         });
 
-
                   }
-                  else {
+                  else 
+                  {
+                     console.log("lnkdiv should be shown");
                       lnkdiv.style="display:block";
                   }
 
+                 
+
+
                   }
+
+                  
                 }(taskid,vdepends_on_task));
 
 
-            
+                  
                                
             }
 
@@ -1687,7 +1822,7 @@ if($this->session->flashdata('project_inserted'))
 
         
 
-        divc1.addEventListener("dblclick", function( vassignee,vusername,pt_assignee,vstatus,vapproved,pt_ddate,vduedate ) 
+        divc1.addEventListener("dblclick", function( project_id,vassignee,vusername,pt_assignee,vstatus,vapproved,pt_ddate,vduedate ) 
         {
           return function()   
           {
@@ -1709,7 +1844,7 @@ if($this->session->flashdata('project_inserted'))
             if ((vstatus !== 3 && vusername==pt_assignee) ||(vusername==vassignee && vapproved==0  && vstatus <3 && vstatus!==null))
             {
                 console.log("UPDATE TASK IS TO BE CALLED");
-                window.open("http://localhost/ci/tasks/js_upd_task/"+taskid+'?ddate='+vduedate+'&ptd='+pt_ddate,'_self');
+                window.open("http://localhost/ci/tasks/js_upd_task/"+taskid+'?project_id='+project_id+'&ddate='+vduedate+'&ptd='+pt_ddate,'_self');
             }
             else
             {
@@ -1717,7 +1852,7 @@ if($this->session->flashdata('project_inserted'))
             }
           }
          
-          } (vassignee,vusername,pt_assignee,vstatus,vapproved,pt_ddate,vduedate ) );
+          } ( project_id,vassignee,vusername,pt_assignee,vstatus,vapproved,pt_ddate,vduedate ) );
 
 
         // End of mouse over/mouse enter event triggers
