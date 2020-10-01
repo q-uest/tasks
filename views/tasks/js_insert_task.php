@@ -29,7 +29,7 @@
 
 <div class="container">
 
-<div class="col-xs-5">
+
 
 
 
@@ -37,6 +37,8 @@
 echo "<h3>Tasks for <b>".$this->session->userdata('project_data')->project_name."</b></h3>"; 
 ?>
 
+
+<div class="col-xs-12" style="margin-top:40px;margin-left: 0px;padding-left:0px;"  >
 
 <?php if($this->session->flashdata('taskerrors')): ?>
 		<?php echo $this->session->flashdata('taskerrors') ?>
@@ -49,11 +51,14 @@ echo "<h3>Tasks for <b>".$this->session->userdata('project_data')->project_name.
 
 <?php echo form_open('tasks/validate_task',$attributes); ?>
 
+<!-- <div class="form-group"> -->
 
-<div class="form-group">
 
+<div class="col-xs-6" style="padding-right:50px;border-right:0.5px solid #c2bbb4;">
 
 <?php 
+
+echo form_label('Name'); 
 
 if (isset($_POST["name"]))
 	$pname=$_POST["name"];
@@ -65,23 +70,14 @@ $data = array('class' => 'form-control',
 			  'placeholder' => "Task Name",
 			  'value' => $pname
 			);
-#set_value('name',$_POST["name"] );
-
-#echo '$_POST["name"]='.$_POST["name"];
 ?>
 
 
-
-<?php echo form_input($data);  ?>
-
+<?php echo form_input($data,"",'style="color:red;margin-bottom:40px;"');  ?>
 
 
-</div>
+<?php echo form_label('Description'); ?> 
 
-
-<div class="form-group">
-
-<?php echo form_label('Description'); ?>
 
 <?php 
 
@@ -98,33 +94,147 @@ $data = array('class' => 'form-control',
 			'rows'=>2);
 ?>
 
-<?php echo form_textarea($data);  ?>
+<?php echo form_textarea($data,"",'style=margin-bottom:40px;');  ?>
+
+
+
+<?php
+
+	echo form_label('Dependent on Tasks'); 	
+
+	$data=array('class' => 'form-control',
+			  'name' => 'depends_on_task[]'
+				);
+
+	$selected=array();
+	
+	foreach ($this->session->userdata('task_data') as $task)
+	{
+	
+		#echo "<option value=".$options[$task['id']].">".$task['task_name']."</option>";
+	
+		$selected[$task['id']]=$task['task_name'];
+	}
+
+	#echo form_input($task,'class="form-control"'); 	
+	echo form_multiselect('depends_on_task[]', $selected, set_value('depends_on_task'),"class='css-style col-xs-12'");
+?>
+
 
 
 
 </div>
 
-<div class="form-group">
-
-<?php echo form_label('To Be Completed Before [ Should be <'.$this->session->userdata['vddate'][0]['ddate'].' & >'.$this->session->userdata['cdate'][0]['today'].' ]'); ?>
 
 <?php 
 
+
+echo '<div class="col-xs-4" style="margin-bottom:20px;">';
+
+
+
+########
+# Tentative Start date
+#########################
+
+echo "<div class='col-xs-12'>";
+echo form_label('Tentative Start Date'); 
+ 
+if (isset($_POST["tentative_start_date"]))
+	$tsd=$_POST["tentative_start_date"];
+else
+	$tsd="";
+
+
+
 $data = array('class' => 'form-control',
-			  'name' => 'due_date',
-			  'type'=>'date',
-			  'value' => $this->session->userdata['vddate2']
-			);
+			  'name' => 'tentative_start_date',
+			  'type'=>'date'
+			 );
 
-#echo "vdue_Date=".$this->session->userdata['vddate2'];
 
+echo form_input($data,"",'style=margin-bottom:5px;');  
+
+#echo form_label("between ".$this->session->userdata['cdate'][0]['today'].' & '.$this->session->userdata['vddate'][0]['ddate']);
+
+echo "</div>";
+
+######
+# Tentative End date
+##########################
+
+echo "<div class='col-xs-12' style='margin-top:40px;'>";
+
+echo form_label('Tentative End Date',''); 
+
+
+if (isset($_POST["tentative_end_date"]))
+	$ted=$_POST["tentative_end_date"];
+else
+	$ted="";
+
+ 
+
+$data = array('class' => 'form-control',
+			  'name' => 'tentative_end_date',
+			  'type'=>'date'
+			  );
+
+
+
+
+echo form_input($data);  
+
+#echo form_label('between '.$this->session->userdata['vddate'][0]['ddate'].' &'.' Tentative Start Date');
+
+echo "</div>";
+
+
+######
+# Assigned to
+#######################
+
+if ($this->session->userdata('approved')==0)
+{
+
+
+
+	echo "<div class='col-xs-12' style='margin-top:60px;'>";
+
+	echo form_label('Assign to'); 
+
+	$data=array('class' => 'form-control',
+			  'name' => 'userid',
+			  'placeholder' => 'Choose userid');
+
+	$options=array();
+
+	foreach ($this->session->userdata('user_data') as $user)
+	{
+		$options[$user['id']]=$user['username'];
+	}
+
+	echo form_dropdown('userid', $options,$this->session->userdata('user_id'), 'class="form-control"'); 	
+}
+else
+{
+	echo form_hidden('userid',$this->session->userdata('user_id')); 		
+}
+
+
+echo "</div>";
+
+echo "</div>";
 ?>
 
-<?php echo form_input($data,$this->session->userdata['vddate2']);  ?>
 
 
 
-</div>
+
+
+<!-- <div class="form-group"> -->
+
+
 
 
 <div class="form-group">
@@ -150,37 +260,6 @@ $data = ['parent_task_id'=>$this->session->userdata['vparent_task_id']];
 
 
 
-<div class="form-group">
-
-<?php 
-
-
-if ($this->session->userdata('approved')==0)
-{
-
-	echo form_label('Assigned to'); 
-
-	$data=array('class' => 'form-control',
-			  'name' => 'userid',
-			  'placeholder' => 'Choose userid');
-
-	$options=array();
-
-	foreach ($this->session->userdata('user_data') as $user)
-	{
-		$options[$user['id']]=$user['username'];
-	}
-
-	echo form_dropdown('userid', $options,$this->session->userdata('user_id'), 'class="form-control"'); 	
-}
-else
-{
-	echo form_hidden('userid',$this->session->userdata('user_id')); 		
-}
-
-?>
-
-</div>
 
 <div class="form-group">
 
@@ -214,37 +293,9 @@ echo form_hidden('approved',$this->session->userdata('approved'));
 
 </div>
 
-<div class="form-group"  >
-
-
-
-<?php
-
-	echo form_label('Dependent on Tasks'); 	
-
-	$data=array('class' => 'form-control',
-			  'name' => 'depends_on_task[]'
-				);
-
-	$selected=array();
-	
-	foreach ($this->session->userdata('task_data') as $task)
-	{
-	
-		#echo "<option value=".$options[$task['id']].">".$task['task_name']."</option>";
-	
-		$selected[$task['id']]=$task['task_name'];
-	}
-
-	#echo form_input($task,'class="form-control"'); 	
-	echo form_multiselect('depends_on_task[]', $selected, set_value('depends_on_task'),"class='css-style col-xs-12'");
-?>
-
-</div>
-
 
 <div class="form-group col-xs-10">
-<div class="col-xs-5" style="margin-top:20px;left:45%">
+<div class="col-xs-5" style="margin-top:30px;left:35%">
 <?php 
 
 $data = array('class' => 'btn btn-success btn-lg',
@@ -253,12 +304,43 @@ $data = array('class' => 'btn btn-success btn-lg',
 ?>
 
 <?php echo form_submit($data);  ?>
+
 </div>
+
+<div class="col-xs-5" style="margin-top:30px;left:10%" >
+<?php 
+
+$data = array('class' => 'btn btn-success btn-lg',
+			  'name' => 'cancel',
+			  'value' => 'Cancel');
+
+$js = 'onClick="cancel_func()"';
+echo form_input($data,"",$js);  
+?>
+
+
+</div>
+
+
 
 
 <!-- <?php echo form_close(); ?> -->
 </div>
 </div>
+
+<script type="text/javascript">
+
+function cancel_func() {
+	window.location.replace("http://localhost/ci/projects");
+}
+
+
+</script>
+
+
+
+
+
 </body>
 
 

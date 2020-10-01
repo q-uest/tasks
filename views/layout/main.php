@@ -411,8 +411,10 @@ cursor:pointer;
 
 .css-style
 {
-  background-color: gray;
-  color:white;
+  background-color:white;
+  color:grey;
+  padding-left: 0px;
+  margin-left:0px;
 }
 .tlbrdiv{
   margin-top:5px;
@@ -466,6 +468,20 @@ a:active {
 
 .v2 {
   padding-left: var(--rtlvl);
+
+}
+
+.setmsg {
+  margin-left:15px;
+  background-color:#96CDCD;
+  color:red;
+  font-weight:bold;
+  font-size:15px;
+  margin-bottom:20px;
+}
+
+.ddatediv {
+display: none;
 
 }
 

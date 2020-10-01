@@ -20,6 +20,14 @@
 	color: white;
 		}
 
+
+	#.fldcss {
+		background-color: grey;
+		color: white;
+		font-weight:bold;
+		font-size: 20px;
+		}
+	}
 </style>
 
 </head>
@@ -28,7 +36,6 @@
 
 <div class="container">
 
-<div class="col-xs-5">
 
 
 
@@ -50,9 +57,9 @@
 
 
 
-<div class="form-group">
+<div class="col-xs-6" style="border-right:1px red solid;">
 
-
+<div class="col-xs-12">
 
 <?php 
 
@@ -60,83 +67,83 @@
 
 $data = array('class' => 'form-control',
 			  'name' => 'task_id',
-			  'value'=> $task[0]["id"]);
+			  'value'=> $this->session->userdata['task']["task_id"]        
+			);
 ?>
 
-<?php echo form_hidden($data,$task[0]["id"]);  ?>
-
-
+<?php echo form_hidden($data,$this->session->userdata['task']["task_id"]);  ?>
 
 </div>
 
-
-
-
-<div class="form-group">
-
-
+<div class="col-xs-12" >
 
 <?php 
 
 echo form_label('Task'); 
 
+if (isset($_POST["task_name"]))
+{
+	echo "task_name Found";
+	$vname=$_POST["task_name"];
+}
+else
+{	
+	echo "<br>vstat not found";
+	$vname=$this->session->userdata['task']['task_name'];
+}
+
+
+
 $data = array('class' => 'form-control',
 			  'name' => 'task_name',
-			  'placeholder' => $task[0]["task_name"]);
+			  'placeholder' => $vname
+			  			 );
 ?>
 
-<?php echo form_input($data,$task[0]["task_name"]);  ?>
+<?php echo form_input($data,$vname);  ?>
 
 
 
 </div>
 
-
-<div class="form-group">
+<div class="col-xs-12" style="margin-top:20px">
 
 <?php echo form_label('Description'); ?>
 
 <?php 
 
+#echo "post=".$_POST;
+
+if (isset($_POST['description']))
+{
+	echo "task_body Found";
+	$vbody=$_POST["description"];
+}
+else
+{	
+	echo "<br>vstat not found";
+	$vbody=$this->session->userdata['task']['task_body'];
+	
+}
+
+
 $data = array('class' => 'form-control',
 			  'name' => 'description',
 			  'placeholder' => 'Task Description',
-			'rows'=>2);
+			'rows'=>3);
 ?>
 
-<?php echo form_textarea($data,$task[0]["task_body"]);  ?>
+
+<?php echo form_textarea($data,$vbody);  ?>
 
 
 
 </div>
 
-<div class="form-group">
-
-<?php echo form_label('To Be Completed Before [Must be <'.$this->session->userdata['vddate'].' & >'.$this->session->userdata['today'].' ]'); ?>
-
+<div class='col-xs-12' style="margin-top:20px">
 
 <?php 
 
-$data = array('class' => 'form-control',
-			  'name' => 'due_date',
-			  'type'=>'date',
-			  'value' => $this->session->userdata['task']['defvddate'],
-			  'placeholder' => $this->session->userdata['task']['defvddate']);
-?>
-
-<?php echo form_input($data,$this->session->userdata['task']['defvddate']);  ?>
-
-
-
-</div>
-
-
-
-
-
-<div class="form-group">
-
-<?php 
 
 
 if ($this->session->userdata('approved')==0)
@@ -150,7 +157,7 @@ if ($this->session->userdata('approved')==0)
 
 	$options=array();
 
-	foreach($user_data as $user)
+	foreach($this->session->userdata('user_data') as $user)
 	{
 		
 		$options[$user['id']]=$user['username'];
@@ -164,133 +171,10 @@ else
 }
 
 ?>
-
 </div>
 
 
-<div class="form-group">
-
-<?php 
-
-echo form_label('Status'); 
-#echo "Task's status=".$this->session->userdata['task']["status"];
-if ($this->session->userdata['task']["status"] != 4 )
-{
-?>
-
-<div class='form-group' id='statdiv'>
-
-
-<?php 
-
-
-
-$data = array('class' => 'form-control',
-				'id' => 'status',
-			  'name' => 'status');
-
- 	$stoptions=array(1=>'Open',2 =>'In Progress',3 => 'Completed',4 => 'Unscheduled');
-	echo form_dropdown('status', $stoptions,$task[0]["status"],'onChange="check_for_compl();" id="status" class="form-control"'); 	
-
- } 
-
- else 
- {
-
- 	$data = array('class' => 'form-control',
-				'id' => 'status',
-			  'name' => 'status');
-
- 	$stoptions=array(4=>'Unscheduled');
- 	echo form_dropdown('status', $stoptions,$task[0]["status"],'id="status" class="form-control"');
-
-
-
- }
-
-?>
-
-<script type="text/javascript">
-
-dditm=document.getElementById("status");
-console.log("The script of onchange is firing..");
-function check_for_compl() {
-	cmtdiv=document.getElementById("cmtdiv");
-	cmtcol=document.getElementById('clo_comments');
-	if (dditm.value==3)
-	{
-		console.log("Completed has been choosen");
-		
-			cmtdiv.style="display:block";
-			cmtcol.style="display:block";
-	}
-	else
-	{
-			console.log("other than completed has been choosen"+dditm.value);
-			cmtdiv.style="display:none";
-			cmtcol.style="display:none";
-	}
-
-}
-
-
-</script>
-
-
-
-
-
-</div>
-
-<?php if ($task[0]["status"]==3)
-{
-?>
-
-<div class="form-group" id="cmtdiv" style="display:block">
-<?php }
-
-else
-{
-?>
-
-<div class="form-group" id="cmtdiv" style="display:none">
-
-<?php
-}
-?>
-
-<?php echo form_label('Closing Comments'); 
-
-
-
-
-$data = array('class' => 'form-control',
-			  'name' => 'clo_comments',
-			  'id'=>'clo_comments',
-			  'placeholder' => 'Closing Comments',
-				'rows'=>2);
-?>
-
-<?php echo form_textarea($data,$task[0]["clo_comments"]);  ?>
-
-</div>
-
-
-
-<div class="form-group">
-
-
-<?php 
-
-$data = array('class' => 'form-control',
-			  'name' => 'approved');
-?>
-
-<?php echo form_hidden($data,$task[0]["approved"]);  ?>
-
-
-
-<div class="form-group" id='statdiv'>
+<div class="col-xs-12" id='statdiv' style="margin-top:20px">
 
 <?php
 
@@ -334,12 +218,303 @@ $data = array('class' => 'form-control',
 
 </div>
 
+</div>
 
 
 
-<div>
+<div class="col-xs-4">
+
+<div class="col-xs-12 form-group" id='statdiv'>
+<?php 
+
+echo form_label('Status');
 
 
+if (isset($_POST["status"]))
+{
+	echo "vstat Found";
+	$vstat=$_POST["status"];
+}
+else
+{	
+	echo "<br>vstat not found";
+	$vstat=$this->session->userdata['task']["status"];
+}
+
+
+echo "vstat=".$vstat;
+
+#echo "Task's status=".$this->session->userdata['task']["status"];
+if ($vstat != 4 )
+{
+ 
+$data = array('class' => 'form-control',
+				'id' => 'status',
+			  'name' => 'status',
+			  'value' => $vstat);
+
+ 	$stoptions=array(1=>'Open',2 =>'In Progress',3 => 'Completed',4 => 'Unscheduled');
+	echo form_dropdown('status', $stoptions,$vstat,'onChange="check_for_compl();" id="status" class="form-control"'); 	
+
+ } 
+ else 
+ {
+
+ 	$data = array('class' => 'form-control',
+				'id' => 'status',
+			  'name' => 'status',
+			'value' => $vstat);
+
+ 	$stoptions=array(4=>'Unscheduled');
+ 	echo form_dropdown('status',$stoptions,$vstat,'id="status" class="form-control"');
+
+ }
+
+?>
+
+</div>
+
+<script type="text/javascript">
+
+function check_for_compl() {
+	cmtdiv=document.getElementById("cmtdiv");
+	cmtcol=document.getElementById('clo_comments');
+	ddatedivi=document.getElementById('ddatediv');
+	dditm=document.getElementById("status");
+			
+	if (dditm.value==3)
+	{
+		console.log("Completed has been choosen");
+		
+			cmtdiv.style="display:block";
+			cmtcol.style="display:block";
+	}
+	else
+	{
+			console.log("other than completed has been choosen"+dditm.value);
+			cmtdiv.style="display:none";
+			cmtcol.style="display:none";
+	}
+
+	console.log("ddate.value="+dditm.value);
+
+	if (dditm.value==2 || dditm.value==3 )
+	{
+		console.log("dditm=completed or in progress!!");
+		ddatedivi.style="margin-top:20px;display:block";
+	}
+	else
+	{
+		console.log("dditm=open or Unscheduled");
+		ddatedivi.style="display:none";
+	}
+	
+}
+
+
+</script>
+
+
+
+
+
+<?php if ($this->session->userdata['task']["status"]==3)
+{
+?>
+
+<div class="form-group" id="cmtdiv" style="display:block">
+<?php }
+
+else
+{
+?>
+
+<div class="form-group" id="cmtdiv" style="display:none">
+
+<?php
+}
+?>
+
+
+<?php echo form_label('Closing Comments'); 
+
+
+
+
+$data = array('class' => 'form-control',
+			  'name' => 'clo_comments',
+			  'id'=>'clo_comments',
+			  'placeholder' => 'Closing Comments',
+				'rows'=>2);
+?>
+
+<?php echo form_textarea($data,$this->session->userdata['task']["clo_comments"]);  ?>
+
+</div>
+
+
+
+
+<?php 
+
+########
+# Tentative Start date
+#########################
+
+echo "<div class='col-xs-12' style='margin-top:10px'>";
+echo form_label('Tentative Start Date'); 
+ 
+if (isset($_POST["tentative_start_date"]))
+	$tsd=$_POST["tentative_start_date"];
+else
+	$tsd=$this->session->userdata['task']['tentative_start_date'];
+
+
+echo "TSD=".$this->session->userdata['task']['tentative_start_date'];
+
+$data = array('class' => 'form-control',
+			  'name' => 'tentative_start_date',
+			  'type'=>'date',
+			  'value'=> $tsd
+			 );
+
+
+echo form_input($data,"",'style=margin-bottom:5px;');  
+
+#echo form_label("between ".$this->session->userdata['cdate'][0]['today'].' & '.$this->session->userdata['vddate'][0]['ddate']);
+
+echo "</div>";
+
+######
+# Tentative End date
+##########################
+
+echo "<div class='col-xs-12' style='margin-top:20px;'>";
+
+echo form_label('Tentative End Date',''); 
+
+
+if (isset($_POST["tentative_end_date"]))
+	$ted=$_POST["tentative_end_date"];
+else
+	$ted="";
+
+ 
+
+$data = array('class' => 'form-control',
+			  'name' => 'tentative_end_date',
+			  'type'=>'date',
+			  'value'=>$this->session->userdata['task']['tentative_end_date']
+			  );
+
+
+
+
+echo form_input($data);  
+
+#echo form_label('between '.$this->session->userdata['vddate'][0]['ddate'].' &'.' Tentative Start Date');
+
+echo "</div>";
+
+?>
+
+<div class="col-xs-12" style="margin-top: 5px;">
+
+<?php echo form_label('(Must be >='.$this->session->userdata['today'].' < Tentative Start Date)'); ?>
+
+</div>
+
+
+<?php 
+
+#echo "status=".$this->session->userdata['task']["status"];
+
+
+
+
+#echo "<br>upd_view defvddate=".$this->session->userdata['task']['defvddate'];
+
+if (isset($_POST["tentative_end_date"]))
+	$ddlbl=$_POST["tentative_end_date"];
+else
+	$ddlbl=$this->session->userdata['task']['tentative_end_date'];
+
+
+if (isset($_POST["status"]))
+{
+	echo "vstat Found";
+	$vshowdd=$_POST["status"];
+}
+else
+{	
+	echo "<br>vstat not found";
+	$vshowdd=$this->session->userdata['task']["status"];
+}
+
+echo "vshowdd=".$vshowdd;
+
+
+
+echo "<div class='col-xs-12 ddatediv' id='ddatediv' style='margin-top:20px;'>";
+
+	echo form_label('Due Date',''); 
+
+
+$val=$this->session->userdata['task']['defvddate'];
+
+
+$data = array('class' => 'form-control',
+				'id' => 'ddate',
+			  'name' => 'due_date',
+			  'type'=>'date',
+			  'value' => $val ,
+			  'placeholder' => $val);
+
+
+echo form_input($data,$val); 
+
+
+echo form_label('(Must be <='.date('d/m/Y',strtotime($ddlbl)));
+
+if ( $this->session->userdata['task']["status"] == 2 || $this->session->userdata['task']["status"] == 3  )
+{
+	#echo "<script language=\"javascript\">console\.log(\"fired the commands in status if 2 or 3\")\;di=document\.getElementById('ddatediv')\;di\.classList\.add('ddatediv')\;</script>";
+
+	echo "<script language=\"javascript\">console.log(\"testing\");dditm=document.getElementById('ddatediv');dditm.classList.remove('ddatediv');console.log(\"end of script\");</script>";
+}
+
+?>
+
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="form-group">
+
+
+<?php 
+
+$data = array('class' => 'form-control',
+			  'name' => 'approved');
+?>
+
+<?php echo form_hidden($data,$this->session->userdata['task']["approved"]);  ?>
+
+
+
+</div>
+
+
+<div class="col-xs-12">
+
+<div class="col-xs-7" style="margin-left:40px;">
 
 <?php echo form_label('Latest Update'); ?>
 
@@ -354,26 +529,41 @@ $data = array('class' => 'form-control',
 <?php echo form_textarea($data,$this->session->userdata['task']["latest_update"]);  ?>
 
 
+</div>
 
 </div>
 
-<br>
+<div  class="col-xs-12" id="savediv" >
 
-<div class="form-group " id="savediv" style="text-align: center">
-<!-- <div class="col-xs-5"> -->
+<div class="col-xs-4" style="text-align: center;margin-top:25px;">
 <?php 
 
 $data = array('class' => 'btn btn-success btn-lg',
 			  'name' => 'save',
 			  'value' => 'Save');
-?>
-<?php 
+
 $attributes = array('id'=>'save');
 echo form_submit($data,'','" id="save" ');  
+
 ?>
-<!-- </div> -->
 
+</div>
 
+<div class="col-xs-4" style="text-align:left center;margin-top:25px;">
+
+<?php 
+
+$data = array('class' => 'btn btn-success btn-lg',
+			  'name' => 'cancel',
+			  'value' => 'Cancel');
+?>
+<?php 
+$attributes = array('id'=>'cancel');
+echo form_submit($data,'','" id="cancel" ');  
+?>
+</div>
+
+</div>
 
 
 

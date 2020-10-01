@@ -103,27 +103,6 @@ $data = array('class' => 'form-control',
 
 </div>
 
-<div class="form-group">
-
-<?php echo form_label('To Be Completed Before [ Should be >'.$this->session->userdata['cdate'][0]['today'].' ]'); ?>
-
-<?php 
-
-$data = array('class' => 'form-control',
-			  'name' => 'due_date',
-			  'type'=>'date'
-			  );
-
-#echo "vdue_Date=".$this->session->userdata['vddate2'];
-
-?>
-
-<?php echo form_input($data);  ?>
-
-
-
-</div>
-
 
 <div class="form-group">
 
@@ -148,13 +127,13 @@ $data = ['parent_task_id'=>$this->session->userdata['vparent_task_id']];
 
 
 
-<div class="form-group">
 
 <?php 
 
 
 if ($this->session->userdata('approved')==0)
 {
+	echo "<div class='form-group'>";
 
 	echo form_label('Assigned to'); 
 
@@ -170,6 +149,62 @@ if ($this->session->userdata('approved')==0)
 	}
 
 	echo form_dropdown('userid', $options,$this->session->userdata('user_id'), 'class="form-control"'); 	
+
+ echo "</div>";
+
+########
+# Tentative Start date
+#########################
+
+echo "<div>";
+echo form_label('Tentative Start Date'); 
+ 
+if (isset($_POST["tentative_start_date"]))
+	$ptsd=$_POST["tentative_start_date"];
+else
+	$ptsd="";
+
+
+$data = array('class' => 'form-control',
+			  'name' => 'tentative_start_date',
+			  'type'=>'date',
+			  'value'=>$ptsd
+			 );
+
+
+echo form_input($data,"",'style=margin-bottom:5px;');  
+
+
+echo "</div>";
+
+######
+# Tentative End date
+##########################
+
+echo "<div  style='margin-top:0px;'>";
+
+echo form_label('Tentative End Date',''); 
+
+
+if (isset($_POST["tentative_end_date"]))
+	$pted=$_POST["tentative_end_date"];
+else
+	$pted="";
+
+
+
+$data = array('class' => 'form-control',
+			  'name' => 'tentative_end_date',
+			  'type'=>'date',
+			  'value'=>$pted
+			  );
+
+
+
+
+echo form_input($data);  
+echo "</div>";
+
 }
 else
 {
@@ -178,7 +213,6 @@ else
 
 ?>
 
-</div>
 
 <div class="form-group">
 
@@ -224,6 +258,18 @@ $data = array('class' => 'btn btn-success btn-lg',
 ?>
 
 <?php echo form_submit($data);  ?>
+
+
+</div>
+
+<div class="col-xs-5">
+<?php 
+
+$data = array('class' => 'btn btn-success btn-lg',
+			  'name' => 'cancel',
+			  'value' => 'Cancel');
+?>
+
 </div>
 
 

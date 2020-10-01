@@ -431,7 +431,7 @@ if($this->session->flashdata('project_inserted'))
           divc1=document.createElement('div');
           divc1.id='divc1'+taskid;
           //divc1.className="col-xs-12";
-            divc1.className="col-xs-8";
+          divc1.className="col-xs-8";
           
           divc1.classList.add("divc1");
 
@@ -498,6 +498,7 @@ if($this->session->flashdata('project_inserted'))
           // add_updbtn variable for adding button only when the conditions are met, otherwise that part is to be excluded from executing
           
           add_updbtn="false";
+          
           if (tasksArr[i].username==vassignee || pt_assignee==tasksArr[i].username ||mt_owner==login_user) 
           {
             updbtn=document.createElement("BUTTON");
@@ -509,7 +510,6 @@ if($this->session->flashdata('project_inserted'))
           {
             console.log("Provide Update button fired");
             updbtn.innerHTML="Provide Update";
-
             updbtn.value="Provide Update";
           }
           else if (tasksArr[i].username==pt_assignee|| mt_owner==login_user)
@@ -599,11 +599,11 @@ if($this->session->flashdata('project_inserted'))
 
           upddiv.style="margin-bottom: 15px;margin-left:-35px;margin-top:10px;";
 
-          // adding toolbar, only if approved=0
+          
 
 
           vapproved=tasksArr[i].approved;
-          console.log("APPROVED="+vapproved);
+          console.log("taskid="+taskid+"APPROVED="+vapproved);
 
 
           // Set task's status
@@ -659,11 +659,13 @@ if($this->session->flashdata('project_inserted'))
           tlbrdiv.className="col-xs-4 tlbrdiv";
           //tlbrdiv.style="margin-top:20px;width:200px;float:right;";
           
+          // adding toolbar, only if approved=0
+
           
           if (vapproved==0 )
           {
             
-
+            console.log("create tlbrdiv elements...vapproved="+vapproved+' taskid='+taskid);
             addsibbtn=document.createElement("button");
             addchlbtn=document.createElement("button");
             modbtn=document.createElement("button");
@@ -702,8 +704,25 @@ if($this->session->flashdata('project_inserted'))
               tlbrdiv.appendChild(expbtn);
             }
              
+            
+            // if the task is "COMPLETED", disable Add buttons
+
+            if (vstatus==3)
+            {
+              addsibbtn.className="glyphicon glyphicon-plus disabled";
+              addchlbtn.className="glyphicon glyphicon-subscript disabled";              
+            }
 
 
+            // find if parent task is "Completed", disble "modify" button too
+
+            if (currlvl>1)
+            {
+              
+              if (tasksArr[parent_taskidx].status==3 )
+                 modbtn.className="glyphicon glyphicon-pencil disabled";               
+            }
+            
               if (currlvl==1 && has_child=='Y')
               {
                 
@@ -987,6 +1006,8 @@ if($this->session->flashdata('project_inserted'))
 
           
           vusername=tasksArr[i].username;
+
+          console.log("last phase vusername="+vusername);
 
           if (vapproved==1 && tasksArr[i].username!==pt_assignee)
           {
@@ -1774,50 +1795,61 @@ if($this->session->flashdata('project_inserted'))
         // This handler will be executed every time the cursor
         // is moved over a different list item
 
-        divc1.addEventListener("mouseover", function( event ) {   
-          // highlight the mouseover target
-          //console.log("MOUSEOVER event fired");
-          //this.style.backgroundColor = "orange";
-          //this.style.cursor = "pointer";
-          //this.style.color = "white";
-          this.classList.add('tskhglt');
-          taskid=this.id.substring(5);
+        divc1.addEventListener("mouseover", function(vapproved) 
+        {
+          return function()
+          {   
+            // highlight the mouseover target
+            //console.log("MOUSEOVER event fired");
+            //this.style.backgroundColor = "orange";
+            //this.style.cursor = "pointer";
+            //this.style.color = "white";
+            this.classList.add('tskhglt');
+            taskid=this.id.substring(5);
 
-        //  console.log("this id="+this.id+'.'+taskid);
-          rtdiv=document.getElementById('rtdiv'+taskid);
-          //rtdiv.style="margin-bottom:10px;border-bottom: 2px solid red";
-          rtdiv.classList.remove("rtdiv");
-          rtdiv.classList.remove("rtdivmot");
-          rtdiv.classList.add("rtdivmov");
-          
-           
-          if (vapproved==0)
-          {
-            tlbrdiv=document.getElementById('tlbrdiv'+taskid);
-            tlbrdiv.style="display:block;";
-          }
+            //  console.log("this id="+this.id+'.'+taskid);
+            rtdiv=document.getElementById('rtdiv'+taskid);
+            //rtdiv.style="margin-bottom:10px;border-bottom: 2px solid red";
+            rtdiv.classList.remove("rtdiv");
+            rtdiv.classList.remove("rtdivmot");
+            rtdiv.classList.add("rtdivmov");
             
-          }, false);
-
-        divc1.addEventListener("mouseout", function( event ) {   
-          // highlight the mouseover target
-          //console.log("MOUSEOUT event fired");
-          //this.style.backgroundColor = "";   
-          //this.style.color = "";
-          //this.style.cursor = "default";
-
-          this.classList.toggle('tskhglt');
-          taskid=this.id.substring(5);
-          rtdiv=document.getElementById('rtdiv'+taskid);
-          rtdiv.classList.remove("rtdivmov");
-          rtdiv.classList.remove("rtdiv");
-          rtdiv.classList.add("rtdivmot");
-          if (vapproved==0)
-          {
-            tlbrdiv=document.getElementById('tlbrdiv'+taskid);
-            tlbrdiv.style="display:none";
+            console.log("taskid="+taskid+' vapproved='+vapproved);
+             
+            if (vapproved==0)
+            {
+              tlbrdiv=document.getElementById('tlbrdiv'+taskid);
+              tlbrdiv.style="display:block;";
+            }
           }
-        }, false);
+              
+          }(vapproved));
+
+        divc1.addEventListener("mouseout", function(vapproved) 
+        {   
+              return function()   
+              {
+              
+                // highlight the mouseover target
+                //console.log("MOUSEOUT event fired");
+                //this.style.backgroundColor = "";   
+                //this.style.color = "";
+                //this.style.cursor = "default";
+
+                this.classList.toggle('tskhglt');
+                taskid=this.id.substring(5);
+                rtdiv=document.getElementById('rtdiv'+taskid);
+                rtdiv.classList.remove("rtdivmov");
+                rtdiv.classList.remove("rtdiv");
+                rtdiv.classList.add("rtdivmot");
+
+                if (vapproved==0)
+                {
+                  tlbrdiv=document.getElementById('tlbrdiv'+taskid);
+                  tlbrdiv.style="display:none";
+                }
+              }
+        }(vapproved));
 
 
         
@@ -1838,17 +1870,18 @@ if($this->session->flashdata('project_inserted'))
 
             // call task update form
 
-            console.log("vusername="+vusername+' ptassignee='+pt_assignee+' vassignee='+vassignee+' status='+vstatus+'vapproved='+vapproved);
+            console.log("taskid="+taskid+"vusername="+vusername+' ptassignee='+pt_assignee+' vassignee='+vassignee+' status='+vstatus+'vapproved='+vapproved+'pt_ddate='+pt_ddate);
             
 
-            if ((vstatus !== 3 && vusername==pt_assignee) ||(vusername==vassignee && vapproved==0  && vstatus <3 && vstatus!==null))
+            if ((vstatus != 3 && vusername==pt_assignee) ||(vusername==vassignee && vapproved==0  && vstatus <3 && vstatus!==null))
             {
                 console.log("UPDATE TASK IS TO BE CALLED");
+                
                 window.open("http://localhost/ci/tasks/js_upd_task/"+taskid+'?project_id='+project_id+'&ddate='+vduedate+'&ptd='+pt_ddate,'_self');
             }
-            else
+            else if (vusername!==vassignee )
             {
-              alert("You are not authorised to perform update operation");
+              alert("You are not authorised to perform update operation!!");
             }
           }
          
@@ -2555,7 +2588,7 @@ if($this->session->flashdata('project_inserted'))
 			//console.log("(2)find_task_idx index=".concat(i));
 			if (found=='true')
       { 
-        consone.log("found the task_id"+i);
+        console.log("found the task_id"+i);
 			   return(i);
       }
 			else

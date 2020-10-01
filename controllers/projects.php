@@ -30,7 +30,8 @@ class Projects extends CI_Controller {
 				echo $this->session->flashdata('task_updated');
 		else
 			echo $this->session->flashdata('deptsks_updated');
-				
+
+		echo $this->session->flashdata('master_closed');
 		echo $this->session->flashdata('task_inserted');
 		echo $this->session->flashdata('task_deleted');
 		echo $this->session->flashdata('cleanup_deptask');

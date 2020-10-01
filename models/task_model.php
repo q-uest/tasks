@@ -74,11 +74,12 @@ for ($i=0;$i<sizeof($val);$i++)
 public function check_deptask_stat($id,$deptasks)
 {
 
-###############
+##########
 # Usage:
-#Check the statuses of the listed tasks in depends_on_task column, if they are "NOT CLOSED"
-# deptasks is an array with the dependent_tasks
-########
+#  Check the statuses of the listed tasks in depends_on_task column, 
+#  if they are "NOT COMPLETED". 
+#  'deptasks' is an array with the dependent_tasks
+#################################
 
 
 	$this->db->where('project_id', $id);
@@ -102,6 +103,17 @@ public function populate_dependson_tasks($project_id,$username,$id)
 	 project_id='$project_id' AND username='$username' AND parent_task_id !=0 AND  id !='$id'");
 	return $query->result_array();
 
+
+}
+
+public function get_parent_status($pt_taskid)
+{
+
+	# Check if master task is completed
+	$rows=$this->db->query("select id,status from tasks where 
+		id='$pt_taskid' and status=3");
+	echo "num_rows=".$rows->num_rows();
+	return $rows->num_rows();
 
 }
 
@@ -136,19 +148,36 @@ public function check_duedate($ddate,$parddt)
 	return $numrows;
 }
 
+
+public function check_duedate_gt_ted($ddate,$ted)
+{
+
+	echo "<br><br>from check_duedate....ddate=".$ddate.' ted='.$ted;
+	$res=$this->db->query(
+		"SELECT 'true' where str_to_date('$ddate','%Y-%m-%d')>str_to_date('$ted','%Y-%m-%d')");
+	#$result=$this->db->get();
+
+	$numrows=$res->num_rows();
+	echo "<br>check_duedate_gt_ted....numrows=".$numrows;
+	#echo "result=".$res;
+	return $numrows;
+}
+
 public function get_currdate()
 {
 	$query=$this->db->query("select date_format(curdate(),'%d/%m/%Y') as today");
 	return $query->result_array();
 }
 
+
 public function check_duedate_curdate($ddate)
 {
 
+	
 	$res=$this->db->query(
-	"select 'true' where str_to_date('$ddate','%d-%b-%Y')<=curdate()");
+	"select 'true' where str_to_date('$ddate','%Y-%m-%d')<curdate()");
 	$numrows=$res->num_rows();
-	#echo "<br>curdate check of numrows=".$numrows;
+	echo "<br>curdate check of numrows=".$numrows." ddate=".$ddate;
 	return $numrows;
 }
 
@@ -179,7 +208,7 @@ public function db_fetch_task($id)
 
 {
 
-	$query=$this->db->query("SELECT `id`, `task_name`, `task_body`, `parent_task_id`, `userid`, `approved`, `status`, `project_id`, date_format(`due_date`,'%d-%b-%Y') as `due_date`,`groupid`,`clo_comments`,`latest_update`,`latestupd_datetime`,`depends_on_task` FROM tasks where id='$id'");
+	$query=$this->db->query("SELECT `id`, `task_name`, `task_body`, `parent_task_id`, `userid`, `approved`, `status`, `project_id`, date_format(`due_date`,'%d-%b-%Y') as `due_date`,`groupid`,`clo_comments`,`latest_update`,`latestupd_datetime`,`depends_on_task`,`tentative_start_date`,`tentative_end_date` FROM tasks where id='$id'");
 
 	#$this->db->select("`id`, `task_name`, `task_body`, `parent_task_id`, `userid`, `approved`, `status`, `project_id`, `due_date`, `groupid`");
 
