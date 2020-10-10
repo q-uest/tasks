@@ -26,8 +26,12 @@
   --outbrdr :5px solid #2E4053;  
   --incheight: 0;
   --noitems : 5000;
-  
+  --scaleval: 1;  
 }
+
+:pdiv {
+  --scaleval: 1;
+ }
 
 .vldivout {
   padding-left: var(--rtlvl) ;
@@ -52,6 +56,11 @@ background-color: #f7f7f2;
 
 }
 
+
+.zoomout {
+
+   transform: scale(var(--scaleval, 1));
+}
 
 .omdiv {
   #border-left: 3px solid #339933;
@@ -259,8 +268,14 @@ margin-bottom:10px;
 }
 
 
+.probut {
+
+  font-size:20px;
+  color:#5D8D8D;
+}
+
 .divhglt {
-  border:2px solid lightgray;
+  border:2px solid #0f0f0f;
   padding-top:5px;
   #padding-bottom:5px;
 }
@@ -462,6 +477,10 @@ a:active {
   display: none;
 }
 
+.activepro{
+
+}
+
 .disabled { cursor: not-allowed; }
 
 
@@ -542,8 +561,6 @@ display: none;
 	?>
 
 
-
-  
   <?php $this->load->view('users/login_view'); ?>
 
 

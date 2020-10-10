@@ -81,6 +81,14 @@ if($this->session->flashdata('project_inserted'))
                   //
                 projicon.className="glyphicon glyphicon-collapse-down";
                 display_tasks(tasksArr);
+
+                change_active_proj();
+
+
+
+
+                fstitm=document.getElementById(fstitmid);
+                fstitm.classList.add('activepro');
                 console.log("The calling of functions ends here...!!");
         				  
         			}
@@ -103,6 +111,15 @@ if($this->session->flashdata('project_inserted'))
         fstitm.classList.toggle('hiditm');
         prjendhr.classList.toggle('hiditm');
         
+
+        change_active_proj();
+
+        fstitm.classList.add('activepro');
+        //console.log("activepro is removed from "+actpro[0]);
+        //actproj=document.getElementById(actpro[0].id);
+        //actproj.classList.remove('activepro');
+        //fstitm.classList.add('activepro');
+        
       }
       else if (projicon.className=="glyphicon glyphicon-collapse-down")
       {
@@ -112,10 +129,42 @@ if($this->session->flashdata('project_inserted'))
         //projrw='projrw'+project_id;
         fstitm.classList.toggle('hiditm');
 			  prjendhr.classList.toggle('hiditm');
+        fstitm.classList.remove('activepro');
+
+        //pdivele.classList.add('zoomout');
   		}
           
   
+    function change_active_proj()
+    {
+
+       actpro=document.getElementsByClassName('activepro');
+        
+
+        // if there is any project div is 'active', hide it , remove css class 'activepro', change the icon from collapse to expand. Remove highlighting the project.
+
+        if (actpro.length>0)
+        {
+          pro=actpro[0].id;
+          console.log("activepro is removed from "+pro);
+          proitm=document.getElementById(actpro[0].id);
+          proitm.classList.remove('activepro');
+          proitm.classList.add('hiditm');
+          pid=pro.substr(1,(pro.indexOf("_")-1));
+          pjicn_id='projicon'+pid;
+          picn=document.getElementById(pjicn_id);
+          prodiv=document.getElementById('divhglt'+pid);
+          prodiv.classList.toggle("txthlt");
+          aele=document.getElementById('ahglt'+pid);
+          aele.classList.toggle("txthlt");
+          console.log("picn to be changed is..."+picn.id);
+          picn.className="glyphicon glyphicon-expand";
+        }
+        
            
+
+    }       
+
 
     function find_root_tasks(tasksOrdArr)
     {
@@ -297,7 +346,7 @@ if($this->session->flashdata('project_inserted'))
           var vassignee=tasksArr[i].assignee;
           var vduedate=tasksArr[i].due_date;
           
-          console.log("VASSIGNEE="+vassignee);
+          console.log("VASSIGNEE="+vassignee+' vduedate='+vduedate);
           console.log("username="+tasksArr[i].username);
 
 
@@ -935,8 +984,18 @@ if($this->session->flashdata('project_inserted'))
               {
                 console.log(taskid+' button clicked'+vassignee);
                 
-                
-                window.open("http://localhost/ci/tasks/js_add_task/"+project_id+'?assignee='+pt_assignee+'&parent_task_id='+ptsk+'&groupid='+grpid+'&due_date='+pt_ddate+'&pt_duedate='+pt_ddate,'_self');
+                if (ptsk>0)
+                {
+                  window.open("http://localhost/ci/tasks/js_add_task/"+project_id+'?assignee='+pt_assignee+'&parent_task_id='+ptsk+'&groupid='+grpid+'&due_date='+pt_ddate+'&pt_duedate='+pt_ddate,'_self');
+                }
+                else
+                {
+                   window.open("http://localhost/ci/tasks/js_add_root_task/"+project_id+'?parent_task_id=0','_self');
+
+
+
+
+                }
 
               }
             }(project_id,vassignee,ptsk,grpid,vduedate,pt_ddate));
@@ -2711,15 +2770,25 @@ if($this->session->flashdata('project_inserted'))
 
 		  echo "</div>" ;
 	
-		  echo "<div class='col-xs-7'>";
+		  echo "<div class='col-xs-6'>";
 		  echo "<h4>".$project->project_body."</h4>";
 		  echo "</div>"			;
 
 	
-		  echo "<div class='col-xs-1, pl-0'>";
-	
-	     echo  '<a class="btn btn-primary" href='.base_url() ."projects/del_proj/". $project->id.'><span class="glyphicon glyphicon-remove"></span></a>';
+		  echo "<div class='col-xs-3, pl-0'>";
 
+      
+  
+      echo  '<a class="btn btn-secondary btn-lg probut"><span class="glyphicon glyphicon-zoom-in probut"  id=zi'.$project->id.'></span></a>';
+
+      
+
+      
+       echo  '<a class="btn btn-secondary btn-lg probut"><span class="glyphicon glyphicon-zoom-out probut"  id=zo'.$project->id.'></span></a>';
+
+      
+       echo  '<a class="btn btn-secondary btn-lg probut" href='.base_url() ."projects/del_proj/". $project->id.'><span class="glyphicon glyphicon-remove probut"></span></a>';
+      
       echo "</div>";
       echo "</div>";
   
@@ -2747,6 +2816,147 @@ if($this->session->flashdata('project_inserted'))
 		);
 	
   </script>
+
+
+    <script> type="text/javascript" 
+  
+
+    document.getElementById('zo<?php echo $project->id ?>').addEventListener('click',function(){
+
+
+      // get the icon id
+
+        icnid=this.id;        
+        icn=document.getElementById(icnid);
+        pid=icnid.substring(2);
+        console.log("status of icon="+icn.disabled);
+  
+        // zoom-out only if the zoom-in icon is NOT disabled 
+
+        if ( icn.disabled !== true )
+        {
+      
+//          pdiv_id=document.getElementsByClassName('activepro')[0].children[0].id;
+  
+        pdivs=document.getElementsByClassName('activepro')[0].getElementsByClassName('outdiv_pt0');
+
+        for(i=0;i<pdivs.length;i++)
+        {
+          
+          pdiv_id=pdivs[i].id;
+          console.log("pdiv_id to zoom out "+pdiv_id);
+          pdivele=document.getElementById(pdiv_id);
+          pdivele.classList.add('zoomout');
+          scvl=pdivele.style.getPropertyValue('--scaleval');
+      
+          if (scvl=="")
+              scvl=0.9;
+          else if (Number(scvl)>=0.25)
+          {
+            console.log("scvl B4 change="+scvl);
+            scvl=Number(scvl)-0.1;
+          }
+          
+          // Disable zoom-out icon
+
+          if (Number(scvl)<=0.25)
+          {
+            icn.disabled=true;
+            icn.className='glyphicon glyphicon-zoom-out disabled';
+          }
+          
+                   
+          console.log("scvl val="+scvl);
+          pdivele.style.setProperty('--scaleval', scvl );    
+          pdivele.classList.add('zoomout');
+          
+     
+        }
+          // Enable zoom-in icon   
+
+          icnid="zi"+pid;
+          icn=document.getElementById(icnid);
+          icn.disabled = false;
+          icn.className='glyphicon glyphicon-zoom-in';
+
+      
+        }
+      }
+    );
+  
+  </script>
+
+  <script> type="text/javascript" 
+  
+
+    document.getElementById('zi<?php echo $project->id ?>').addEventListener('click',function(){
+
+      // get the icon id
+
+        icnid=this.id;
+        
+        icn=document.getElementById(icnid);
+        console.log("icnid="+icnid+" status of icon="+icn.disabled);
+
+        // zoom-in only if the zoom-in icon is NOT disabled 
+
+        if ( icn.disabled!==true )
+        {
+          console.log("zoomin id="+this.id+'projid='+this.id.substring(2));
+        
+        pdivs=document.getElementsByClassName('activepro')[0].getElementsByClassName('outdiv_pt0');
+
+        for(i=0;i<pdivs.length;i++)
+        {
+          
+          pdiv_id=pdivs[i].id;
+          console.log("pdiv_id to zoom in "+pdiv_id);
+          pdivele=document.getElementById(pdiv_id);
+          pdivele.classList.add('zoomout');
+
+          scvl=pdivele.style.getPropertyValue('--scaleval');
+          
+          // zoom-in until scale value is less than or equal to 0.9
+
+          if (scvl=="")
+               scvl=1;
+          else if (Number(scvl)<=0.9)
+          {
+             console.log("scvl B4 change="+scvl);
+              scvl=Number(scvl)+0.1;
+          }
+
+          // disable zoom-in icon
+          
+          if (Number(scvl)>=1)
+          {
+            icn.disabled=true;
+            icn.className="glyphicon glyphicon-zoom-in disabled";
+          }
+          console.log("scvl val="+scvl);
+          pdivele.style.setProperty('--scaleval', scvl );    
+          pdivele.classList.add('zoomout');
+        }
+    
+          // enable zoom-out icon,regardless whether it is disabled
+
+            icnid=this.id; 
+            pid=icnid.substring(2);
+            console.log("zoomin icni="+icnid+" pid="+pid);
+            icnid="zo"+pid;
+            icn=document.getElementById(icnid);
+            icn.disabled = false;
+            icn.className='glyphicon glyphicon-zoom-out';
+
+
+        
+      }
+    }
+    );
+  
+  </script>
+
+
 
   <script> type="text/javascript" 
 

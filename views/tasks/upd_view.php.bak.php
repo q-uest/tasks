@@ -293,6 +293,7 @@ $data = array('class' => 'form-control',
 ?>
 
 </div>
+
 <script type="text/javascript">
 
 function check_for_compl() {
@@ -355,29 +356,30 @@ function check_for_compl() {
 {
 ?>
 
-
-<div class="col-xs-12 form-group" id="cmtdiv" style="display:block">
+<div class="form-group" id="cmtdiv" style="display:block">
 <?php }
 
 else
 {
 ?>
 
-<div class="col-xs-12 form-group" id="cmtdiv" style="display:none">
+<div class="form-group" id="cmtdiv" style="display:none">
 
 <?php
 }
 ?>
 
-<?php
+
+<?php echo form_label('Closing Comments'); 
+
+
+
 
 $data = array('class' => 'form-control',
 			  'name' => 'clo_comments',
 			  'id'=>'clo_comments',
 			  'placeholder' => 'Closing Comments',
-				'rows'=>2,
-				'style' =>"background-color: blue;color:white;"
-			);
+				'rows'=>2);
 ?>
 
 <?php echo form_textarea($data,$this->session->userdata['task']["clo_comments"]);  ?>
@@ -459,6 +461,12 @@ echo "</div>";
 
 <?php 
 
+#echo "status=".$this->session->userdata['task']["status"];
+
+
+
+
+#echo "<br>upd_view defvddate=".$this->session->userdata['task']['defvddate'];
 
 if (isset($_POST["tentative_due_date"]))
 	$ddlbl=$_POST["tentative_due_date"];
@@ -477,7 +485,17 @@ else
 }
 
 
+if (isset($_POST["status"])) 
+{
+	echo "post[status] found defined & status=".$_POST["status"];
+}
+else
+{ 
 
+echo "post[status] NOT found defined but userdata[status]=".$this->session->userdata['task']["status"];
+
+
+}
 
 
 echo "<div class='col-xs-12 ddatediv' id='ddatediv' style='margin-top:20px;'>";
@@ -486,6 +504,9 @@ echo form_label('Due Date','');
 
 
 $val=$this->session->userdata['task']['defvddate'];
+
+
+
 
 
 $data = array('class' => 'form-control',
@@ -505,9 +526,9 @@ echo form_label('(Must be <='.date('d/m/Y',strtotime($ddlbl)).')');
 
 if (isset($_POST["status"])) 
 {
-	#	echo "post[status] found defined & status=".$_POST["status"];
+	echo "post[status] found defined & status=".$_POST["status"];
 
-	if ( $this->session->userdata['task']["status"] == 2 || $this->session->userdata['task']["status"] == 3  || $_POST["status"]== 2 || $_POST["status"]== 3)
+	if ( $this->session->userdata['task']["status"] == 2 || $this->session->userdata['task']["status"] == 3  || $this->session->post('status') == 2 || $this->session->post('status') == 3)
 	{
 		
 		echo "<script language=\"javascript\">console.log(\"testing\");dditm=document.getElementById('ddatediv');dditm.classList.remove('ddatediv');console.log(\"end of script\");</script>";
@@ -515,7 +536,7 @@ if (isset($_POST["status"]))
 }
 else
 {
-		#		echo "post[status] NOT found defined but userdata[status]=".$this->session->userdata['task']["status"];
+		echo "post[status] NOT found defined but userdata[status]=".$this->session->userdata['task']["status"];
 		if ( $this->session->userdata['task']["status"] == 2 || $this->session->userdata['task']["status"] == 3  )
 		{
 
@@ -523,9 +544,9 @@ else
 			echo "<script language=\"javascript\">console.log(\"testing\");dditm=document.getElementById('ddatediv');dditm.classList.remove('ddatediv');console.log(\"end of script\");</script>";
 		}
 }
-
 ?>
 
+</div>
 </div>
 
 <div class="form-group">
@@ -542,11 +563,11 @@ $data = array('class' => 'form-control',
 
 
 </div>
-</div>
+
 
 <div class="col-xs-12">
 
-<div class="col-xs-7" style="margin-left:0px;">
+<div class="col-xs-7" style="margin-left:40px;">
 
 <?php echo form_label('Latest Update'); ?>
 
@@ -565,13 +586,9 @@ $data = array('class' => 'form-control',
 
 </div>
 
-
-
 <div  class="col-xs-12" id="savediv" >
 
 <div class="col-xs-4" style="text-align: center;margin-top:25px;">
-
-
 <?php 
 
 $data = array('class' => 'btn btn-success btn-lg',
@@ -600,10 +617,6 @@ echo form_submit($data,'','" id="cancel" ');
 </div>
 
 </div>
-
-
-
-
 
 
 

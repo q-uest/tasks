@@ -143,13 +143,14 @@ echo form_label('Tentative Start Date');
 if (isset($_POST["tentative_start_date"]))
 	$tsd=$_POST["tentative_start_date"];
 else
-	$tsd="";
+	$tsd=$this->session->userdata['main_task'][0]['tentative_start_date'];
 
 
 
 $data = array('class' => 'form-control',
 			  'name' => 'tentative_start_date',
-			  'type'=>'date'
+			  'type'=>'date',
+			  'value'=>$tsd
 			 );
 
 
@@ -160,24 +161,25 @@ echo form_input($data,"",'style=margin-bottom:5px;');
 echo "</div>";
 
 ######
-# Tentative End date
+# tentative due date
 ##########################
 
 echo "<div class='col-xs-12' style='margin-top:40px;'>";
 
-echo form_label('Tentative End Date',''); 
+echo form_label('Tentative Due Date',''); 
 
 
-if (isset($_POST["tentative_end_date"]))
-	$ted=$_POST["tentative_end_date"];
+if (isset($_POST["tentative_due_date"]))
+	$ted=$_POST["tentative_due_date"];
 else
-	$ted="";
+	$ted=$this->session->userdata['main_task'][0]['tentative_due_date'];
 
  
 
 $data = array('class' => 'form-control',
-			  'name' => 'tentative_end_date',
-			  'type'=>'date'
+			  'name' => 'tentative_due_date',
+			  'type'=>'date',
+			  'value'=>$ted
 			  );
 
 

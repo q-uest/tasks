@@ -178,23 +178,23 @@ echo form_input($data,"",'style=margin-bottom:5px;');
 echo "</div>";
 
 ######
-# Tentative End date
+# tentative due date
 ##########################
 
 echo "<div  style='margin-top:0px;'>";
 
-echo form_label('Tentative End Date',''); 
+echo form_label('Tentative Due Date',''); 
 
 
-if (isset($_POST["tentative_end_date"]))
-	$pted=$_POST["tentative_end_date"];
+if (isset($_POST["tentative_due_date"]))
+	$pted=$_POST["tentative_due_date"];
 else
 	$pted="";
 
 
 
 $data = array('class' => 'form-control',
-			  'name' => 'tentative_end_date',
+			  'name' => 'tentative_due_date',
 			  'type'=>'date',
 			  'value'=>$pted
 			  );
