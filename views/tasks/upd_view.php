@@ -592,16 +592,25 @@ echo form_submit($data,'','" id="save" ');
 $data = array('class' => 'btn btn-success btn-lg',
 			  'name' => 'cancel',
 			  'value' => 'Cancel');
+
+$js = 'onClick="cancel_func()"';
+echo form_input($data,"",$js);  
 ?>
-<?php 
-$attributes = array('id'=>'cancel');
-echo form_submit($data,'','" id="cancel" ');  
-?>
+
+
 </div>
 
 </div>
 
 
+<script type="text/javascript">
+
+function cancel_func() {
+	window.location.replace("http://localhost/ci/projects");
+}
+
+
+</script>
 
 
 

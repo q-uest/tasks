@@ -270,8 +270,14 @@ margin-bottom:10px;
 
 .probut {
 
-  font-size:20px;
-  color:#5D8D8D;
+  display:none;
+}
+
+.zoomshow {
+
+ #  font-size:20px;
+ # color:#5D8D8D;
+  display:inline;
 }
 
 .divhglt {

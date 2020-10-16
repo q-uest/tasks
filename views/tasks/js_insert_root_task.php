@@ -28,7 +28,7 @@
 
 <div class="container">
 
-<div class="col-xs-5">
+<div class="col-xs-6">
 
 
 
@@ -248,8 +248,9 @@ echo form_hidden('approved',$this->session->userdata('approved'));
 
 
 
-<div class="form-group col-xs-10">
-<div class="col-xs-5">
+
+<div class="form-group col-xs-8">
+<div class="col-xs-5" style="margin-top:30px;left:25%">
 <?php 
 
 $data = array('class' => 'btn btn-success btn-lg',
@@ -259,16 +260,19 @@ $data = array('class' => 'btn btn-success btn-lg',
 
 <?php echo form_submit($data);  ?>
 
-
 </div>
 
-<div class="col-xs-5">
+<div class="col-xs-5" style="margin-top:30px;left:10%" >
 <?php 
 
 $data = array('class' => 'btn btn-success btn-lg',
 			  'name' => 'cancel',
 			  'value' => 'Cancel');
+
+$js = 'onClick="cancel_func()"';
+echo form_input($data,"",$js);  
 ?>
+
 
 </div>
 
@@ -276,6 +280,19 @@ $data = array('class' => 'btn btn-success btn-lg',
 <!-- <?php echo form_close(); ?> -->
 </div>
 </div>
+
+<script type="text/javascript">
+
+function cancel_func() {
+	window.location.replace("http://localhost/ci/projects");
+}
+
+
+</script>
+
+
+
+
 </body>
 
 

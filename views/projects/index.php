@@ -2779,15 +2779,15 @@ if($this->session->flashdata('project_inserted'))
 
       
   
-      echo  '<a class="btn btn-secondary btn-lg probut"><span class="glyphicon glyphicon-zoom-in probut"  id=zi'.$project->id.'></span></a>';
+      echo  '<a class="btn btn-secondary btn-lg" ><span class="glyphicon glyphicon-zoom-in probut"  id=zi'.$project->id.'></span></a>';
 
       
 
       
-       echo  '<a class="btn btn-secondary btn-lg probut"><span class="glyphicon glyphicon-zoom-out probut"  id=zo'.$project->id.'></span></a>';
+       echo  '<a class="btn btn-secondary btn-lg" ><span class="glyphicon glyphicon-zoom-out probut"  id=zo'.$project->id.'></span></a>';
 
       
-       echo  '<a class="btn btn-secondary btn-lg probut" href='.base_url() ."projects/del_proj/". $project->id.'><span class="glyphicon glyphicon-remove probut"></span></a>';
+       echo  '<a class="btn btn-secondary btn-lg" href='.base_url() ."projects/del_proj/". $project->id.'><span class="glyphicon glyphicon-remove" id=rm'.$project->id.'></span></a>';
       
       echo "</div>";
       echo "</div>";
@@ -2807,8 +2807,18 @@ if($this->session->flashdata('project_inserted'))
 			var divele=document.getElementById('divhglt<?php echo $project->id ?>' );
 			var aele=document.getElementById('ahglt<?php echo $project->id ?>' );
 			
+      var zi=document.getElementById('zi<?php echo $project->id ?>' );
+      
+      var zo=document.getElementById('zo<?php echo $project->id ?>' );
+      var rm=document.getElementById('rm<?php echo $project->id ?>' );
+
 			divele.classList.toggle("txthlt");
 			aele.classList.toggle("txthlt");
+
+      zi.classList.toggle("probut");
+      zo.classList.toggle("probut");
+      //rm.classList.toggle("probut");
+      
       get_projectid(<?php echo $project->id ?>) ;
 
 	

@@ -124,6 +124,13 @@ public function upd_tskdepon($id,$newlst)
 }
 
 
+public function set_tskstat_completed($id)
+{
+	$stat=$this->db->query("update tasks set status=3 where id='$id'");
+	return($stat);
+}
+
+
 
 public function db_approve_task($taskid)
 {
