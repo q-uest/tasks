@@ -183,7 +183,7 @@ if ($this->session->userdata('approved')==0)
 		$options[$user['id']]=$user['username'];
 	}
 
-	echo form_dropdown('userid', $options,$this->session->userdata('user_id'), 'class="form-control"'); 	
+	echo form_dropdown('userid', $options,$this->session->userdata['task']['userid'], 'class="form-control"'); 	
 }
 else
 {
@@ -450,20 +450,24 @@ echo "</div>";
 
 ?>
 
+<?php
+
+if (isset($_POST["tentative_due_date"]))
+	$ddlbl=$_POST["tentative_due_date"];
+else
+	$ddlbl=$this->session->userdata['task']['pt_duedate'];
+
+?>
+
 <div class="col-xs-12" style="margin-top: 5px;">
 
-<?php echo form_label('(Must be >='.$this->session->userdata['today'].' < Tentative Start Date)'); ?>
+<?php echo form_label('(>=Tentative Start Date AND <='.date('d/m/Y',strtotime($ddlbl)).')'); ?>
 
 </div>
 
 
 <?php 
 
-
-if (isset($_POST["tentative_due_date"]))
-	$ddlbl=$_POST["tentative_due_date"];
-else
-	$ddlbl=$this->session->userdata['task']['tentative_due_date'];
 
 
 if (isset($_POST["status"]))
@@ -485,6 +489,7 @@ echo "<div class='col-xs-12 ddatediv' id='ddatediv' style='margin-top:20px;'>";
 echo form_label('Due Date',''); 
 
 
+
 $val=$this->session->userdata['task']['defvddate'];
 
 
@@ -499,7 +504,7 @@ $data = array('class' => 'form-control',
 echo form_input($data,$val); 
 
 
-echo form_label('(Must be <='.date('d/m/Y',strtotime($ddlbl)).')');
+echo form_label('( <='.date('d/m/Y',strtotime($ddlbl)).' )');
 
 
 

@@ -1932,7 +1932,7 @@ if($this->session->flashdata('project_inserted'))
             console.log("taskid="+taskid+"vusername="+vusername+' ptassignee='+pt_assignee+' vassignee='+vassignee+' status='+vstatus+'vapproved='+vapproved+'pt_ddate='+pt_ddate);
             
 
-            if ((vstatus != 3 && vusername==pt_assignee) ||(vusername==vassignee && vapproved==0  && vstatus <3 && vstatus!==null))
+            if ((vstatus != 3 && vusername==pt_assignee) ||(vusername==vassignee && vapproved==0  && vstatus !=3 && vstatus!==null))
             {
                 console.log("UPDATE TASK IS TO BE CALLED");
                 

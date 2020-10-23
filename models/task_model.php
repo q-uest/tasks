@@ -108,8 +108,10 @@ public function populate_dependson_tasks($project_id,$username,$id)
 
 public function get_parent_status($pt_taskid)
 {
-
+	####
 	# Check if master task is completed
+	##########
+
 	$rows=$this->db->query("select id,status from tasks where 
 		id='$pt_taskid' and status=3");
 	echo "num_rows=".$rows->num_rows();
@@ -144,13 +146,13 @@ public function db_approve_task($taskid)
 public function check_duedate($ddate,$parddt)
 {
 
-	#echo "<br><br>from check_duedate....ddate=".$ddate.' parddt='.$parddt;
+	echo "</br>from check_duedate....ddate=".$ddate.' parddt='.$parddt;
 	$res=$this->db->query(
-		"SELECT 'true' where str_to_date('$ddate','%d/%c/%Y')> str_to_date('$parddt','%d-%b-%Y')");
+		"SELECT 'true' where str_to_date('$ddate','%Y-%m-%d')> str_to_date('$parddt','%d-%b-%Y')");
 	#$result=$this->db->get();
 
 	$numrows=$res->num_rows();
-	#echo "<br>check_duedate....numrows=".$numrows;
+	echo "<br>check_duedate....numrows=".$numrows;
 	#echo "result=".$res;
 	return $numrows;
 }
@@ -269,6 +271,15 @@ public function db_upd_task($task)
 	$this->db->where('id',$this->session->userdata['task']['task_id']);
 	$stat=$this->db->update('tasks',$task);
 	return $stat;
+}
+
+
+public function db_set_inprogress($pt_taskid)
+{
+	$stat=$this->db->query("update tasks set status=2,started_date=CURDATE() where id='$pt_taskid' and status !=2");
+	return $stat;
+
+
 }
 
 public function db_upd_ddateofsubtasks($chldtasks,$due_date)

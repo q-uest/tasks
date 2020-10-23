@@ -139,8 +139,10 @@ public function js_add_task($id)
 
 		echo "main_task[tdd]=".$data['main_task'][0]['tentative_due_date'];
 
+		#######
+		# check the current user with the owner of the task
+		###########################
 
-		// check the current user with the owner of the task
 
 		$data['vassignee']=strtolower($_GET['assignee']);
 		$logged_inas = $_SESSION['username'];
@@ -176,8 +178,10 @@ public function js_add_task($id)
 
 		if (strtolower($tskowner) != strtolower($logged_inas))
 		{
-			#echo "tskowner is different from logged_inas";
-			# 1 for status means Pending Approval;approved=1 (for "NO")
+			########
+			# echo "tskowner is different from logged_inas";
+			# 1 for status means Pending Approval;approved=1 (for    # "NO")
+			#############################
 
 			$data['approved']=1;
 			$data['status']=NULL;
@@ -185,8 +189,10 @@ public function js_add_task($id)
 		}
 		else
 		{
+			######
 			# when "task owner & logged in ownr are same";
 			# 1 for status means Open; approved=0 (for YES)
+			#################
 
 			$data['approved']=0;
 			$data['status']=1;
@@ -522,22 +528,33 @@ public function tentative_start_date_validate($tsd)
 public function tentative_due_date_validate($ted)
 {
 
-echo "firing callback_ted_validate";
-echo "ted=".$ted."TSD=".$_POST['tentative_start_date'];
+echo "</br>firing callback_ted_validate";
+echo "</br>ted=".$ted."TSD=".$_POST['tentative_start_date'];
 
-if ($_POST['tentative_start_date'] > $ted)
+if ($this->session->userdata['task']['parent_task_id'] != 0)
 {
-	$this->form_validation->set_message(__FUNCTION__, '</div><div class="col-xs-12 setmsg">The tentative end date is lower than tentative start date </div><div class="col-xs-6">');
-	
-	return FALSE;
+	echo "</br>[main_task][ted]=".$this->session->userdata['main_task'][0] ['tentative_due_date'];
+
+	if ($_POST['tentative_start_date'] > $ted || ($ted >
+	$this->session->userdata['main_task'][0] ['tentative_due_date']))
+	{
+		echo "tsd>ted or ted>parent tasks due_date";
+		$this->form_validation->set_message(__FUNCTION__, '<div class="col-xs-10 setmsg">The tentative end date is lower than tentative start date or TED is higher than its parent '.date("d/m/Y",strtotime($this->session->userdata["main_task"][0] ["tentative_due_date"])).'</div>');
+		
+		return FALSE;
 
 
-}
+	}
+	else
+	 return true;
+
+
+	}
+
 else
- return true;
+	return true;
 
 }
-
 
 public function tentative_tsd_ted_notnull($ted)
 {
@@ -593,11 +610,36 @@ public function due_date_validate($ddate)
 {
 
 	echo "callback_due_Date_validate firing..."	;
-	#echo "<br>due_Date_validate...parddt=".$this->session->userdata('parddt');
-	#echo "ddate=".$ddate;
-
-	$res=$this->task_model->check_duedate($ddate,$this->session->userdata('parddt'));
 	
+	echo "duedate=".$ddate.'parent date='.$this->session->userdata('parddt');
+
+	echo "post[due_date]".$this->input->post('due_date');
+
+	######
+	# Due_Date should be higher than Tentative_start_date
+	###############
+
+	$res4=0;
+	if ($ddate < $this->input->post('tentative_start_date') )
+		$res4=1;
+
+
+	#######
+	# Due_date should NOT be higher than the parent task's due_date
+	###############################
+
+	$res=0;
+	$res=$this->task_model->check_duedate($ddate,$this->session->userdata('parddt'));
+
+	if ($res >0 )
+		echo "</br>Due_Date is greater than parent_due_Date";
+	echo "</br>Due_date is > parent_due_date...res=".$res;
+
+
+	######
+	# Due_date should be higher than the current_Date
+	###########################
+
 	$today=date('Y-m-d',time());
 	
 	$res2=0;
@@ -607,21 +649,21 @@ public function due_date_validate($ddate)
 	}
 	
 	
-
-	#$res2=$this->task_model->check_duedate_curdate($ddate);
+	#######
+	# Due_date should NOT be higher than tentative_end_date           # (tentative_Due_date)
+	####################
 
 	$res3=$this->task_model->check_duedate_gt_ted($ddate,$this->input->post('tentative_due_date'));
 
-	echo ">currdate check num_rows=".$res2;
+	echo ">currdate check num_rows...res2=".$res2;
 	echo "</br>res3=".$res3;
-	echo "ted is lower....date from POST var=".$this->input->post('tentative_due_date')." ddate=".$ddate;
+	echo "</br>ted is lower....date from POST var=".$this->input->post('tentative_due_date')." ddate=".$ddate;
 
 	echo "</br>res=".$res."res2=".$res2."res3=".$res3;
 
-	#echo "res=".$res;
-	if ($res > 0 || $res2>0 || $res3 > 0 )
+	if ($res > 0 || $res2>0 || $res3 > 0 || $res4 > 0)
 	{
-		$this->form_validation->set_message(__FUNCTION__, '</div><div class="col-xs-9 setmsg">Due date/to_be_completed_on can not be higher than Parent Task"s Due_Date/Tentative_Due_Date OR Lower than Current Date !!</div> <div class="col-xs-6">');
+		$this->form_validation->set_message(__FUNCTION__, '<div class="col-xs-9 setmsg">Voilation due to one or more of the below conditions for Due_Date:</br>1) It is higher than Parent Task"s Due_Date </br> 2) It is higher than its Tentative_Due_Date </br> 3) It is Lower than the Current Date or Tentative Start Date !!</div>');
 		return FALSE;
 	}
 	else
@@ -752,7 +794,7 @@ public function js_upd_task($id)
 	#echo "<br>js_upd_task parddt=".$data['parddt']." old duedate=".$data['old_duedate'];
 	
 	
-
+	
 	$data['task']=$this->task_model->db_fetch_task($id);
 	$data['user_data']=$this->user_model->get_user();
 
@@ -781,15 +823,33 @@ public function js_upd_task($id)
 	$task['started_date']=$data['task'][0]["started_date"];
 	$task['tentative_start_date']=$data['task'][0]["tentative_start_date"];
 	$task['tentative_due_date']=$data['task'][0]["tentative_due_date"];
+	$task['userid']=$data['task'][0]["userid"];
+
 
 	
 	echo "existing depends_on_task=".$data['task'][0]["depends_on_task"];
 
-	#echo "status as fetched from db=".$task['status'];
-	#$depends_on_task=$data['task_data'][0]["depends_on_task"];
+	######
+	# Get Parent task's due date, if it is not the root task
+	####################
+	
+	$data['main_task']=$this->task_model->db_fetch_task($task['parent_task_id']);
+
+
+	
+	if ( $task['parent_task_id'] != 0)
+	{
+		echo "parent tasks duedate=".$data['main_task'][0]['due_date'];
+		$task['pt_duedate']=$data['main_task'][0]['due_date'];
+	}
+	else
+	{
+		$task['pt_duedate']=NULL;
+
+	}
+
 
 	echo "parent Task id=".$task['parent_task_id'];
-	
 	$vdepends_on_task=$data['task'][0]["depends_on_task"];
 
 	###############
@@ -927,7 +987,18 @@ public function validate_upd_task()
 
 		$this->form_validation->set_rules('tentative_start_date','tentative_start_date','required|callback_tentative_start_date_validate');
 		
-		$this->form_validation->set_rules('tentative_due_date','tentative_due_date','required');
+		$this->form_validation->set_rules('tentative_due_date','tentative_due_date','required|callback_tentative_due_date_validate');
+
+		#######
+		# validate due_date only when it is not null & task's status # is not UNSCHEDULED
+		#######################
+
+		if ($this->input->post('due_date') !== NULL && $this->input->post("status") !=4)
+		{
+		#	echo "The due_date is not null & status not eq to 4;fire callback_due_Date_validate".$this->input->post('status');
+			$this->form_validation->set_rules('due_date','due_date','required|callback_due_date_validate');
+		}
+
 
 		$stat=$this->input->post("status");
 
@@ -969,7 +1040,7 @@ public function validate_upd_task()
 		}
 
 		########
-		# if the parent task is already completed, nothing else is   # possible to perform other than setting the current task to  # "completed"
+		# find if the parent task is already completed, nothing else # is possible to perform other than setting the current task # to "completed"
 		###############
 
 		if ($this->input->post('status')!==3)
@@ -990,10 +1061,6 @@ public function validate_upd_task()
 		
 			$data['main_view']='tasks\upd_view';
 			$this->load->view('layout\main.php',$data);
-			#return;
-
-			#echo "<br>redirect to the url";
-		#redirect('tasks/js_upd_task/'.$this->session->userdata['task']['task_id'].'?project_id='.$this->session->userdata['project_id'].'&ptd='.$this->session->userdata('parddt').'&ddate='.$this->session->userdata['vddate'],$data);
 
 		}
 		else
@@ -1007,11 +1074,7 @@ public function validate_upd_task()
 			#echo "id to be passed on for chldtasks=".$id."grpid=".$grpid;
 			$olddt=$this->session->userdata('old_duedate');
 			$newdt=$vdue_date;
-			#echo "validate_upd_task....olddt=".$olddt;
 
-			#$ddt=$this->task_model->chg_duedate_fmt($newdt);
-			#echo "change_dt_fmt ddt=".$ddt[0]['ddate'];
-			#$data['task'][0]["task_name"];
 
 			############
 			# post only closing comments, if status is "completed"
@@ -1140,6 +1203,12 @@ public function validate_upd_task()
 				}
 
 				$this->session->set_flashdata('task_updated','<p class="bg-success"> The Task has been updated </p>');
+
+				if ($this->input->post('status')==2)
+				{
+					$ptstat=$this->task_model->db_set_inprogress($this->session->userdata['task']['parent_task_id']);
+					echo "updated the parent task whose status not set to in progress";
+				}
 			}
 
 			
@@ -1150,11 +1219,6 @@ public function validate_upd_task()
 				$this->task_model->db_upd_ddateofsubtasks($chldtasks,$newdt);
 			
 
-				#foreach ($chldtasks as $tasks)
-				#{
-				#	echo " ".$tasks["id"];
-
-				#}	
 			}
 			else
 			{
@@ -1162,7 +1226,7 @@ public function validate_upd_task()
 			}
 
 			
-			#redirect('projects');
+			redirect('projects');
 
 		}
 }
