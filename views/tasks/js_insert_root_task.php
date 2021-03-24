@@ -284,7 +284,7 @@ echo form_input($data,"",$js);
 <script type="text/javascript">
 
 function cancel_func() {
-	window.location.replace("http://localhost/ci/projects");
+	window.location.replace("http://localhost:8000/ci/projects");
 }
 
 

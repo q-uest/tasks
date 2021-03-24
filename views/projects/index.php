@@ -54,7 +54,7 @@ if($this->session->flashdata('project_inserted'))
       {
           console.log("from GET_PROJECTID b4 XMLHttpRequest()");
           var xhttp = new XMLHttpRequest();
-          xhttp.open("GET", "http://localhost/ci/tasks/list_tasks/".concat(project_id), true);
+          xhttp.open("GET", "http://localhost:8000/prod/tasks/list_tasks/".concat(project_id), true);
           console.log('this is after xhttp.open statement');
           xhttp.send();
           console.log('this is after xhttp.send');
@@ -64,7 +64,7 @@ if($this->session->flashdata('project_inserted'))
             
       			if (this.readyState == 4 && this.status == 200)
       			{
-              console.log("readstate=4 & status=200");
+              			console.log("readstate=4 & status=200"+this.responseText);
       				if (this.responseText.length > 3)
       				{
       					var tasksArr = JSON.parse(this.responseText); 
@@ -73,10 +73,10 @@ if($this->session->flashdata('project_inserted'))
                 // adding a new column to indicate the task is parent or child 
 
         				  tasksArr.forEach(function(e){
-                  if (typeof e === "object" ){
-                    e["has_child"] = "N"
-                  }
-                  });
+                  			  if (typeof e === "object" ){
+                    				e["has_child"] = "N"
+                  			  }
+                  			});
 
                   //
                 projicon.className="glyphicon glyphicon-collapse-down";
@@ -94,7 +94,7 @@ if($this->session->flashdata('project_inserted'))
         			}
               else
               {
-                window.open("http://localhost/ci/tasks/js_add_root_task/"+project_id+'?parent_task_id=0','_self');
+                window.open("http://localhost:8000/prod/tasks/js_add_root_task/"+project_id+'?parent_task_id=0','_self');
 
 
               }
@@ -967,7 +967,7 @@ if($this->session->flashdata('project_inserted'))
                 //window.confirm("Are you sure you want to delete the task "+taskid);
 
                 if (confirm("Confirm delete task "+taskid))
-                    window.open("http://localhost/ci/tasks/js_del_task/"+taskid+'?groupid='+grpid,'_self');
+                    window.open("http://localhost:8000/ci/tasks/js_del_task/"+taskid+'?groupid='+grpid,'_self');
 
 
               }

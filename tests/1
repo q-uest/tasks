@@ -1,0 +1,1409 @@
+PHPUnit 9.5.2 by Sebastian Bergmann and contributors.
+
+Warning:       No code coverage driver available
+
+F                                                                   1 / 1 (100%)output=<!DOCTYPE html>
+<html>
+<head>
+	<title>CI Test</title>
+
+
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+
+  <style>
+
+
+:root {
+  --lvl : 1px;
+  --bg : #9A3F36;
+  --lvl2 : 1px;
+  --rtlvl : 1px;
+  --rtlvlnum : 1px;
+  --vertln : 1px solid #9A3F36 ;
+  --outbrdr :5px solid #2E4053;  
+  --incheight: 0;
+  --noitems : 5000;
+  --scaleval: 1;  
+}
+
+:pdiv {
+  --scaleval: 1;
+ }
+
+.vldivout {
+  padding-left: var(--rtlvl) ;
+  #height:100%;
+  
+}
+
+
+body {
+#  background-color: #F4F6F6;
+background-color: #f7f7f2;
+}
+.vldivin {
+  
+  #padding-left: calc(1 * var(--rtlvl) );
+  padding-left: 15px;
+  height:100%;
+  #color: green;
+  #border-left: 3px solid #339933;
+  border-left: var(--vertln);
+  #border: 2px solid black;
+
+}
+
+
+.zoomout {
+
+   transform: scale(var(--scaleval, 1));
+}
+
+.omdiv {
+  #border-left: 3px solid #339933;
+
+}
+
+    .lvl1 {
+    #  padding-left: 33px ;
+      #padding-left: var( --rtlvl )  ;
+    #  padding-left: calc( ( 50 * var( --lvl ) + 15px ) );
+      #padding-left: -62px;
+     # background-color: var(--bg);
+      
+    }
+
+    .lvl2 {
+    # padding-left: var( --rtlvlnum ) ;
+  #   border: 2px solid blue;
+    }
+
+
+.vldivout{
+
+   #border: 2px solid black;
+} 
+    .outdiv{
+      background-color: #F4F6F6
+     # background-color: white;
+      text-decoration: black;
+     # border-left:2px solid red;
+
+     margin-bottom:0px;
+     margin-top:0px;
+     padding-top: 0px;
+     padding-bottom: 0px;
+    #border-left: 2px solid #339966;
+    #border-left: ;
+    padding-left: 10px;
+     #border-style:solid;
+
+
+    }
+
+.leftbord{
+     #border: 2px solid red;
+     #border-left: 2px solid #666633;
+     border-left: 2px solid lightgray;
+     #margin-left: -15px;
+     padding-left: 0px;
+     padding-right: 0px;
+}
+
+.lastitm {
+  border-left: 2px solid #339933;
+}
+.unsetlb
+{
+  border-left:1px solid red !important;
+}
+  .multirows {
+     #border-left: 2px solid #339933;
+     #padding-left: 10px;
+  }
+
+.indiv1{
+
+ padding-left: 10px;
+
+}
+
+.scrollit {
+
+  overflow-y: scroll;
+  overflow-x: scroll;
+  white-space: nowrap;
+  #height: 300px;
+  height: var(--noitems );
+  #height: calc(350 + var(--incheight ) ) px;
+
+  #height:5000px;
+  #height: 5000px;
+  #height:325px;
+  #width:750px;
+
+}
+
+.encdiv {
+  #overflow-y: hidden;
+  #overflow-x: scroll;
+  #white-space: nowrap;
+  #height:325px;
+  #width:750px;
+ # border: 2px solid red;
+  #padding-left: calc(var( --rtlvl ) * 1 ) ;
+}
+
+.tdiv {
+  width: var(--scrollper);
+  }
+
+.lftpad {
+ padding-left: calc(var( --rtlvl ) * 1 ) ;  
+}
+
+.singleitem {
+ #border: 2px solid blue;
+  width: var(--scrollper);
+ padding-left: calc(var( --rtlvl ) * 1 ) ; 
+}
+
+.tskitm {
+
+  #  margin-left: calc(var(--rtlvlnum) * 1 );
+  #margin-left: 18px;
+  margin-top: 10px;
+    #border-left: 2px solid #897F7F; 
+   # border: 0.01px solid blue;
+   width: var(--scrollper);
+}
+
+.tskhr {
+
+  margin-top:0px;
+  margin-bottom:0px;
+  padding-top: 0px;
+  padding-bottom: 5px;
+ border: 0.01px solid  #5CB3FF;
+ padding:0px;
+
+
+}
+
+.tophr {
+
+  margin-top:0px;
+  margin-bottom:0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border: 1.5px dotted  #666633;
+ #padding:0px;
+
+
+}
+
+.bothr {
+
+  margin-top:0px;
+  margin-bottom:0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+ border: 1.5px dotted  #666633;
+ #padding:0px;
+
+
+}
+
+
+.endhr {
+  height:10px;
+  border-width:0;
+  color:grey;
+  background-color:grey;
+  margin-top:0px;
+  margin-bottom: 0px;
+  padding:0px;
+
+}
+
+.prjendhr {
+  height:10px;
+  border-width:0;
+  color:grey;
+  background-color:#f09348;
+  margin-top:0px;
+  margin-bottom: 0px;
+  padding:0px;
+
+}
+
+
+ .bord {
+  border:2px solid red;
+ }
+.selitem {
+  background-color: brown;
+  text-decoration-color: white;
+}
+  
+a:active {
+  color: red;
+}
+
+a:hover {
+  background-color: white;
+  color: hotpink;
+}
+
+
+.outrbrdr {
+
+border-right: var(--outbrdr);
+border-left: var(--outbrdr);
+border-bottom: var(--outbrdr);
+margin-bottom:10px; 
+}
+
+
+.probut {
+
+  display:none;
+}
+
+.zoomshow {
+
+ #  font-size:20px;
+ # color:#5D8D8D;
+  display:inline;
+}
+
+.divhglt {
+  border:2px solid #0f0f0f;
+  padding-top:5px;
+  #padding-bottom:5px;
+}
+.txthlt {
+ background-color:#2E4053   ;
+ ##8A4117;
+ 
+ #text-decoration-color: white;
+ color: white; !important
+
+}
+
+.divc1_lvl1 {
+
+  height:350px;
+  width: 750px;
+
+  border: 5px solid #3271a8;
+ # border-left: 10px solid #2E4053;
+#  border-right: 10px solid #2E4053;
+  background-color:#edf2f7 ;
+  color:#2E4053;
+  padding-left:0px;
+  padding-right:0px;
+  #border-radius: 25px; 
+  margin-bottom:15px;
+  transition-delay: 0.5s;
+  box-shadow: 5px 5px #7d8185;      
+}
+
+.divc1_gt_lvl1 {
+#height:350px;
+
+width: 750px;
+height: calc(350 + var(--incheight ) ) px;
+border: 5px solid #3271a8;
+#border-right: 10px solid #5CB3FF;
+color:#2E4053;
+background-color: #edf2f7;
+padding-left:0px;
+padding-right:0px;
+#border-radius: 15px;
+margin-bottom:15px;
+transition-delay: 0.5s;
+box-shadow: 5px 5px #7d8185;      
+
+
+}
+
+
+
+#.divc1_gt_lvl1_bak {
+height:325px;
+border-left: 10px solid #5CB3FF;
+border-right: 10px solid #5CB3FF;
+color:#2E4053;
+padding-left:0px;
+padding-right:0px;
+border-radius: 15px;
+margin-bottom:1px;
+transition-delay: 0.5s;
+            
+
+
+}
+.rtdivc3 {
+
+border-left: 10px solid #063852;
+#background-color:#897F7F ;
+#color:#8A4117;
+
+}
+
+.tskhglt
+{
+
+background-color:orange;
+cursor:pointer;
+
+#color: white;
+#color:#2E4053;
+}
+
+.rtdiv_bak {
+    
+  font-size: 20px; 
+  font-weight: bold; 
+  padding-bottom:2px;
+  padding-top: 10px;
+  margin-bottom:12px;
+  }
+
+  .cntdiv0 {
+    font-size:20px;
+    font-weight:bold;
+    padding-top:10px;
+    border-bottom:2px solid red;
+    background-color: #691314;
+    #background-color: #063852;
+    color: white;
+  }
+
+.cntdiv_lvl_gt_1 {
+  font-size:20px;
+    font-weight:bold;
+    height:75px;
+    padding-top:10px;
+    border-bottom:2px solid red;
+    background-color: #3271a8;
+    #background-color: #063852;
+    color: white;
+  
+
+}
+.rtdiv {
+    
+  font-size: 20px; 
+  font-weight: bold; 
+  padding-bottom:2px;
+  padding-top: 10px;
+  margin-bottom:12px;
+  #border-bottom:2px solid red;
+  }
+
+.lnkcol {
+  border:1px solid white;
+  padding-left:5px;
+  #word-wrap: break-word;
+}
+
+.lnkdiv {
+ # overflow-y: scroll;
+  overflow-x: scroll;
+  position:absolute;
+  display:inline;
+  margin-left: 0px;
+  padding-left: 0px;
+  top:-40px;
+  left:200px;
+  width:500px;
+  #height:150px;
+  height:80%;
+  border:3px solid greenyellow;
+  background-color: red;
+  color:white;
+  
+}
+
+.css-style
+{
+  background-color:white;
+  color:grey;
+  padding-left: 0px;
+  margin-left:0px;
+}
+.tlbrdiv{
+  margin-top:5px;
+  width:200px;
+  float:right;
+  font-size: 20px; 
+}
+
+.rtdivmov {
+  font-size: 20px; 
+  font-weight: bold; 
+  padding-bottom:2px;
+  padding-top: 10px;
+  margin-bottom:10px;
+  border-bottom: 2px solid red;
+}
+
+.rtdivmot {
+  font-size: 20px; 
+  font-weight: bold; 
+  padding-bottom:2px;
+  padding-top: 10px;
+#  border-bottom:'';
+  margin-bottom:12px;
+}
+
+.rtname{
+
+  font-weight: bold;
+  font-size: 25px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+a:active {
+  color: white;
+}
+
+
+.disitm {
+  display: block;
+}
+
+.hiditm {
+  display: none;
+}
+
+.activepro{
+
+}
+
+.disabled { cursor: not-allowed; }
+
+
+
+.v2 {
+  padding-left: var(--rtlvl);
+
+}
+
+.setmsg {
+  margin-left:15px;
+  background-color:#96CDCD;
+  color:red;
+  font-weight:bold;
+  font-size:15px;
+  margin-bottom:20px;
+}
+
+.ddatediv {
+display: none;
+
+}
+
+ </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      
+
+       </button>
+      <a class="navbar-brand" href="http://localhost:8000/ci/">Ardhas</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="http://localhost:8000/ci/">Home<span class="sr-only">(current)</span></a></li>
+        <li><a href="http://localhost:8000/ci/users/register">Register</a></li>
+         <li><a href="http://localhost:8000/ci/projects">Projects</a></li>
+        </ul>
+        </li>
+      </ul>
+
+      
+        <li class="dropdown">
+          <ul class="dropdown-menu">
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+<div class="container-fluid">
+	
+	<div class="col-xs-2">
+
+	
+
+  
+ <h2>Login Form</h2>
+
+
+
+
+<form action="http://localhost:8000/ci/users/login" id="login_form" class="form_horizontal" method="post" accept-charset="utf-8">
+
+
+<div class="form-group">
+
+<label>Username</label>
+
+<input type="text" name="username" value="" class="form-control" placeholder="Enter Username"  />
+
+</div>
+
+<div class="form-group">
+
+
+<label>Password</label>
+
+
+
+<input type="password" name="password" value="" class="form-control" placeholder="Enter Password"  />
+
+</div>
+
+<!-- <div class="form-group">
+
+
+<label>Confirm Password</label>
+
+<input type="password" name="Confpswd" value="" class="form-control" placeholder="Confirm Password"  />
+
+</div>
+ -->
+<div class="form-group">
+
+
+<input type="submit" name="submit" value="Login" class="btn btn-primary"  />
+
+
+</div>
+
+</form>
+
+
+
+	</div>
+
+
+	<div class="col-xs-10">
+
+    
+
+
+
+<div class="col-xs-12">
+
+ <h1>User Registration</h1>
+
+<div class="col-xs-8">
+
+
+
+
+
+<form action="http://localhost:8000/ci/users/validate" id="register_form" class="form_horizontal" method="post" accept-charset="utf-8">
+
+<div class="form-group">
+
+<label>Firstname</label>
+
+<input type="text" name="first_name" value="" class="form-control" placeholder="Firstname"  />
+
+</div>
+
+<div class="form-group">
+
+<label>Lastname</label>
+
+<input type="text" name="last_name" value="" class="form-control" placeholder="Lastname"  />
+
+
+</div>
+
+<div class="form-group">
+
+<label>Email</label>
+
+<input type="text" name="email" value="" class="form-control" placeholder="Email"  />
+
+
+</div>
+
+
+<div class="form-group">
+
+<label>Username</label>
+
+<input type="text" name="username" value="" class="form-control" placeholder="Username"  />
+
+
+</div>
+
+<div class="form-group">
+
+<label>Password</label>
+
+<input type="password" name="password" value="" class="form-control" placeholder="Password"  />
+
+
+</div>
+
+<div class="form-group">
+
+<label>Confirm Password</label>
+
+<input type="password" name="Confpswd" value="" class="form-control" placeholder="Confirm Password"  />
+
+</div>
+
+
+
+
+<input type="submit" name="submit" value="Register" class="btn btn-primary"  />
+
+
+
+
+</form>
+
+	</div>
+</div>
+
+</body>
+</html>
+
+Time: 00:00.102, Memory: 8.00 MB
+
+There was 1 failure:
+
+1) Register_test::test_register
+Failed asserting that '<!DOCTYPE html>\n
+<html>\n
+<head>\n
+	<title>CI Test</title>\n
+\n
+\n
+<meta charset="utf-8">\n
+  <meta name="viewport" content="width=device-width, initial-scale=1">\n
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">\n
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">\n
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>\n
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>\n
+\n
+\n
+\n
+  <style>\n
+\n
+\n
+:root {\n
+  --lvl : 1px;\n
+  --bg : #9A3F36;\n
+  --lvl2 : 1px;\n
+  --rtlvl : 1px;\n
+  --rtlvlnum : 1px;\n
+  --vertln : 1px solid #9A3F36 ;\n
+  --outbrdr :5px solid #2E4053;  \n
+  --incheight: 0;\n
+  --noitems : 5000;\n
+  --scaleval: 1;  \n
+}\n
+\n
+:pdiv {\n
+  --scaleval: 1;\n
+ }\n
+\n
+.vldivout {\n
+  padding-left: var(--rtlvl) ;\n
+  #height:100%;\n
+  \n
+}\n
+\n
+\n
+body {\n
+#  background-color: #F4F6F6;\n
+background-color: #f7f7f2;\n
+}\n
+.vldivin {\n
+  \n
+  #padding-left: calc(1 * var(--rtlvl) );\n
+  padding-left: 15px;\n
+  height:100%;\n
+  #color: green;\n
+  #border-left: 3px solid #339933;\n
+  border-left: var(--vertln);\n
+  #border: 2px solid black;\n
+\n
+}\n
+\n
+\n
+.zoomout {\n
+\n
+   transform: scale(var(--scaleval, 1));\n
+}\n
+\n
+.omdiv {\n
+  #border-left: 3px solid #339933;\n
+\n
+}\n
+\n
+    .lvl1 {\n
+    #  padding-left: 33px ;\n
+      #padding-left: var( --rtlvl )  ;\n
+    #  padding-left: calc( ( 50 * var( --lvl ) + 15px ) );\n
+      #padding-left: -62px;\n
+     # background-color: var(--bg);\n
+      \n
+    }\n
+\n
+    .lvl2 {\n
+    # padding-left: var( --rtlvlnum ) ;\n
+  #   border: 2px solid blue;\n
+    }\n
+\n
+\n
+.vldivout{\n
+\n
+   #border: 2px solid black;\n
+} \n
+    .outdiv{\n
+      background-color: #F4F6F6\n
+     # background-color: white;\n
+      text-decoration: black;\n
+     # border-left:2px solid red;\n
+\n
+     margin-bottom:0px;\n
+     margin-top:0px;\n
+     padding-top: 0px;\n
+     padding-bottom: 0px;\n
+    #border-left: 2px solid #339966;\n
+    #border-left: ;\n
+    padding-left: 10px;\n
+     #border-style:solid;\n
+\n
+\n
+    }\n
+\n
+.leftbord{\n
+     #border: 2px solid red;\n
+     #border-left: 2px solid #666633;\n
+     border-left: 2px solid lightgray;\n
+     #margin-left: -15px;\n
+     padding-left: 0px;\n
+     padding-right: 0px;\n
+}\n
+\n
+.lastitm {\n
+  border-left: 2px solid #339933;\n
+}\n
+.unsetlb\n
+{\n
+  border-left:1px solid red !important;\n
+}\n
+  .multirows {\n
+     #border-left: 2px solid #339933;\n
+     #padding-left: 10px;\n
+  }\n
+\n
+.indiv1{\n
+\n
+ padding-left: 10px;\n
+\n
+}\n
+\n
+.scrollit {\n
+\n
+  overflow-y: scroll;\n
+  overflow-x: scroll;\n
+  white-space: nowrap;\n
+  #height: 300px;\n
+  height: var(--noitems );\n
+  #height: calc(350 + var(--incheight ) ) px;\n
+\n
+  #height:5000px;\n
+  #height: 5000px;\n
+  #height:325px;\n
+  #width:750px;\n
+\n
+}\n
+\n
+.encdiv {\n
+  #overflow-y: hidden;\n
+  #overflow-x: scroll;\n
+  #white-space: nowrap;\n
+  #height:325px;\n
+  #width:750px;\n
+ # border: 2px solid red;\n
+  #padding-left: calc(var( --rtlvl ) * 1 ) ;\n
+}\n
+\n
+.tdiv {\n
+  width: var(--scrollper);\n
+  }\n
+\n
+.lftpad {\n
+ padding-left: calc(var( --rtlvl ) * 1 ) ;  \n
+}\n
+\n
+.singleitem {\n
+ #border: 2px solid blue;\n
+  width: var(--scrollper);\n
+ padding-left: calc(var( --rtlvl ) * 1 ) ; \n
+}\n
+\n
+.tskitm {\n
+\n
+  #  margin-left: calc(var(--rtlvlnum) * 1 );\n
+  #margin-left: 18px;\n
+  margin-top: 10px;\n
+    #border-left: 2px solid #897F7F; \n
+   # border: 0.01px solid blue;\n
+   width: var(--scrollper);\n
+}\n
+\n
+.tskhr {\n
+\n
+  margin-top:0px;\n
+  margin-bottom:0px;\n
+  padding-top: 0px;\n
+  padding-bottom: 5px;\n
+ border: 0.01px solid  #5CB3FF;\n
+ padding:0px;\n
+\n
+\n
+}\n
+\n
+.tophr {\n
+\n
+  margin-top:0px;\n
+  margin-bottom:0px;\n
+  padding-top: 0px;\n
+  padding-bottom: 0px;\n
+  border: 1.5px dotted  #666633;\n
+ #padding:0px;\n
+\n
+\n
+}\n
+\n
+.bothr {\n
+\n
+  margin-top:0px;\n
+  margin-bottom:0px;\n
+  padding-top: 0px;\n
+  padding-bottom: 0px;\n
+ border: 1.5px dotted  #666633;\n
+ #padding:0px;\n
+\n
+\n
+}\n
+\n
+\n
+.endhr {\n
+  height:10px;\n
+  border-width:0;\n
+  color:grey;\n
+  background-color:grey;\n
+  margin-top:0px;\n
+  margin-bottom: 0px;\n
+  padding:0px;\n
+\n
+}\n
+\n
+.prjendhr {\n
+  height:10px;\n
+  border-width:0;\n
+  color:grey;\n
+  background-color:#f09348;\n
+  margin-top:0px;\n
+  margin-bottom: 0px;\n
+  padding:0px;\n
+\n
+}\n
+\n
+\n
+ .bord {\n
+  border:2px solid red;\n
+ }\n
+.selitem {\n
+  background-color: brown;\n
+  text-decoration-color: white;\n
+}\n
+  \n
+a:active {\n
+  color: red;\n
+}\n
+\n
+a:hover {\n
+  background-color: white;\n
+  color: hotpink;\n
+}\n
+\n
+\n
+.outrbrdr {\n
+\n
+border-right: var(--outbrdr);\n
+border-left: var(--outbrdr);\n
+border-bottom: var(--outbrdr);\n
+margin-bottom:10px; \n
+}\n
+\n
+\n
+.probut {\n
+\n
+  display:none;\n
+}\n
+\n
+.zoomshow {\n
+\n
+ #  font-size:20px;\n
+ # color:#5D8D8D;\n
+  display:inline;\n
+}\n
+\n
+.divhglt {\n
+  border:2px solid #0f0f0f;\n
+  padding-top:5px;\n
+  #padding-bottom:5px;\n
+}\n
+.txthlt {\n
+ background-color:#2E4053   ;\n
+ ##8A4117;\n
+ \n
+ #text-decoration-color: white;\n
+ color: white; !important\n
+\n
+}\n
+\n
+.divc1_lvl1 {\n
+\n
+  height:350px;\n
+  width: 750px;\n
+\n
+  border: 5px solid #3271a8;\n
+ # border-left: 10px solid #2E4053;\n
+#  border-right: 10px solid #2E4053;\n
+  background-color:#edf2f7 ;\n
+  color:#2E4053;\n
+  padding-left:0px;\n
+  padding-right:0px;\n
+  #border-radius: 25px; \n
+  margin-bottom:15px;\n
+  transition-delay: 0.5s;\n
+  box-shadow: 5px 5px #7d8185;      \n
+}\n
+\n
+.divc1_gt_lvl1 {\n
+#height:350px;\n
+\n
+width: 750px;\n
+height: calc(350 + var(--incheight ) ) px;\n
+border: 5px solid #3271a8;\n
+#border-right: 10px solid #5CB3FF;\n
+color:#2E4053;\n
+background-color: #edf2f7;\n
+padding-left:0px;\n
+padding-right:0px;\n
+#border-radius: 15px;\n
+margin-bottom:15px;\n
+transition-delay: 0.5s;\n
+box-shadow: 5px 5px #7d8185;      \n
+\n
+\n
+}\n
+\n
+\n
+\n
+#.divc1_gt_lvl1_bak {\n
+height:325px;\n
+border-left: 10px solid #5CB3FF;\n
+border-right: 10px solid #5CB3FF;\n
+color:#2E4053;\n
+padding-left:0px;\n
+padding-right:0px;\n
+border-radius: 15px;\n
+margin-bottom:1px;\n
+transition-delay: 0.5s;\n
+            \n
+\n
+\n
+}\n
+.rtdivc3 {\n
+\n
+border-left: 10px solid #063852;\n
+#background-color:#897F7F ;\n
+#color:#8A4117;\n
+\n
+}\n
+\n
+.tskhglt\n
+{\n
+\n
+background-color:orange;\n
+cursor:pointer;\n
+\n
+#color: white;\n
+#color:#2E4053;\n
+}\n
+\n
+.rtdiv_bak {\n
+    \n
+  font-size: 20px; \n
+  font-weight: bold; \n
+  padding-bottom:2px;\n
+  padding-top: 10px;\n
+  margin-bottom:12px;\n
+  }\n
+\n
+  .cntdiv0 {\n
+    font-size:20px;\n
+    font-weight:bold;\n
+    padding-top:10px;\n
+    border-bottom:2px solid red;\n
+    background-color: #691314;\n
+    #background-color: #063852;\n
+    color: white;\n
+  }\n
+\n
+.cntdiv_lvl_gt_1 {\n
+  font-size:20px;\n
+    font-weight:bold;\n
+    height:75px;\n
+    padding-top:10px;\n
+    border-bottom:2px solid red;\n
+    background-color: #3271a8;\n
+    #background-color: #063852;\n
+    color: white;\n
+  \n
+\n
+}\n
+.rtdiv {\n
+    \n
+  font-size: 20px; \n
+  font-weight: bold; \n
+  padding-bottom:2px;\n
+  padding-top: 10px;\n
+  margin-bottom:12px;\n
+  #border-bottom:2px solid red;\n
+  }\n
+\n
+.lnkcol {\n
+  border:1px solid white;\n
+  padding-left:5px;\n
+  #word-wrap: break-word;\n
+}\n
+\n
+.lnkdiv {\n
+ # overflow-y: scroll;\n
+  overflow-x: scroll;\n
+  position:absolute;\n
+  display:inline;\n
+  margin-left: 0px;\n
+  padding-left: 0px;\n
+  top:-40px;\n
+  left:200px;\n
+  width:500px;\n
+  #height:150px;\n
+  height:80%;\n
+  border:3px solid greenyellow;\n
+  background-color: red;\n
+  color:white;\n
+  \n
+}\n
+\n
+.css-style\n
+{\n
+  background-color:white;\n
+  color:grey;\n
+  padding-left: 0px;\n
+  margin-left:0px;\n
+}\n
+.tlbrdiv{\n
+  margin-top:5px;\n
+  width:200px;\n
+  float:right;\n
+  font-size: 20px; \n
+}\n
+\n
+.rtdivmov {\n
+  font-size: 20px; \n
+  font-weight: bold; \n
+  padding-bottom:2px;\n
+  padding-top: 10px;\n
+  margin-bottom:10px;\n
+  border-bottom: 2px solid red;\n
+}\n
+\n
+.rtdivmot {\n
+  font-size: 20px; \n
+  font-weight: bold; \n
+  padding-bottom:2px;\n
+  padding-top: 10px;\n
+#  border-bottom:'';\n
+  margin-bottom:12px;\n
+}\n
+\n
+.rtname{\n
+\n
+  font-weight: bold;\n
+  font-size: 25px;\n
+  margin-top: 15px;\n
+  margin-bottom: 15px;\n
+}\n
+\n
+a:active {\n
+  color: white;\n
+}\n
+\n
+\n
+.disitm {\n
+  display: block;\n
+}\n
+\n
+.hiditm {\n
+  display: none;\n
+}\n
+\n
+.activepro{\n
+\n
+}\n
+\n
+.disabled { cursor: not-allowed; }\n
+\n
+\n
+\n
+.v2 {\n
+  padding-left: var(--rtlvl);\n
+\n
+}\n
+\n
+.setmsg {\n
+  margin-left:15px;\n
+  background-color:#96CDCD;\n
+  color:red;\n
+  font-weight:bold;\n
+  font-size:15px;\n
+  margin-bottom:20px;\n
+}\n
+\n
+.ddatediv {\n
+display: none;\n
+\n
+}\n
+\n
+ </style>\n
+</head>\n
+\n
+<body>\n
+\n
+<nav class="navbar navbar-inverse">\n
+  <div class="container-fluid">\n
+    <!-- Brand and toggle get grouped for better mobile display -->\n
+    <div class="navbar-header">\n
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">\n
+        <span class="sr-only">Toggle navigation</span>\n
+        <span class="icon-bar"></span>\n
+        <span class="icon-bar"></span>\n
+        <span class="icon-bar"></span>\n
+      \n
+\n
+       </button>\n
+      <a class="navbar-brand" href="http://localhost:8000/ci/">Ardhas</a>\n
+    </div>\n
+\n
+    <!-- Collect the nav links, forms, and other content for toggling -->\n
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">\n
+      <ul class="nav navbar-nav">\n
+        <li class="active"><a href="http://localhost:8000/ci/">Home<span class="sr-only">(current)</span></a></li>\n
+        <li><a href="http://localhost:8000/ci/users/register">Register</a></li>\n
+         <li><a href="http://localhost:8000/ci/projects">Projects</a></li>\n
+        </ul>\n
+        </li>\n
+      </ul>\n
+\n
+      \n
+        <li class="dropdown">\n
+          <ul class="dropdown-menu">\n
+          </ul>\n
+        </li>\n
+      </ul>\n
+    </div><!-- /.navbar-collapse -->\n
+  </div><!-- /.container-fluid -->\n
+</nav>\n
+\n
+\n
+<div class="container-fluid">\n
+	\n
+	<div class="col-xs-2">\n
+\n
+	\n
+\n
+  \n
+ <h2>Login Form</h2>\n
+\n
+\n
+\n
+\n
+<form action="http://localhost:8000/ci/users/login" id="login_form" class="form_horizontal" method="post" accept-charset="utf-8">\n
+\n
+\n
+<div class="form-group">\n
+\n
+<label>Username</label>\n
+\n
+<input type="text" name="username" value="" class="form-control" placeholder="Enter Username"  />\n
+\n
+</div>\n
+\n
+<div class="form-group">\n
+\n
+\n
+<label>Password</label>\n
+\n
+\n
+\n
+<input type="password" name="password" value="" class="form-control" placeholder="Enter Password"  />\n
+\n
+</div>\n
+\n
+<!-- <div class="form-group">\n
+\n
+\n
+<label>Confirm Password</label>\n
+\n
+<input type="password" name="Confpswd" value="" class="form-control" placeholder="Confirm Password"  />\n
+\n
+</div>\n
+ -->\n
+<div class="form-group">\n
+\n
+\n
+<input type="submit" name="submit" value="Login" class="btn btn-primary"  />\n
+\n
+\n
+</div>\n
+\n
+</form>\n
+\n
+\n
+\n
+	</div>\n
+\n
+\n
+	<div class="col-xs-10">\n
+\n
+    \n
+\n
+\n
+\n
+<div class="col-xs-12">\n
+\n
+ <h1>User Registration</h1>\n
+\n
+<div class="col-xs-8">\n
+\n
+\n
+\n
+\n
+\n
+<form action="http://localhost:8000/ci/users/validate" id="register_form" class="form_horizontal" method="post" accept-charset="utf-8">\n
+\n
+<div class="form-group">\n
+\n
+<label>Firstname</label>\n
+\n
+<input type="text" name="first_name" value="" class="form-control" placeholder="Firstname"  />\n
+\n
+</div>\n
+\n
+<div class="form-group">\n
+\n
+<label>Lastname</label>\n
+\n
+<input type="text" name="last_name" value="" class="form-control" placeholder="Lastname"  />\n
+\n
+\n
+</div>\n
+\n
+<div class="form-group">\n
+\n
+<label>Email</label>\n
+\n
+<input type="text" name="email" value="" class="form-control" placeholder="Email"  />\n
+\n
+\n
+</div>\n
+\n
+\n
+<div class="form-group">\n
+\n
+<label>Username</label>\n
+\n
+<input type="text" name="username" value="" class="form-control" placeholder="Username"  />\n
+\n
+\n
+</div>\n
+\n
+<div class="form-group">\n
+\n
+<label>Password</label>\n
+\n
+<input type="password" name="password" value="" class="form-control" placeholder="Password"  />\n
+\n
+\n
+</div>\n
+\n
+<div class="form-group">\n
+\n
+<label>Confirm Password</label>\n
+\n
+<input type="password" name="Confpswd" value="" class="form-control" placeholder="Confirm Password"  />\n
+\n
+</div>\n
+\n
+\n
+\n
+\n
+<input type="submit" name="submit" value="Register" class="btn btn-primary"  />\n
+\n
+\n
+\n
+\n
+</form>\n
+\n
+	</div>\n
+</div>\n
+\n
+</body>\n
+</html>' contains "user_id check is through".
+
+/var/www/html/prod/tasks/tests/controllers/Register_test.php:23
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.

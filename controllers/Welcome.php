@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+echo "this is Welcome Class......";
 class Welcome extends CI_Controller {
 
 	/**

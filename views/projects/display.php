@@ -66,7 +66,7 @@
 
 
 
- <!-- <a href="<?php echo base_url()."tasks/cre_task/".$project_data->id?>"><button type="button" class="btn btn-primary btn-lg">Add Tasks</button></a>
+<a href="<?php echo base_url()."tasks/cre_task/".$project_data->id?>"><button type="button" class="btn btn-primary btn-lg">Add Tasks</button></a>
 
 <?php if($task_data): ?>
 
@@ -90,16 +90,16 @@
 	</tr>
 	</thead>
 	<tbody>
-		
+<?php echo var_dump($task_data); ?>	
 		<?php foreach($task_data as $task): ?>
 		<tr>
-		<?php echo "<td><a href='". base_url() ."tasks/display/". $task->id ."'>".$task->task_name . "</a></td>"?>
-		<?php echo "<td>".$task->task_body; "</td>"?>
-		<?php echo "<td>".$task->due_date; "</td>"?>
+		<?php echo "<td><a href='". base_url() ."tasks/display/". $task['id'] ."'>".$task['task_name'] . "</a></td>"?>
+		<?php echo "<td>".$task['task_body']; "</td>"?>
+		<?php echo "<td>".$task['due_date']; "</td>"?>
 
 
-		<td><a class="btn btn-danger" href='<?php echo base_url() ."tasks/del_task/". $task->id ?>'><span class="glyphicon glyphicon-remove"></span></a>
-		<a class="btn btn-success" href='<?php echo base_url() ."tasks/upd_task/". $task->id ?>'><span class="glyphicon glyphicon-edit"></span></a></td>
+		<td><a class="btn btn-danger" href='<?php echo base_url() ."tasks/del_task/". $task['id'] ?>'><span class="glyphicon glyphicon-remove"></span></a>
+		<a class="btn btn-success" href='<?php echo base_url() ."tasks/upd_task/". $task['id'] ?>'><span class="glyphicon glyphicon-edit"></span></a></td>
 
 
 		</tr>
@@ -115,5 +115,5 @@
 </div>
 
 <?php endif; ?>
--->
+
 
