@@ -8,10 +8,10 @@
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
 
-class Login_test extends TestCase
+class Users_test extends TestCase
 {
 
-	public function test_login()
+	public function users_login()
 
 	{
 		$params=['username'=>'mani',

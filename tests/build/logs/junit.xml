@@ -1,74 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="Projects_display_test" file="/var/www/html/prod/tasks/tests/controllers/Projects_display_test.php" tests="1" assertions="0" errors="1" warnings="0" failures="0" skipped="0" time="0.058749">
-    <testcase name="test_projmock" class="Projects_display_test" classname="Projects_display_test" file="/var/www/html/prod/tasks/tests/controllers/Projects_display_test.php" line="7" assertions="0" time="0.058749">
-      <error type="Error">Projects_display_test::test_projmock
-Error: Call to a member function helper() on null
-
-/var/www/html/prod/system/libraries/Form_validation.php:147
-/var/www/html/prod/tasks/tests/_ci_phpunit_test/replacing/core/Common.php:111
-/var/www/html/prod/system/core/Controller.php:75
-/var/www/html/prod/tasks/controllers/Projects.php:8
-/var/www/html/prod/tasks/tests/controllers/Projects_display_test.php:20</error>
-      <system-out>
-A PHP Error was encountered
-
-Severity:    Notice
-Message:     Undefined property: Projects::$load
-Filename:    /var/www/html/prod/system/libraries/Form_validation.php
-Line Number: 147
-
-Backtrace:
-	File: /var/www/html/prod/tasks/tests/_ci_phpunit_test/replacing/core/Common.php
-	Line: 111
-	Function: __construct
-
-	File: /var/www/html/prod/tasks/controllers/Projects.php
-	Line: 8
-	Function: __construct
-
-	File: /var/www/html/prod/tasks/tests/controllers/Projects_display_test.php
-	Line: 20
-	Function: __construct
-
-	File: /var/www/html/phpunit/ci/tasks/tests/vendor/phpunit/phpunit/src/Framework/TestCase.php
-	Line: 1526
-	Function: test_projmock
-
-	File: /var/www/html/phpunit/ci/tasks/tests/vendor/phpunit/phpunit/src/Framework/TestCase.php
-	Line: 1132
-	Function: runTest
-
-	File: /var/www/html/phpunit/ci/tasks/tests/vendor/phpunit/phpunit/src/Framework/TestResult.php
-	Line: 722
-	Function: runBare
-
-	File: /var/www/html/phpunit/ci/tasks/tests/vendor/phpunit/phpunit/src/Framework/TestCase.php
-	Line: 884
-	Function: run
-
-	File: /var/www/html/phpunit/ci/tasks/tests/vendor/phpunit/phpunit/src/Framework/TestSuite.php
-	Line: 677
-	Function: run
-
-	File: /var/www/html/phpunit/ci/tasks/tests/vendor/phpunit/phpunit/src/TextUI/TestRunner.php
-	Line: 667
-	Function: run
-
-	File: /var/www/html/phpunit/ci/tasks/tests/vendor/phpunit/phpunit/src/TextUI/Command.php
-	Line: 142
-	Function: run
-
-	File: /var/www/html/phpunit/ci/tasks/tests/vendor/phpunit/phpunit/src/TextUI/Command.php
-	Line: 95
-	Function: run
-
-	File: /var/www/html/phpunit/ci/tasks/tests/vendor/phpunit/phpunit/phpunit
-	Line: 61
-	Function: main
-
-
-</system-out>
-    </testcase>
+  <testsuite name="" tests="8" assertions="11" errors="0" warnings="1" failures="0" skipped="0" time="3.435490">
+    <testsuite name="CodeIgniter Application Test Suite" tests="8" assertions="11" errors="0" warnings="1" failures="0" skipped="0" time="3.435490">
+      <testsuite name="DataProcessorTest_test" file="/var/www/html/tasks/tests/controllers/DataProcessorTest_test.php" tests="1" assertions="5" errors="0" warnings="0" failures="0" skipped="0" time="0.047527">
+        <testcase name="testDataProcessorProcess_Subclass" class="DataProcessorTest_test" classname="DataProcessorTest_test" file="/var/www/html/tasks/tests/controllers/DataProcessorTest_test.php" line="37" assertions="5" time="0.047527">
+          <system-out> mock_dr@DataProcessorTest_test={"data": [4,5,6]}</system-out>
+        </testcase>
+      </testsuite>
+      <testsuite name="Login_test" file="/var/www/html/tasks/tests/controllers/Login_test.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="1.121309">
+        <testcase name="test_login" class="Login_test" classname="Login_test" file="/var/www/html/tasks/tests/controllers/Login_test.php" line="14" assertions="1" time="1.121309">
+          <system-out>output=logged_in=1</system-out>
+        </testcase>
+      </testsuite>
+      <testsuite name="Projects_test" file="/var/www/html/tasks/tests/controllers/Projects_test.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.024806">
+        <testcase name="test_projects" class="Projects_test" classname="Projects_test" file="/var/www/html/tasks/tests/controllers/Projects_test.php" line="14" assertions="1" time="0.024806">
+          <system-out>output=project_inserted&lt;p class="bg-danger"&gt;The project has been added&lt;/p&gt;</system-out>
+        </testcase>
+      </testsuite>
+      <testsuite name="Register_test" file="/var/www/html/tasks/tests/controllers/Register_test.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="2.217187">
+        <testcase name="test_register" class="Register_test" classname="Register_test" file="/var/www/html/tasks/tests/controllers/Register_test.php" line="14" assertions="1" time="2.217187"/>
+      </testsuite>
+      <testsuite name="Users_test" file="/var/www/html/tasks/tests/controllers/Users_test.php" tests="1" assertions="0" errors="0" warnings="1" failures="0" skipped="0" time="0.001679">
+        <testcase name="Warning" assertions="0" time="0.001679">
+          <warning type="PHPUnit\Framework\Warning">Warning
+No tests found in class "Users_test".</warning>
+        </testcase>
+      </testsuite>
+      <testsuite name="Welcome_test" file="/var/www/html/tasks/tests/controllers/Welcome_test.php" tests="3" assertions="3" errors="0" warnings="0" failures="0" skipped="0" time="0.022982">
+        <testcase name="test_index" class="Welcome_test" classname="Welcome_test" file="/var/www/html/tasks/tests/controllers/Welcome_test.php" line="13" assertions="1" time="0.008620">
+          <system-out>this is Welcome Class......</system-out>
+        </testcase>
+        <testcase name="test_method_404" class="Welcome_test" classname="Welcome_test" file="/var/www/html/tasks/tests/controllers/Welcome_test.php" line="19" assertions="1" time="0.011088"/>
+        <testcase name="test_APPPATH" class="Welcome_test" classname="Welcome_test" file="/var/www/html/tasks/tests/controllers/Welcome_test.php" line="25" assertions="1" time="0.003274"/>
+      </testsuite>
+    </testsuite>
   </testsuite>
 </testsuites>
