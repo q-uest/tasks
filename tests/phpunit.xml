@@ -10,7 +10,7 @@
                         <exclude>./_ci_phpunit_test/</exclude>
                 </testsuite>
         </testsuites>
-        <coverage processUncoveredFiles="true">
+        <coverage processUncoveredFiles="false">
                 <include>
                         <directory suffix=".php">../controllers</directory>
                         <directory suffix=".php">../models</directory>
