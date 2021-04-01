@@ -11,12 +11,12 @@
         </testsuites>
         <coverage>
                 <include>
-                        <directory suffix=".php">/var/www/html/prod/tasks/controllers/</directory>
-                        <directory suffix=".php">/var/www/html/prod/tasks/models/</directory>
-                        <directory suffix=".php">/var/www/html/prod/tasks/views/</directory>
-                        <directory suffix=".php">/var/www/html/prod/tasks/libraries/</directory>
-                        <directory suffix=".php">/var/www/html/prod/tasks/helpers/</directory>
-                        <directory suffix=".php">/var/www/html/prod/tasks/hooks/</directory>
+                        <directory suffix=".php">WORKSPACE/tasks/controllers/</directory>
+                        <directory suffix=".php">WORKSPACE/tasks/models/</directory>
+                        <directory suffix=".php">WORKSPACE/tasks/views/</directory>
+                        <directory suffix=".php">WORKSPACE/tasks/libraries/</directory>
+                        <directory suffix=".php">WORKSPACE/tasks/helpers/</directory>
+                        <directory suffix=".php">WORKSPACE/tasks/hooks/</directory>
                 </include>
                 <report>
                         <html outputDirectory="build/coverage" lowUpperBound="0" highLowerBound="0"/>
