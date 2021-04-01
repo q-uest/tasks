@@ -7,25 +7,20 @@
         <testsuites>
                 <testsuite name="CodeIgniter Application Test Suite">
                         <directory suffix="test.php">./</directory>
-                        <exclude>./_ci_phpunit_test/</exclude>
                 </testsuite>
         </testsuites>
-        <coverage processUncoveredFiles="false">
+        <coverage>
                 <include>
-                        <directory suffix=".php">../controllers</directory>
-                        <directory suffix=".php">../models</directory>
-                        <directory suffix=".php">../views</directory>
-                        <directory suffix=".php">../libraries</directory>
-                        <directory suffix=".php">../helpers</directory>
-                        <directory suffix=".php">../hooks</directory>
+                        <directory suffix=".php">/var/www/html/prod/tasks/controllers/</directory>
+                        <directory suffix=".php">/var/www/html/prod/tasks/models/</directory>
+                        <directory suffix=".php">/var/www/html/prod/tasks/views/</directory>
+                        <directory suffix=".php">/var/www/html/prod/tasks/libraries/</directory>
+                        <directory suffix=".php">/var/www/html/prod/tasks/helpers/</directory>
+                        <directory suffix=".php">/var/www/html/prod/tasks/hooks/</directory>
                 </include>
                 <report>
-                        <html outputDirectory="build/coverage" lowUpperBound="50" highLowerBound="90"/>
+                        <html outputDirectory="build/coverage" lowUpperBound="0" highLowerBound="0"/>
                         <clover outputFile="build/logs/clover.xml"/>
                 </report>
         </coverage>
-        <logging>
-                <log type="coverage-clover" target="clover.xml"/>
-                <junit outputFile="build/logs/junit.xml"/>
-        </logging>
 </phpunit>
