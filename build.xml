@@ -15,14 +15,14 @@
 	<mkdir dir="${basedir}/build/pdepend"/> 
 </target>
 <target name="phpab" description="Generate autoloader scripts">  
-	<exec executable="phpab">   
+	<exec executable="/var/www/html/prod/phpab/tools/phpab">   
 		<arg value="--output" />   
 		<arg path="${basedir}/src/autoload.php" />   
 		<arg value="--template" />   
 		<arg path="${basedir}/build/src_autoload.php.in" />   
 		<arg path="${basedir}/src" />  
 	</exec>
-	<exec executable="phpab">
+	<exec executable="/var/www/html/prod/phpab/tools/phpab">
 		<arg value="--output" />   
 		<arg path="${basedir}/tests/autoload.php" />   
 		<arg value="--template" />   
