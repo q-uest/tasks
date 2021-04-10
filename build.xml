@@ -38,7 +38,7 @@
 	</apply> 
 </target>
 <target name="phpunit" description="Run unit tests with PHPUnit">  
-	<exec executable="phpunit" failonerror="true"/> 
+	<exec executable="/var/www/html/prod/phpunit/vendor/bin/phpunit" failonerror="true"/> 
 </target>
 <target name="parallelTasks"         description="Run code analysis tasks in parallel">  
 	<parallel threadCount="2">   
@@ -69,21 +69,21 @@
 	</exec> 
 </target>
 <target name="phpcpd" description="Find duplicate code using PHPCPD">  
-	<exec executable="phpcpd">   
+	<exec executable="/var/www/html/prod/phpmd/vendor/bin/phpcpd">   
 		<arg value="--log-pmd" />   
 		<arg value="${basedir}/build/logs/pmd-cpd.xml" />   
 		<arg path="${basedir}/src" />  
 	</exec> 
 </target>
 <target name="phploc" description="Measure project size using PHPLOC">  
-	<exec executable="phploc">   
+	<exec executable="/var/www/html/prod/phploc/tools/phploc">   
 		<arg value="--log-csv" />   
 		<arg value="${basedir}/build/logs/phploc.csv" />   
 		<arg path="${basedir}/src" />  
 	</exec> 
 </target>
 <target name="phpcs"         description="Find coding standard violations using PHP_CodeSniffer">  
-	<exec executable="phpcs" output="/dev/null">   
+	<exec executable="/var/www/html/prod/phpcs/vendor/bin/phpcheckstyle" output="/dev/null">   
 		<arg value="--report=checkstyle" />   
 		<arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />   
 		<arg value="--standard=${basedir}/build/phpcs.xml" />   
@@ -91,7 +91,7 @@
 	</exec> 
 </target>
 <target name="phpdoc"         description="Generate API documentation using PHPDocumentor">  
-	<exec executable="phpdoc">   
+	<exec executable="phpdox">   
 		<arg value="--directory" />   
 		<arg path="${basedir}/src" />   
 		<arg value="--target" />   
@@ -99,7 +99,7 @@
 	</exec> 
 </target>
 <target name="phpcb"         description="Aggregate tool output with PHP_CodeBrowser">  
-	<exec executable="phpcb">   
+	<exec executable="/var/www/html/prod/phpcb2/vendor/bin/phpcb">   
 		<arg value="--log" />   
 		<arg path="${basedir}/build/logs" />   
 		<arg value="--source" />   
