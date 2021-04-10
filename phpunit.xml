@@ -11,7 +11,13 @@
         </testsuites>
         <coverage>
                 <include>
-                        <directory suffix=".php">tests/controllers</directory>
+                        <directory suffix=".php">WORKSPACE/controllers/</directory>
+                        <directory suffix=".php">WORKSPACE/models/</directory>
+                        <directory suffix=".php">WORKSPACE/views/</directory>
+                        <directory suffix=".php">WORKSPACE/libraries/</directory>
+                        <directory suffix=".php">WORKSPACE/helpers/</directory>
+                        <directory suffix=".php">WORKSPACE/hooks/</directory>
+
                 </include>
                 <report>
                         <html outputDirectory="build/coverage" lowUpperBound="0" highLowerBound="0"/>
