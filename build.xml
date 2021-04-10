@@ -17,17 +17,17 @@
 <target name="phpab" description="Generate autoloader scripts">  
 	<exec executable="/var/www/html/prod/phpab/tools/phpab">   
 		<arg value="--output" />   
-		<arg path="${basedir}/src/autoload.php" />   
+		<arg path="${basedir}/autoload.php" />   
 		<arg value="--template" />   
-		<arg path="${basedir}/build/src_autoload.php.in" />   
-		<arg path="${basedir}/src" />  
+		<arg path="${basedir}/build/phpab_templ" />   
+		<arg path="${basedir}/controllers,${basedir}/models,${basedir}/views" />  
 	</exec>
 	<exec executable="/var/www/html/prod/phpab/tools/phpab">
 		<arg value="--output" />   
 		<arg path="${basedir}/tests/autoload.php" />   
 		<arg value="--template" />   
-		<arg path="${basedir}/build/tests_autoload.php.in" />   
-		<arg path="${basedir}/tests" />  
+		<arg path="${basedir}/build/phpab_templ" />   
+		<arg path="${basedir}/tests/controllers,${basedir}/tests/views,${basedir}/tests/models" />  
 	</exec> 
 </target>
 <target name="lint">  
