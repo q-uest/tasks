@@ -12,11 +12,6 @@
         <coverage>
                 <include>
                         <directory suffix=".php">./controllers/</directory>
-                        <directory suffix=".php">./models/</directory>
-                        <directory suffix=".php">./views/</directory>
-                        <directory suffix=".php">./libraries/</directory>
-                        <directory suffix=".php">./helpers/</directory>
-                        <directory suffix=".php">./hooks/</directory>
                 </include>
                 <report>
                         <html outputDirectory="build/coverage" lowUpperBound="0" highLowerBound="0"/>
