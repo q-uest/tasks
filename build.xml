@@ -34,7 +34,7 @@
 	<apply executable="php" failonerror="true">   
 		<arg value="-l" />
 		   <fileset dir="${basedir}/controllers">    <include name="**/*.php" />   </fileset>
-		   <fileset dir="${basedir}/tests">    <include name="**/*.php" />   </fileset>  
+		   <fileset dir="${basedir}/tests/controllers">    <include name="**/*.php" />   </fileset>  
 	</apply> 
 </target>
 <target name="phpunit" description="Run unit tests with PHPUnit">  
