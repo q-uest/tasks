@@ -11,7 +11,7 @@
         </testsuites>
         <coverage>
                 <include>
-                        <directory suffix=".php">tests/controllers/</directory>
+                        <directory suffix=".php">tests/controllers</directory>
                 </include>
                 <report>
                         <html outputDirectory="build/coverage" lowUpperBound="0" highLowerBound="0"/>
