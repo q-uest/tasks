@@ -229,7 +229,7 @@ switch (ENVIRONMENT)
 	// Path to the system directory
 	define('BASEPATH', $system_path);
 
-         echo "BASEPATH=".$system_path);
+         
 
 
 	// Path to the front controller (this file) directory
