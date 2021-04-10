@@ -33,7 +33,7 @@
 <target name="lint">  
 	<apply executable="php" failonerror="true">   
 		<arg value="-l" />
-		   <fileset dir="${basedir}/.">    <include name="**/*.php" />   </fileset>
+		   <fileset dir="${basedir}/controllers,${basedir}/views,${basedir}/models">    <include name="**/*.php" />   </fileset>
 		   <fileset dir="${basedir}/tests">    <include name="**/*.php" />   </fileset>  
 	</apply> 
 </target>
