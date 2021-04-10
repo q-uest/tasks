@@ -33,8 +33,8 @@
 <target name="lint">  
 	<apply executable="php" failonerror="true">   
 		<arg value="-l" />
-		   <fileset dir="${basedir}/controllers,${basedir}/views,${basedir}/models">    <include name="**/*.php" />   </fileset>
-		   <fileset dir="${basedir}/tests/controllers,${basedir}/tests/views,${basedir}/tests/models">    <include name="**/*.php" />   </fileset>  
+		   <fileset dir="${basedir}/controllers">    <include name="**/*.php" />   </fileset>
+		   <fileset dir="${basedir}/tests">    <include name="**/*.php" />   </fileset>  
 	</apply> 
 </target>
 <target name="phpunit" description="Run unit tests with PHPUnit">  
