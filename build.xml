@@ -92,10 +92,6 @@
 </target>
 <target name="phpdoc"         description="Generate API documentation using PHPDocumentor">  
 	<exec executable="phpdox">   
-		<arg value="--directory" />   
-		<arg path="${basedir}" />   
-		<arg value="--target" />   
-		<arg path="${basedir}/build/api" />  
 	</exec> 
 </target>
 <target name="phpcb"         description="Aggregate tool output with PHP_CodeBrowser">  
