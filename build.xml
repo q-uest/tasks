@@ -69,7 +69,7 @@
 	</exec> 
 </target>
 <target name="phpcpd" description="Find duplicate code using PHPCPD">  
-	<exec executable="/var/www/html/prod/phpmd/vendor/bin/phpcpd">   
+	<exec executable="/var/www/html/prod/phpcpd/tools/phpcpd">   
 		<arg value="--log-pmd" />   
 		<arg value="${basedir}/build/logs/pmd-cpd.xml" />   
 		<arg path="${basedir}/src" />  
