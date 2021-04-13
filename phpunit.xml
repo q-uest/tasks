@@ -11,12 +11,12 @@
         </testsuites>
         <coverage>
                 <include>
-                        <directory suffix=".php">WORKSPACE/controllers/</directory>
-                        <directory suffix=".php">WORKSPACE/models/</directory>
-                        <directory suffix=".php">WORKSPACE/views/</directory>
-                        <directory suffix=".php">WORKSPACE/libraries/</directory>
-                        <directory suffix=".php">WORKSPACE/helpers/</directory>
-                        <directory suffix=".php">WORKSPACE/hooks/</directory>
+                        <directory suffix=".php">WORKSPACE/src/controllers/</directory>
+                        <directory suffix=".php">WORKSPACE/src/models/</directory>
+                        <directory suffix=".php">WORKSPACE/src/views/</directory>
+                        <directory suffix=".php">WORKSPACE/src/libraries/</directory>
+                        <directory suffix=".php">WORKSPACE/src/helpers/</directory>
+                        <directory suffix=".php">WORKSPACE/src/hooks/</directory>
 
                 </include>
                 <report>
