@@ -25,7 +25,7 @@ class Welcome_test extends TestCase
 	public function test_APPPATH()
 	{
 		$actual = realpath(APPPATH);
-		$expected = realpath(__DIR__ . '/../..');
+		$expected = realpath(__DIR__ . '/../../src');
 		$this->assertEquals(
 			$expected,
 			$actual,
