@@ -27,7 +27,7 @@
 		<arg path="${basedir}/tests/autoload.php" />   
 		<arg value="--template" />   
 		<arg path="${basedir}/build/phpab_templ" />   
-		<arg path="${basedir}/tests/controllers,${basedir}/tests/views,${basedir}/tests/models" />  
+		<arg path="${basedir}/tests/controllers" />  
 	</exec> 
 </target>
 <target name="lint">  
