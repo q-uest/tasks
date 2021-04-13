@@ -29,6 +29,7 @@
 		<arg path="${basedir}/build/phpab_templ" />   
 		<arg path="${basedir}/tests/controllers" />  
 		<arg path="${basedir}/tests/models" />
+		<arg path="${basedir}/tests/views" />
 	</exec> 
 </target>
 <target name="lint">  
