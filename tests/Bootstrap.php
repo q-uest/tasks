@@ -245,6 +245,10 @@ switch (ENVIRONMENT)
 	// Name of the "system" directory
 	define('SYSDIR', basename(BASEPATH));
 
+	// Define the path of CodeIgniter system scripts for phpunit
+	$ci_phpunit_path=dirname(__dir__.'..');
+
+
 	// The path to the "application" directory
 	if (is_dir($application_folder))
 	{
@@ -328,6 +332,9 @@ switch (ENVIRONMENT)
 			[dirname(APPPATH), 'vendor', 'kenjis', 'ci-phpunit-test', 'application', 'tests', '_ci_phpunit_test']
 		).DIRECTORY_SEPARATOR);
 	}
+
+         // set path for CodeIgniter system scripts for PHPUnit
+	 define('CI_PHPUNIT_TESTPATH',$ci_phpunit_path.DIRECTORY_SEPARATOR. '_ci_phpunit_test' );
 
 /*
  * -------------------------------------------------------------------
