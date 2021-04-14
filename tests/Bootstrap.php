@@ -319,21 +319,19 @@ switch (ENVIRONMENT)
 
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
 
-	/* 
-	*// Path to the ci-phpunit-test directory
-	*if (is_file(TESTPATH . '_ci_phpunit_test' . DIRECTORY_SEPARATOR . 'CIPHPUnitTest.php'))
-	*{
-	*	define('CI_PHPUNIT_TESTPATH', TESTPATH . '_ci_phpunit_test' . DIRECTORY_SEPARATOR);
-	*}
-	*else
-	*{
-	*	// Assume Composer with a vendor directory parallel to the application directory
-	*	define('CI_PHPUNIT_TESTPATH', implode(
-	*		DIRECTORY_SEPARATOR,
-	*		[dirname(APPPATH), 'vendor', 'kenjis', 'ci-phpunit-test', 'application', 'tests', '_ci_phpunit_test']
-	*	).DIRECTORY_SEPARATOR);
-	*}
-	*/
+	// Path to the ci-phpunit-test directory
+	//if (is_file(TESTPATH . '_ci_phpunit_test' . DIRECTORY_SEPARATOR . 'CIPHPUnitTest.php'))
+	//{
+	//	define('CI_PHPUNIT_TESTPATH', TESTPATH . '_ci_phpunit_test' . DIRECTORY_SEPARATOR);
+	//}
+	//else
+	//{
+	// Assume Composer with a vendor directory parallel to the application directory
+	//	define('CI_PHPUNIT_TESTPATH', implode(
+	//		DIRECTORY_SEPARATOR,
+	//	[dirname(APPPATH), 'vendor', 'kenjis', 'ci-phpunit-test', 'application', 'tests', '_ci_phpunit_test']
+	//	).DIRECTORY_SEPARATOR);
+	//}
 
          // set path for CodeIgniter system scripts for PHPUnit
 	 define('CI_PHPUNIT_TESTPATH',$ci_phpunit_path.DIRECTORY_SEPARATOR. '_ci_phpunit_test' );
