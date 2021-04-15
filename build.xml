@@ -89,7 +89,7 @@
 	<exec executable="phpcs" >   
 		<arg value="--report=checkstyle" />   
 		<arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
-		<arg value="--standard=${basedir}/build/phpcs_ruleset.xml" />
+		<arg value="--standard=/usr/share/php/PHP/CodeSniffer/src/Standards/CodeIgniter4-Standard/CodeIgniter4/ruleset.xml" />
 		<arg path="${basedir}/src" />  
 	</exec> 
 </target>
