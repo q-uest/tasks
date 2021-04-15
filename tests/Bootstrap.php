@@ -120,7 +120,7 @@ switch (ENVIRONMENT)
  *
  * NO TRAILING SLASH!
  */
-	$application_folder = './src';
+	$application_folder = '../src';
 
 /*
  *---------------------------------------------------------------
