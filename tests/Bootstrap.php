@@ -236,7 +236,7 @@ switch (ENVIRONMENT)
 	// Path to the test directory containing all the test files.
 	define('TESTPATH', __dir__.DIRECTORY_SEPARATOR);  // Should be the folder this `Bootstrap.php` file is in.
 
-	echo "TESTPATH=".TESTPATH;
+	
 
 	// Path to the system directory
 	define('BASEPATH', $system_path);
