@@ -88,7 +88,7 @@
 	<exec executable="/var/www/html/prod/phpcs/vendor/bin/phpcheckstyle" output="/dev/null">   
 		<arg value="--report=checkstyle" />   
 		<arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />   
-		<arg value="--standard=${basedir}/build/phpcs_ruleset..xml" />   
+		<arg value="--standard=${basedir}/build/phpcs_ruleset.xml" />   
 		<arg path="${basedir}/src" />  
 	</exec> 
 </target>
