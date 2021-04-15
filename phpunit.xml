@@ -20,8 +20,8 @@
 
                 </include>
                 <report>
-                        <html outputDirectory="build/coverage" lowUpperBound="0" highLowerBound="0"/>
-                        <clover outputFile="build/logs/clover.xml"/>
+                        <html outputDirectory="WORKSPACE/build/coverage" lowUpperBound="0" highLowerBound="0"/>
+                        <clover outputFile="WORKSPACE/build/logs/clover.xml"/>
                 </report>
         </coverage>
 </phpunit>
