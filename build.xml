@@ -85,7 +85,7 @@
 	</exec> 
 </target>
 <target name="phpcs"         description="Find coding standard violations using PHP_CodeSniffer">  
-	<exec executable="/var/www/html/prod/phpcs/vendor/bin/phpcheckstyle" output="/dev/null">   
+	<exec executable="phpcs" output="/dev/null">   
 		<arg value="--report=checkstyle" />   
 		<arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />   
 		<arg value="--standard=${basedir}/build/phpcs_ruleset.xml" />   
