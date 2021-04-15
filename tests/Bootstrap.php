@@ -103,7 +103,7 @@ switch (ENVIRONMENT)
  * This variable must contain the name of your "system" directory.
  * Set the path if it is not in the same directory as this file.
  */
-	$system_path = '../../../system';
+	$system_path = '../../system';
 
 /*
  *---------------------------------------------------------------
@@ -120,7 +120,7 @@ switch (ENVIRONMENT)
  *
  * NO TRAILING SLASH!
  */
-	$application_folder = '../src';
+	$application_folder = '.';
 
 /*
  *---------------------------------------------------------------
@@ -234,7 +234,9 @@ switch (ENVIRONMENT)
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
 	// Path to the test directory containing all the test files.
-	define('TESTPATH', __dir__.DIRECTORY_SEPARATOR);  // Should be the folder this `Bootstrap.php` file is in.
+	define('TESTPATH', __dir__.DIRECTORY_SEPARATOR.'tests/');  // Should be the folder this `Bootstrap.php` file is in.
+
+	echo "TESTPATH=".TESTPATH;
 
 	// Path to the system directory
 	define('BASEPATH', $system_path);
@@ -244,10 +246,6 @@ switch (ENVIRONMENT)
 
 	// Name of the "system" directory
 	define('SYSDIR', basename(BASEPATH));
-
-	// Define the path of CodeIgniter system scripts for phpunit
-	$ci_phpunit_path=dirname(__dir__.'..');
-
 
 	// The path to the "application" directory
 	if (is_dir($application_folder))
@@ -281,6 +279,9 @@ switch (ENVIRONMENT)
 	}
 
 	define('APPPATH', $application_folder.DIRECTORY_SEPARATOR);
+
+
+	echo "APPPATH=".APPPATH;
 
 	// The path to the "views" directory
 	if ( ! isset($view_folder[0]) && is_dir(APPPATH.'views'.DIRECTORY_SEPARATOR))
@@ -320,21 +321,21 @@ switch (ENVIRONMENT)
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
 
 	// Path to the ci-phpunit-test directory
-	//if (is_file(TESTPATH . '_ci_phpunit_test' . DIRECTORY_SEPARATOR . 'CIPHPUnitTest.php'))
-	//{
-	//	define('CI_PHPUNIT_TESTPATH', TESTPATH . '_ci_phpunit_test' . DIRECTORY_SEPARATOR);
-	//}
-	//else
-	//{
-	// Assume Composer with a vendor directory parallel to the application directory
-	//	define('CI_PHPUNIT_TESTPATH', implode(
-	//		DIRECTORY_SEPARATOR,
-	//	[dirname(APPPATH), 'vendor', 'kenjis', 'ci-phpunit-test', 'application', 'tests', '_ci_phpunit_test']
-	//	).DIRECTORY_SEPARATOR);
-	//}
 
-         // set path for CodeIgniter system scripts for PHPUnit
-	 define('CI_PHPUNIT_TESTPATH',$ci_phpunit_path.DIRECTORY_SEPARATOR. '_ci_phpunit_test' );
+	echo "\n CIPHPUnitTest PATH=".TESTPATH . '_ci_phpunit_test' . DIRECTORY_SEPARATOR . 'CIPHPUnitTest.php';
+	if (is_file(TESTPATH . '_ci_phpunit_test' . DIRECTORY_SEPARATOR . 'CIPHPUnitTest.php'))
+	{
+		echo "\nCIPHPUnitTest.php is found.....";
+		define('CI_PHPUNIT_TESTPATH', TESTPATH . '_ci_phpunit_test' . DIRECTORY_SEPARATOR);
+	}
+	else
+	{
+		// Assume Composer with a vendor directory parallel to the application directory
+		define('CI_PHPUNIT_TESTPATH', implode(
+			DIRECTORY_SEPARATOR,
+			[dirname(APPPATH), 'vendor', 'kenjis', 'ci-phpunit-test', 'application', 'tests', '_ci_phpunit_test']
+		).DIRECTORY_SEPARATOR);
+	}
 
 /*
  * -------------------------------------------------------------------
@@ -343,9 +344,9 @@ switch (ENVIRONMENT)
  * 
  * If you want to use monkey patching, uncomment below code and configure
  * for your application.
- */
-/*
-require CI_PHPUNIT_TESTPATH . 'patcher/bootstrap.php';
+ /*
+
+ require CI_PHPUNIT_TESTPATH . 'patcher/bootstrap.php';
 MonkeyPatchManager::init([
 	// If you want debug log, set `debug` true, and optionally you can set the log file path
 	'debug' => true,
@@ -391,7 +392,9 @@ MonkeyPatchManager::init([
 define('TESTPATH', APPPATH.'tests'.DIRECTORY_SEPARATOR);
 */
 
-require CI_PHPUNIT_TESTPATH . '/CIPHPUnitTest.php';
+echo "CI_PHPUNIT_TESTPATH=".CI_PHPUNIT_TESTPATH;
+	require CI_PHPUNIT_TESTPATH . '/CIPHPUnitTest.php';
+
 
 CIPHPUnitTest::init();
 // Or you can set directories for autoloading
