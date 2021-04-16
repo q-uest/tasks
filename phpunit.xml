@@ -11,17 +11,17 @@
         </testsuites>
         <coverage>
                 <include>
-                        <directory suffix=".php">WORKSPACE/src/controllers/</directory>
-                        <directory suffix=".php">WORKSPACE/src/models/</directory>
-                        <directory suffix=".php">WORKSPACE/src/views/</directory>
-                        <directory suffix=".php">WORKSPACE/src/libraries/</directory>
-                        <directory suffix=".php">WORKSPACE/src/helpers/</directory>
-                        <directory suffix=".php">WORKSPACE/src/hooks/</directory>
+                        <directory suffix=".php">./src/controllers/</directory>
+                        <directory suffix=".php">./src/models/</directory>
+                        <directory suffix=".php">./src/views/</directory>
+                        <directory suffix=".php">./src/libraries/</directory>
+                        <directory suffix=".php">./src/helpers/</directory>
+                        <directory suffix=".php">./src/hooks/</directory>
 
                 </include>
                 <report>
-                        <html outputDirectory="WORKSPACE/build/coverage" lowUpperBound="0" highLowerBound="0"/>
-                        <clover outputFile="WORKSPACE/build/logs/clover.xml"/>
+                        <html outputDirectory="./tests/build/coverage" lowUpperBound="0" highLowerBound="0"/>
+                        <clover outputFile="./tests/build/logs/clover.xml"/>
                 </report>
         </coverage>
 </phpunit>
