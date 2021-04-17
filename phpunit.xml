@@ -11,13 +11,7 @@
         </testsuites>
         <coverage>
                 <include>
-                        <directory suffix=".php">./src/controllers/</directory>
-                        <directory suffix=".php">./src/models/</directory>
-                        <directory suffix=".php">./src/views/</directory>
-                        <directory suffix=".php">./src/libraries/</directory>
-                        <directory suffix=".php">./src/helpers/</directory>
-                        <directory suffix=".php">./src/hooks/</directory>
-
+                        <directory suffix=".php">./src/</directory>
                 </include>
                 <report>
                         <html outputDirectory="./tests/build/coverage" lowUpperBound="0" highLowerBound="0"/>
