@@ -15,7 +15,7 @@
                 </include>
                 <report>
                         <html outputDirectory="./tests/build/coverage" lowUpperBound="0" highLowerBound="0"/>
-                        <clover outputFile="./tests/build/logs/clover.xml"/>
+                        <clover outputFile="./tests/build/coverage/clover.xml"/>
                 </report>
         </coverage>
 </phpunit>
