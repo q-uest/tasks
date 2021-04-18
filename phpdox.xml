@@ -2,7 +2,7 @@
 <phpdox xmlns="http://xml.phpdox.net/config">
         <project name="Tasks" source="./src" workdir="./build/api/xml">
     <collector backend="parser" />
-    <generator output="./tests/build/api">
+    <generator output="./build/api">
       <build engine="html" output="html"/>
     </generator>
   </project>
