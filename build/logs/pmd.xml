@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pmd version="@project.version@" timestamp="2021-04-19T04:36:20+00:00">
+  <file name="/var/lib/jenkins/workspace/tasks_freestyle/src/controllers/Tasks.php">
+    <violation beginline="70" endline="70" rule="UnusedLocalVariable" ruleset="Unused Code Rules" externalInfoUrl="http://phpmd.org/rules/unusedcode.html#unusedlocalvariable" priority="3">
+      Avoid unused local variables such as '$taskid'.
+    </violation>
+    <violation beginline="71" endline="71" rule="UnusedLocalVariable" ruleset="Unused Code Rules" externalInfoUrl="http://phpmd.org/rules/unusedcode.html#unusedlocalvariable" priority="3">
+      Avoid unused local variables such as '$tskowner'.
+    </violation>
+    <violation beginline="210" endline="344" rule="CyclomaticComplexity" ruleset="Code Size Rules" package="+global" externalInfoUrl="http://phpmd.org/rules/codesize.html#cyclomaticcomplexity" class="Tasks" method="validate_root_task" priority="3">
+      The method validate_root_task() has a Cyclomatic Complexity of 10. The configured cyclomatic complexity threshold is 10.
+    </violation>
+    <violation beginline="333" endline="333" rule="UnusedLocalVariable" ruleset="Unused Code Rules" externalInfoUrl="http://phpmd.org/rules/unusedcode.html#unusedlocalvariable" priority="3">
+      Avoid unused local variables such as '$add_task_func'.
+    </violation>
+    <violation beginline="349" endline="501" rule="CyclomaticComplexity" ruleset="Code Size Rules" package="+global" externalInfoUrl="http://phpmd.org/rules/codesize.html#cyclomaticcomplexity" class="Tasks" method="validate_task" priority="3">
+      The method validate_task() has a Cyclomatic Complexity of 11. The configured cyclomatic complexity threshold is 10.
+    </violation>
+    <violation beginline="363" endline="363" rule="UnusedLocalVariable" ruleset="Unused Code Rules" externalInfoUrl="http://phpmd.org/rules/unusedcode.html#unusedlocalvariable" priority="3">
+      Avoid unused local variables such as '$tsd'.
+    </violation>
+    <violation beginline="491" endline="491" rule="UnusedLocalVariable" ruleset="Unused Code Rules" externalInfoUrl="http://phpmd.org/rules/unusedcode.html#unusedlocalvariable" priority="3">
+      Avoid unused local variables such as '$add_task_func'.
+    </violation>
+    <violation beginline="707" endline="707" rule="UnusedLocalVariable" ruleset="Unused Code Rules" externalInfoUrl="http://phpmd.org/rules/unusedcode.html#unusedlocalvariable" priority="3">
+      Avoid unused local variables such as '$tasksres'.
+    </violation>
+    <violation beginline="977" endline="1232" rule="CyclomaticComplexity" ruleset="Code Size Rules" package="+global" externalInfoUrl="http://phpmd.org/rules/codesize.html#cyclomaticcomplexity" class="Tasks" method="validate_upd_task" priority="3">
+      The method validate_upd_task() has a Cyclomatic Complexity of 21. The configured cyclomatic complexity threshold is 10.
+    </violation>
+    <violation beginline="977" endline="1232" rule="NPathComplexity" ruleset="Code Size Rules" package="+global" externalInfoUrl="http://phpmd.org/rules/codesize.html#npathcomplexity" class="Tasks" method="validate_upd_task" priority="3">
+      The method validate_upd_task() has an NPath complexity of 57096. The configured NPath complexity threshold is 200.
+    </violation>
+    <violation beginline="1190" endline="1190" rule="UnusedLocalVariable" ruleset="Unused Code Rules" externalInfoUrl="http://phpmd.org/rules/unusedcode.html#unusedlocalvariable" priority="3">
+      Avoid unused local variables such as '$tskid'.
+    </violation>
+    <violation beginline="1209" endline="1209" rule="UnusedLocalVariable" ruleset="Unused Code Rules" externalInfoUrl="http://phpmd.org/rules/unusedcode.html#unusedlocalvariable" priority="3">
+      Avoid unused local variables such as '$ptstat'.
+    </violation>
+    <violation beginline="1235" endline="1235" rule="UnusedFormalParameter" ruleset="Unused Code Rules" externalInfoUrl="http://phpmd.org/rules/unusedcode.html#unusedformalparameter" priority="3">
+      Avoid unused parameters such as '$taskid'.
+    </violation>
+    <violation beginline="1271" endline="1271" rule="UnusedLocalVariable" ruleset="Unused Code Rules" externalInfoUrl="http://phpmd.org/rules/unusedcode.html#unusedlocalvariable" priority="3">
+      Avoid unused local variables such as '$pt_rwcnt'.
+    </violation>
+  </file>
+  <file name="/var/lib/jenkins/workspace/tasks_freestyle/src/controllers/Users.php">
+    <violation beginline="222" endline="222" rule="UnusedLocalVariable" ruleset="Unused Code Rules" externalInfoUrl="http://phpmd.org/rules/unusedcode.html#unusedlocalvariable" priority="3">
+      Avoid unused local variables such as '$user_id'.
+    </violation>
+  </file>
+  <file name="/var/lib/jenkins/workspace/tasks_freestyle/src/models/Task_model.php">
+    <violation beginline="12" endline="12" rule="UnusedLocalVariable" ruleset="Unused Code Rules" externalInfoUrl="http://phpmd.org/rules/unusedcode.html#unusedlocalvariable" priority="3">
+      Avoid unused local variables such as '$insert_task'.
+    </violation>
+  </file>
+</pmd>
