@@ -5,7 +5,7 @@ class Home extends CI_Controller {
 	public function index() {
 
 
-		#echo "Firing home\index";
+		echo "\nBuild Test - 1";
 
 		if($this->session->userdata('logged_in'))
 		{
