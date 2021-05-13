@@ -5,7 +5,7 @@ class Home extends CI_Controller {
 	public function index() {
 
 
-		echo "\nBuild Test - 3 13/may/2021 19:45";
+		echo "\nBuild Test - 3 13/may/2021 20:11";
 
 		if($this->session->userdata('logged_in'))
 		{
