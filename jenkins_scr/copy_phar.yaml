@@ -1,0 +1,126 @@
+---
+- hosts: test
+
+  tasks:
+
+   - name: create phar directory on dest
+     file:
+       path: /var/www/html/phar
+       state: directory
+       owner: app
+       group: app
+       mode: 0777
+
+   - name: Delete ./app
+     command: rm -rf /var/www/html/phar/app
+     become_user: root
+   
+   - name: copy phar & change ownership/permissions
+     copy:
+       src: /var/www/html/phar/myapp.phar
+       dest: /var/www/html/phar/myapp.phar
+       owner: app
+       group: app
+       mode: 0644
+   
+   - name: Copy app.php to destination
+     copy:
+       src: /home/app/scripts/app.php
+       dest: /var/www/html/app.php
+       owner: app
+       group: app
+       mode: 0644
+   
+   - name: Copy .htaccess to destination
+     copy:
+       src: /home/app/scripts/.htaccess
+       dest: /var/www/html/.htaccess
+       owner: app
+       group: app
+       mode: 0644
+   
+   - name: Copy script extract_phar1.php to destination
+     copy:
+       src: /home/app/scripts/extract_phar1.php
+       dest: /var/www/html/phar/extract_phar1.php
+       owner: app
+       group: app
+       mode: 0666
+
+   - name: Copy script create_phar.php to destination
+     copy:
+       src: /home/app/scripts/create_phar.php
+       dest: /var/www/html/phar/create_phar.php
+       owner: app
+       group: app
+       mode: 0666
+
+   - name: Execute extract_phar1.php
+     command: php /var/www/html/phar/extract_phar1.php
+     become_user: app
+
+     # - name: Move index.php from ./app/src to ./app
+     #command: mv /var/www/html/phar/app/src/index.php /var/www/html/phar/app/.
+     #become_user: root
+
+   - name: Delete myapp.phar file from destination
+     file: 
+       path: /var/www/html/phar/myapp.phar
+       state: absent
+   
+   - name: Update variables with values in index.php
+     ansible.builtin.lineinfile:
+       path: /var/www/html/phar/app/index.php
+       regexp: \$system_path = \'
+       line:             $system_path = '{{ system_path }}';
+       state: present
+
+   - name: Update application_folder with values in index.php
+     ansible.builtin.lineinfile:
+       path: /var/www/html/phar/app/index.php
+       regexp: \$application_folder = \'
+       line:             $application_folder = 'phar://myapp.phar/src';
+       state: present
+
+
+   - name: Update Bootstrap variable in index.php
+     ansible.builtin.lineinfile:
+       path: /var/www/html/phar/app/index.php
+       regexp: BASEPATH\.\'core\/CodeIgniter\.php\'
+       line: require_once '{{system_path}}/core/CodeIgniter.php';
+       state: present
+
+   - name: Update (application) logs variable in src/config/config.php
+     ansible.builtin.lineinfile:
+       path: /var/www/html/phar/app/src/config/config.php
+       regexp: \$config\[\'log_path\'\]
+       line: $config['log_path'] = '/var/www/html/codeigniter/logs';
+       state: present
+
+
+   - name: Update base_url in config.php
+     ansible.builtin.lineinfile:
+       path: /var/www/html/phar/app/src/config/config.php
+       regexp: \$config\['base_url'\]
+       line: $config['base_url'] = '{{base_url}}';
+       state: present
+
+       #   - name: copy index.php from ./app/src to ./app
+       # command: cp /var/www/html/phar/app/index.php /var/www/html/phar/app/src/.
+       # become_user: root
+
+       #- name: Update application_folder with values in index.php
+       #ansible.builtin.lineinfile:
+       #path: /var/www/html/phar/app/src/index.php
+       #regexp: \$application_folder = \'
+       #line:             $application_folder = '.';
+       #state: present
+
+
+   - name: Execute create_phar.php
+     command: php /var/www/html/phar/create_phar.php
+
+   - name: move myapp.phar to /var/www/html
+     command: mv -f /var/www/html/phar/myapp.phar /var/www/html/.
+     become_user: root
+
