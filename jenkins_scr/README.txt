@@ -9,7 +9,7 @@ sudo ansible-playbook /root/ansible/copy_phar.yaml
 1)cre_copyphar.sh
 =================
 
-
+- Will be run on the build server
 - removes the directory named, "copyphar", if it already exists (the variabe, BUILD holds the value of the path).
 - creates a directory called, "copyphar" on the build server (source).
 - copies the source code (located in the workspace under the path - "src") to "copyphar".
@@ -19,6 +19,7 @@ sudo ansible-playbook /root/ansible/copy_phar.yaml
 2) cre_phar_copyphar.php
 ========================
 
+- Will be run on the build server.
 - It packages (in .phar format) the files in the path - "/var/www/html/phar/copyphar".
 - creates the phar file named "myapp.phar"  in the path, /var/www/html/phar.
 - sets index.php as a stub file, so that it can execute when the phar file is called/used.
@@ -28,7 +29,7 @@ sudo ansible-playbook /root/ansible/copy_phar.yaml
 3)copy_phar.yaml (ansible play book)
 ===================================
 
-- this is executed on the target server where the acceptance testing will take place
+- Will be run on the target server (Test box)
 - creates "phar" directory under /var/www/html/
 - removes directory - "app" from "/var/www/html/phar" 
 - copies the myapp.phar file created by the 2nd script onto the target server
