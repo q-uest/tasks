@@ -1,0 +1,12 @@
+The following files need to be updated when the hostname,PATH and URL changes.....
+
+Look for the string - "window.location.replace" to locate those lines and change as required:
+
+~/src/views/tasks/js_insert_task.php
+~/src/views/tasks/upd_view.php
+~/src/views/tasks/js_insert_root_task.php
+
+
+Also, look for the string - "window.open" and update the URL of the below file:
+
+~/src/views/projects/index.php
