@@ -24,7 +24,7 @@
 
 <?php else: ?>
 
- <h2>Login Form</h2>
+ <h2>Login Form for Praveen Demo</h2>
 
 
 <?php $attributes = array('id'=>'login_form','class'=> 'form_horizontal'); ?>
